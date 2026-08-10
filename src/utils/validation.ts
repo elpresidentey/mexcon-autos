@@ -18,7 +18,7 @@ export const validateYear = (year: number): boolean => {
 
 export const validateOemNumber = (oemNumber: string): boolean => {
   // Allow alphanumeric characters and hyphens
-  const oemRegex = /^[a-zA-Z0-9\-]+$/;
+  const oemRegex = /^[a-zA-Z0-9-]+$/;
   return oemRegex.test(oemNumber);
 };
 

@@ -86,7 +86,7 @@ export const ProductDetailPage = () => {
     try {
       await addToCart(product, quantity);
       toast.success(`${product.name} added to cart`);
-    } catch (error) {
+    } catch {
       toast.error('Failed to add item to cart. Please try again.');
     } finally {
       setIsAdding(false);

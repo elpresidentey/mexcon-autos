@@ -18,9 +18,9 @@ export const CategoriesPage = () => {
     try {
       setIsLoading(true);
       const data = await categoriesService.getCategoriesWithProductCounts();
-      // Only show active categories that currently have stock
+      // Show all active categories (including those with 0 products)
       const activeCategories = data
-        .filter((c) => c.is_active && (c.product_count || 0) > 0)
+        .filter((c) => c.is_active)
         .sort((a, b) => (b.product_count || 0) - (a.product_count || 0));
       setCategories(activeCategories);
     } catch (error) {

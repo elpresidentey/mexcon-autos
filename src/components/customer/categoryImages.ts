@@ -27,7 +27,7 @@ export function getCategoryImage(category: {
   image_url?: string | null;
 }): string | null {
   if (category.image_url) return category.image_url;
-  if (!category.slug) return null;
+  if (!category.slug) return '/car-engine.webp';
 
   if (categoryPlaceholderImages[category.slug]) {
     return categoryPlaceholderImages[category.slug];
@@ -38,5 +38,6 @@ export function getCategoryImage(category: {
     if (slug.includes(key)) return categoryPlaceholderImages[key];
   }
 
-  return null;
+  // Default fallback - use car engine image for any unmapped category
+  return '/car-engine.webp';
 }

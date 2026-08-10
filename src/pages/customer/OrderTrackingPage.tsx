@@ -28,7 +28,7 @@ export const OrderTrackingPage = () => {
       } else {
         setError('Order not found. Please check your order number and email and try again.');
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred while searching for your order. Please try again.');
     } finally {
       setIsLoading(false);

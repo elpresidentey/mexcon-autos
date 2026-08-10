@@ -24,14 +24,21 @@ export const CategoryCard = ({ category }: CategoryCardProps) => {
           alt={category.name}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
           loading="lazy"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const fallback = e.currentTarget.nextElementSibling as HTMLElement | null;
+            if (fallback) fallback.style.display = 'flex';
+          }}
         />
-      ) : (
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-metallic-200 to-metallic-100">
+      ) : null}
+      <div
+        className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-metallic-200 to-metallic-100"
+        style={{ display: imageUrl ? 'none' : 'flex' }}
+      >
           <span className="flex items-center justify-center w-16 h-16 rounded-full border-2 border-metallic-300 bg-white/60 font-display text-2xl font-bold text-metallic-500 uppercase">
             {category.name.charAt(0)}
           </span>
         </div>
-      )}
 
       <div className="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/35 to-transparent" />
 

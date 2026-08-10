@@ -32,7 +32,6 @@ export const Header = () => {
                 className="h-12 w-auto transition-transform duration-200 group-hover:scale-[1.03]"
                 style={{
                   imageRendering: 'crisp-edges',
-                  imageRendering: '-webkit-optimize-contrast',
                 }}
               />
             </div>
