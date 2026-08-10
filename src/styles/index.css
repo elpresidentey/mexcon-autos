@@ -1,0 +1,375 @@
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+/* Mexcon Autos brand theme: green + yellow on white */
+@theme {
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #22c55e;
+  --color-primary-600: #16a34a;
+  --color-primary-700: #15803d;
+  --color-primary-800: #166534;
+  --color-primary-900: #14532d;
+  --color-primary-950: #052e16;
+
+  --color-accent-50: #fefce8;
+  --color-accent-100: #fef9c3;
+  --color-accent-200: #fef08a;
+  --color-accent-300: #fde047;
+  --color-accent-400: #facc15;
+  --color-accent-500: #eab308;
+  --color-accent-600: #ca8a04;
+  --color-accent-700: #a16207;
+  --color-accent-800: #854d0e;
+  --color-accent-900: #713f12;
+  --color-accent-950: #422006;
+
+  --color-lime-50: #f7fee7;
+  --color-lime-100: #ecfccb;
+  --color-lime-200: #d9f99d;
+  --color-lime-300: #bef264;
+  --color-lime-400: #a3e635;
+  --color-lime-500: #84cc16;
+  --color-lime-600: #65a30d;
+  --color-lime-700: #4d7c0f;
+  --color-lime-800: #3f6212;
+  --color-lime-900: #365314;
+  --color-lime-950: #1a2e05;
+
+  --color-metallic-50: #f8fafc;
+  --color-metallic-100: #f1f5f9;
+  --color-metallic-200: #e2e8f0;
+  --color-metallic-300: #cbd5e1;
+  --color-metallic-400: #94a3b8;
+  --color-metallic-500: #64748b;
+  --color-metallic-600: #475569;
+  --color-metallic-700: #334155;
+  --color-metallic-800: #1e293b;
+  --color-metallic-900: #0f172a;
+  --color-metallic-950: #020617;
+
+  --color-dark-50: #1c1c1c;
+  --color-dark-100: #181818;
+  --color-dark-200: #141414;
+  --color-dark-300: #101010;
+  --color-dark-400: #0a0a0a;
+  --color-dark-500: #050505;
+  --color-dark-600: #030303;
+  --color-dark-700: #020202;
+  --color-dark-800: #010101;
+  --color-dark-900: #000000;
+  --color-dark-950: #000000;
+
+  --font-sans: "DM Sans", ui-sans-serif, sans-serif;
+  --font-display: "Barlow Condensed", ui-sans-serif, sans-serif;
+}
+
+/* Base page styling */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "DM Sans", ui-sans-serif, sans-serif;
+  background-color: #ffffff;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-display {
+  font-family: "Barlow Condensed", ui-sans-serif, sans-serif;
+}
+
+/* Custom utility classes */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+  cursor: pointer;
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.35);
+  }
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@utility btn-primary {
+  background-color: #16a34a;
+  color: white;
+  box-shadow:
+    0 1px 2px rgba(20, 83, 45, 0.3),
+    0 4px 14px rgba(22, 163, 74, 0.22);
+  &:hover {
+    background-color: #15803d;
+  }
+}
+
+@utility btn-secondary {
+  background-color: #fefce8;
+  color: #713f12;
+  border: 1px solid #fef08a;
+  &:hover {
+    background-color: #fef9c3;
+  }
+}
+
+@utility btn-outline {
+  border: 1.5px solid #16a34a;
+  color: #16a34a;
+  background-color: transparent;
+  &:hover {
+    background-color: #f0fdf4;
+    border-color: #15803d;
+  }
+}
+
+@utility btn-ghost {
+  color: #16a34a;
+  background-color: transparent;
+  border: 1px solid transparent;
+  &:hover {
+    background-color: #f0fdf4;
+  }
+}
+
+@utility btn-danger {
+  background-color: #dc2626;
+  color: white;
+  box-shadow:
+    0 1px 2px rgba(127, 29, 29, 0.3),
+    0 4px 14px rgba(220, 38, 38, 0.18);
+  &:hover {
+    background-color: #b91c1c;
+  }
+}
+
+@utility btn-danger-outline {
+  border: 1.5px solid #fca5a5;
+  color: #b91c1c;
+  background-color: transparent;
+  &:hover {
+    background-color: #fef2f2;
+    border-color: #f87171;
+  }
+}
+
+@utility btn-accent {
+  background-color: #eab308;
+  color: #000000;
+  font-weight: 700;
+  box-shadow:
+    0 1px 2px rgba(113, 63, 18, 0.25),
+    0 4px 14px rgba(234, 179, 8, 0.25);
+  &:hover {
+    background-color: #facc15;
+  }
+}
+
+@utility btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+@utility btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+}
+
+@utility input {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  color: #0f172a;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+  &::placeholder {
+    color: #94a3b8;
+  }
+  &:hover {
+    border-color: #cbd5e1;
+  }
+  &:focus {
+    outline: none;
+    border-color: #22c55e;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+  }
+}
+
+@utility input-error {
+  border-color: #ef4444;
+  &:hover {
+    border-color: #ef4444;
+  }
+  &:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+  }
+}
+
+@utility label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.375rem;
+}
+
+@utility error-message {
+  font-size: 0.875rem;
+  color: #dc2626;
+  margin-top: 0.25rem;
+}
+
+@utility card {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 1px 2px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+@utility card-hover {
+  &:hover {
+    box-shadow:
+      0 0 0 1px rgba(22, 163, 74, 0.35),
+      0 12px 24px -8px rgba(15, 23, 42, 0.12);
+    transform: translateY(-2px);
+  }
+}
+
+@utility container-custom {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  @media (min-width: 640px) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@utility badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+@utility badge-primary {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+@utility badge-success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+@utility badge-warning {
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+
+@utility badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+@utility badge-accent {
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+
+@utility spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 9999px;
+  border-width: 2px;
+  border-color: #e2e8f0;
+  border-top-color: #16a34a;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@utility skeleton {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background-color: #f1f5f9;
+  border-radius: 0.25rem;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.3s ease-in-out;
+}
+
+@utility animate-slide-up {
+  animation: slide-up 0.4s ease-out;
+}
+
+/* Shared page hero for inner customer pages */
+@utility page-hero {
+  background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #14532d 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+@utility page-hero-muted {
+  color: #dcfce7;
+}
