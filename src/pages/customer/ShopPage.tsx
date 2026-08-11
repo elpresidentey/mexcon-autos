@@ -200,14 +200,14 @@ export const ShopPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <section className="relative bg-dark-900 text-white overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-1 bg-accent-500" />
+      <section className="relative bg-black text-white overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-accent-400 via-accent-500 to-primary-400" />
 
-        <div className="container-custom relative z-10 py-10 lg:py-12">
-          <h1 className="font-display text-4xl lg:text-5xl font-extrabold tracking-wide uppercase leading-none mb-2">
+        <div className="container-custom relative z-10 py-12 lg:py-16">
+          <h1 className="font-display text-5xl lg:text-6xl font-extrabold tracking-wide uppercase leading-none mb-3">
             Shop Parts
           </h1>
-          <p className="text-sm lg:text-base text-metallic-300 max-w-xl leading-relaxed mb-6">
+          <p className="text-base lg:text-lg text-white/70 max-w-xl leading-relaxed mb-8">
             Search by part name, OEM number, or vehicle — we confirm availability within 24 hours.
           </p>
 
@@ -216,18 +216,18 @@ export const ShopPage = () => {
               value={searchTerm}
               onChange={handleSearch}
               placeholder="Search by part name, OEM number, part number..."
-              className="bg-white rounded-lg shadow-lg"
+              className="bg-white rounded-xl shadow-xl"
             />
           </div>
 
-          <div className="mt-6 max-w-5xl">
+          <div className="mt-8 max-w-5xl">
             <VehicleSearch variant="hero" />
           </div>
 
           {popularBrands.length > 0 && (
-            <div className="mt-6">
-              <p className="text-xs font-semibold text-metallic-400 uppercase tracking-[0.16em] mb-2.5">Brand</p>
-              <div className="flex flex-wrap gap-2">
+            <div className="mt-8">
+              <p className="text-sm font-semibold text-white/60 uppercase tracking-[0.16em] mb-3">Popular Brands</p>
+              <div className="flex flex-wrap gap-3">
                 {popularBrands.map((brand) => {
                   const isActive = selectedBrand === brand.id;
                   return (
@@ -237,10 +237,10 @@ export const ShopPage = () => {
                         setSelectedBrand(isActive ? '' : brand.id);
                         setCurrentPage(1);
                       }}
-className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 ${
+className={`px-5 py-2.5 text-sm font-medium rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 ${
   isActive
-    ? 'bg-accent-500 text-black border-accent-500 shadow-md shadow-accent-500/20'
-    : 'bg-white/5 text-metallic-200 border-white/20 hover:border-accent-400 hover:text-white hover:bg-white/10'
+    ? 'bg-white text-black border-white shadow-lg'
+    : 'bg-white/5 text-white/80 border-white/20 hover:border-accent-400 hover:text-white hover:bg-white/10'
 }`}
                     >
                       {brand.name}
@@ -253,14 +253,14 @@ className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all d
         </div>
       </section>
 
-      <div className="container-custom py-10 lg:py-14">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
+      <div className="container-custom py-14 lg:py-20">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-12">
           {/* Sidebar Filters - Desktop */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
-            <div className="sticky top-24 space-y-6">
-              <div className="bg-white p-5 rounded-2xl ring-1 ring-black/5 shadow-sm">
-                <div className="flex items-center justify-between mb-5">
-                  <h2 className="font-display text-lg font-bold tracking-wide uppercase text-dark-900 flex items-center gap-2">
+          <aside className="hidden lg:block w-72 flex-shrink-0">
+            <div className="sticky top-24 space-y-8">
+              <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="font-display text-lg font-bold tracking-wide uppercase text-black flex items-center gap-2">
                     <FunnelIcon className="w-4 h-4 text-primary-600" />
                     Filters
                   </h2>
@@ -274,7 +274,7 @@ className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all d
                   )}
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <Select
                     label="Category"
                     value={selectedCategory}
@@ -347,16 +347,16 @@ className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all d
               variant="outline"
               onClick={() => setIsFiltersOpen(!isFiltersOpen)}
               leftIcon={<FunnelIcon className="w-5 h-5" />}
-              className="w-full !border-metallic-300 !text-metallic-700 hover:!bg-metallic-50 font-semibold rounded-lg"
+              className="w-full !border-neutral-300 !text-black hover:!bg-neutral-50 font-semibold rounded-xl"
             >
               {isFiltersOpen ? 'Hide Filters' : 'Show Filters'}
               {hasActiveFilters && ` (${[selectedCategory, selectedBrand, selectedYear].filter(Boolean).length})`}
             </Button>
 
             {isFiltersOpen && (
-              <div className="mt-3 bg-white p-5 border border-metallic-200">
-                <div className="flex items-center justify-between mb-5">
-                  <h2 className="font-display text-lg font-bold tracking-wide uppercase text-dark-900 flex items-center gap-2">
+              <div className="mt-4 bg-white rounded-2xl border border-neutral-200 p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="font-display text-lg font-bold tracking-wide uppercase text-black flex items-center gap-2">
                     <FunnelIcon className="w-4 h-4 text-primary-600" />
                     Filters
                   </h2>
@@ -370,7 +370,7 @@ className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all d
                   )}
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <Select
                     label="Category"
                     value={selectedCategory}
@@ -424,7 +424,7 @@ className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all d
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
                   >
-<option value="">{debouncedSearch ? 'Best Match (Default)' : 'Newest First (Default)'}</option>
+                    <option value="">{debouncedSearch ? 'Best Match (Default)' : 'Newest First (Default)'}</option>
                     <option value="relevance">Best Match</option>
                     <option value="created_at">Newest First</option>
                     <option value="name">Name (A-Z)</option>
@@ -438,14 +438,14 @@ className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all d
           </div>
 
           <div className="flex-1">
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-sm text-metallic-600">
+            <div className="flex items-center justify-between mb-8">
+              <p className="text-base text-neutral-600">
                 {isLoading ? (
                   'Loading...'
                 ) : (
                   <>
-                    Showing <span className="font-semibold text-dark-900">{products.length}</span> of{' '}
-                    <span className="font-semibold text-dark-900">{totalCount}</span> products
+                    Showing <span className="font-semibold text-black">{products.length}</span> of{' '}
+                    <span className="font-semibold text-black">{totalCount}</span> products
                   </>
                 )}
               </p>
@@ -456,7 +456,7 @@ className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all d
                 <LoadingSpinner />
               </div>
             ) : products.length === 0 ? (
-              <div className="bg-white p-10 border border-metallic-200">
+              <div className="bg-white rounded-2xl border border-neutral-200 p-12">
                 <EmptyState
                   title="No products found"
                   description={
@@ -475,14 +475,14 @@ className={`px-4 py-1.5 text-sm font-medium rounded-full border transition-all d
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}
                 </div>
 
                 {totalPages > 1 && (
-                  <div className="mt-10 flex justify-center">
+                  <div className="mt-12 flex justify-center">
                     <Pagination
                       currentPage={currentPage}
                       totalPages={totalPages}

@@ -50,14 +50,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Link
       to={`/products/${product.id}`}
-      className="group relative block bg-white rounded-2xl overflow-hidden ring-1 ring-black/5 shadow-sm hover:shadow-xl hover:shadow-dark-900/10 hover:ring-2 hover:ring-primary-500/60 transition-all duration-300"
+      className="group relative block bg-white rounded-2xl overflow-hidden ring-1 ring-black/5 shadow-sm hover:shadow-xl hover:shadow-black/10 hover:ring-2 hover:ring-primary-500/60 transition-all duration-300"
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] bg-metallic-50 overflow-hidden">
+      <div className="relative aspect-[4/3] bg-neutral-50 overflow-hidden">
         <img
           src={effectivePrimary}
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           loading={imgFailed ? 'eager' : 'lazy'}
           decoding="async"
           onError={() => {
@@ -73,7 +73,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             loading="lazy"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-900/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col items-start gap-1.5">
@@ -83,7 +83,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             </span>
           )}
           {product.oem_number && (
-            <span className="bg-dark-900/70 backdrop-blur-sm text-white text-[10px] font-mono px-2 py-1 rounded-md">
+            <span className="bg-black/70 backdrop-blur-sm text-white text-[10px] font-mono px-2 py-1 rounded-md">
               OEM {product.oem_number}
             </span>
           )}
@@ -126,18 +126,18 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             {product.brand?.name || 'Mexcon Autos'}
           </p>
           {product.part_number && (
-            <p className="text-[10px] font-mono text-metallic-400 truncate">
+            <p className="text-[10px] font-mono text-neutral-400 truncate">
               {product.part_number}
             </p>
           )}
         </div>
 
-        <h3 className="font-display text-[15px] lg:text-base font-bold text-dark-900 leading-snug line-clamp-2 group-hover:text-primary-700 transition-colors">
+        <h3 className="font-display text-base font-bold text-black leading-snug line-clamp-2 group-hover:text-primary-700 transition-colors">
           {product.name}
         </h3>
 
         <div className="flex items-center justify-between pt-1">
-          <span className="text-lg font-black text-dark-900">
+          <span className="text-lg font-black text-black">
             {formatNaira(product.price)}
           </span>
           <span className="hidden md:inline-flex items-center text-xs font-semibold text-primary-700 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">

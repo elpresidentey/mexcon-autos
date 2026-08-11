@@ -142,10 +142,8 @@ export const ProductDetailPage = () => {
       />
 
       {/* Hero Bar - Bold */}
-      <section className="relative bg-dark-900 text-white overflow-hidden">
+      <section className="relative bg-black text-white overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-400 via-accent-500 to-primary-400" />
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary-500/10 rounded-full blur-3xl"></div>
         <div className="container-custom relative z-10 py-10 lg:py-12">
           <Breadcrumbs items={breadcrumbItems} onDark />
         </div>
@@ -156,7 +154,7 @@ export const ProductDetailPage = () => {
           {/* Image Gallery */}
           <div className="space-y-4">
             {/* Main Image */}
-            <div className="relative aspect-square bg-gradient-to-br from-metallic-50 to-metallic-100 rounded-3xl overflow-hidden border border-metallic-200/50 shadow-sm">
+            <div className="relative aspect-square bg-white rounded-2xl overflow-hidden border border-neutral-200 shadow-sm">
               {selectedImage ? (
                 <>
                   <img
@@ -240,7 +238,7 @@ export const ProductDetailPage = () => {
             )}
 
             {/* Product Name */}
-            <h1 className="text-2xl lg:text-3xl font-bold text-dark-900 tracking-tight leading-snug">
+            <h1 className="text-3xl lg:text-4xl font-bold text-black tracking-tight leading-snug">
               {product.name}
             </h1>
 
@@ -256,10 +254,10 @@ export const ProductDetailPage = () => {
             {/* Price */}
             {product.price > 0 && (
               <div className="flex items-baseline space-x-3">
-                <span className="text-2xl lg:text-3xl font-bold text-primary-600 tracking-tight">
+                <span className="text-2xl lg:text-3xl font-bold text-black tracking-tight">
                   {formatCurrency(product.price)}
                 </span>
-                <span className="text-sm text-metallic-500 font-medium">
+                <span className="text-sm text-neutral-500 font-medium">
                   (price on request - subject to availability)
                 </span>
               </div>
@@ -267,23 +265,23 @@ export const ProductDetailPage = () => {
 
             {/* Part Numbers */}
             {(product.oem_number || product.part_number || product.engine_type) && (
-              <div className="bg-gradient-to-br from-metallic-50 to-metallic-100 rounded-2xl p-5 space-y-3 border border-metallic-200/50">
+              <div className="bg-neutral-50 rounded-2xl p-5 space-y-3 border border-neutral-200">
                 {product.oem_number && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-metallic-600">OEM Number:</span>
-                    <span className="text-sm text-dark-900 font-mono font-semibold">{product.oem_number}</span>
+                    <span className="text-sm font-bold text-neutral-600">OEM Number:</span>
+                    <span className="text-sm text-black font-mono font-semibold">{product.oem_number}</span>
                   </div>
                 )}
                 {product.part_number && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-metallic-600">Part Number:</span>
-                    <span className="text-sm text-dark-900 font-mono font-semibold">{product.part_number}</span>
+                    <span className="text-sm font-bold text-neutral-600">Part Number:</span>
+                    <span className="text-sm text-black font-mono font-semibold">{product.part_number}</span>
                   </div>
                 )}
                 {product.engine_type && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-metallic-600">Engine Type:</span>
-                    <span className="text-sm text-dark-900 font-semibold">{product.engine_type}</span>
+                    <span className="text-sm font-bold text-neutral-600">Engine Type:</span>
+                    <span className="text-black font-semibold">{product.engine_type}</span>
                   </div>
                 )}
               </div>
@@ -292,36 +290,36 @@ export const ProductDetailPage = () => {
             {/* Description */}
             {product.description && (
               <div>
-                <h2 className="text-lg font-black text-dark-900 mb-2 tracking-tight">Description</h2>
-                <p className="text-metallic-700 leading-relaxed whitespace-pre-line">{product.description}</p>
+                <h2 className="text-lg font-black text-black mb-2 tracking-tight">Description</h2>
+                <p className="text-neutral-600 leading-relaxed whitespace-pre-line">{product.description}</p>
               </div>
             )}
 
             {/* Specifications */}
             {product.specifications && (
               <div>
-                <h2 className="text-lg font-black text-dark-900 mb-2 tracking-tight">Specifications</h2>
-                <p className="text-metallic-700 leading-relaxed whitespace-pre-line">{product.specifications}</p>
+                <h2 className="text-lg font-black text-black mb-2 tracking-tight">Specifications</h2>
+                <p className="text-neutral-600 leading-relaxed whitespace-pre-line">{product.specifications}</p>
               </div>
             )}
 
             {/* Compatibility Notes */}
             {product.compatibility_notes && (
               <div>
-                <h2 className="text-lg font-black text-dark-900 mb-2 tracking-tight">Compatibility</h2>
-                <p className="text-metallic-700 leading-relaxed whitespace-pre-line">{product.compatibility_notes}</p>
+                <h2 className="text-lg font-black text-black mb-2 tracking-tight">Compatibility</h2>
+                <p className="text-neutral-600 leading-relaxed whitespace-pre-line">{product.compatibility_notes}</p>
               </div>
             )}
 
             {/* Compatible Models */}
             {product.compatible_models && product.compatible_models.length > 0 && (
               <div>
-                <h2 className="text-lg font-black text-dark-900 mb-3 tracking-tight">Compatible Models</h2>
+                <h2 className="text-lg font-black text-black mb-3 tracking-tight">Compatible Models</h2>
                 <div className="flex flex-wrap gap-2">
                   {product.compatible_models.map((model, index) => (
                     <div
                       key={index}
-                      className="flex items-center space-x-2 px-3 py-2 bg-primary-50 text-primary-700 rounded-xl border border-primary-200/60 font-medium"
+                      className="flex items-center space-x-2 px-3 py-2 bg-neutral-100 text-neutral-700 rounded-xl border border-neutral-200 font-medium"
                     >
                       <CheckCircleIcon className="w-4 h-4" />
                       <span className="text-sm">{model}</span>
@@ -332,21 +330,21 @@ export const ProductDetailPage = () => {
             )}
 
             {/* CTA */}
-            <div className="pt-7 border-t border-metallic-200/60 space-y-4">
+            <div className="pt-7 border-t border-neutral-200 space-y-4">
               {product.price > 0 && (
                 <div className="flex items-stretch gap-4">
-                  <div className="flex items-center bg-metallic-50 rounded-2xl border border-metallic-200">
+                  <div className="flex items-center bg-neutral-100 rounded-2xl border border-neutral-200">
                     <button
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                      className="w-12 h-14 flex items-center justify-center text-dark-900 hover:text-primary-600 transition-colors"
+                      className="w-12 h-14 flex items-center justify-center text-black hover:text-primary-600 transition-colors"
                       aria-label="Decrease quantity"
                     >
                       <MinusIcon className="w-5 h-5" />
                     </button>
-                    <span className="w-12 text-center font-bold text-lg text-dark-900">{quantity}</span>
+                    <span className="w-12 text-center font-bold text-lg text-black">{quantity}</span>
                     <button
                       onClick={() => setQuantity((q) => q + 1)}
-                      className="w-12 h-14 flex items-center justify-center text-dark-900 hover:text-primary-600 transition-colors"
+                      className="w-12 h-14 flex items-center justify-center text-black hover:text-primary-600 transition-colors"
                       aria-label="Increase quantity"
                     >
                       <PlusIcon className="w-5 h-5" />
@@ -356,7 +354,7 @@ export const ProductDetailPage = () => {
                     size="lg"
                     onClick={handleAddToCart}
                     disabled={isAdding}
-                    className="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 font-black rounded-2xl shadow-xl shadow-primary-500/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary-500/40"
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-black text-white font-black rounded-2xl shadow-xl hover:bg-neutral-800 transition-all duration-300"
                   >
                     <ShoppingBagIcon className="w-5 h-5" />
                     {isAdding ? 'Adding...' : 'Add to Cart'}
@@ -367,7 +365,7 @@ export const ProductDetailPage = () => {
               <Button
                 size="lg"
                 onClick={() => navigate(`/quote-request?product=${product.id}`)}
-                className="w-full bg-white text-dark-900 border-2 border-metallic-200 hover:border-primary-400 hover:text-primary-700 font-bold rounded-2xl transition-all duration-300"
+                className="w-full bg-black text-white font-bold rounded-2xl hover:bg-neutral-800 transition-all duration-300"
               >
                 Request a Quote
               </Button>
@@ -389,11 +387,11 @@ export const ProductDetailPage = () => {
               )}
 
               {!product.price || product.price === 0 ? (
-                <p className="text-sm text-metallic-500 text-center font-medium">
+                <p className="text-sm text-neutral-500 text-center font-medium">
                   Price on request — use the quote form or WhatsApp to get pricing.
                 </p>
               ) : (
-                <p className="text-sm text-metallic-500 text-center font-medium">
+                <p className="text-sm text-neutral-500 text-center font-medium">
                   Add to cart and check out, or get a quote for bulk pricing.
                 </p>
               )}
