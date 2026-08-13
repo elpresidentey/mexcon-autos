@@ -1,11 +1,13 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import { AuthProvider } from './contexts/AuthContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { CartProvider } from './contexts/CartContext';
 import { Layout, AdminLayout } from './components/layout';
 import { ProtectedRoute, LoadingSpinner } from './components/common';
 import { HomePage } from './pages/customer/HomePage';
+import { SplashScreen } from './components/customer/SplashScreen';
 
 const ShopPage = lazy(() => import('./pages/customer/ShopPage').then((m) => ({ default: m.ShopPage })));
 const CustomerCategoriesPage = lazy(() => import('./pages/customer/CategoriesPage').then((m) => ({ default: m.CategoriesPage })));
@@ -65,6 +67,21 @@ function ScrollToTop() {
   return null;
 }
 
+/** Brand splash — customer pages only, once per page load. */
+function SplashGate() {
+  const { pathname } = useLocation();
+  const [splashDone, setSplashDone] = useState(false);
+  const isAdminRoute = pathname.startsWith('/admin');
+
+  return (
+    <AnimatePresence>
+      {!splashDone && !isAdminRoute && (
+        <SplashScreen key="splash" onComplete={() => setSplashDone(true)} />
+      )}
+    </AnimatePresence>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -72,6 +89,7 @@ function App() {
         <CartProvider>
           <Router>
             <ScrollToTop />
+            <SplashGate />
             <Suspense fallback={<PageFallback />}>
               <Routes>
                 {/* Customer Routes */}

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 import { ordersService } from '../../services/orders.service';
 import { Seo } from '../../components/Seo';
 import { LoadingSpinner } from '../../components/common';
+import { isAdminUser } from '../../types';
 import type { Order } from '../../types';
 
 const orderStatusStyle: Record<string, { label: string; className: string }> = {
@@ -20,7 +22,8 @@ export const AccountPage = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => !user?.id);
+  const customer = isAdminUser(user) ? null : user;
 
   useEffect(() => {
     if (user?.id) {
@@ -29,8 +32,6 @@ export const AccountPage = () => {
         .then(setOrders)
         .catch(() => setOrders([]))
         .finally(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
     }
   }, [user]);
 
@@ -48,7 +49,7 @@ export const AccountPage = () => {
             <div>
               <h1 className="font-display text-4xl font-extrabold text-dark-900 uppercase tracking-wide">My Account</h1>
               <p className="text-metallic-600 mt-1">
-                {(user as any)?.first_name ? `${(user as any).first_name} ${(user as any).last_name || ''}` : user?.email}
+                {customer?.first_name ? `${customer.first_name} ${customer.last_name || ''}` : user?.email}
               </p>
             </div>
             <button
@@ -68,10 +69,10 @@ export const AccountPage = () => {
                   <dt className="text-metallic-500 font-medium">Email</dt>
                   <dd className="text-dark-900 font-semibold break-all">{user?.email}</dd>
                 </div>
-                {(user as any).phone && (
+                {customer?.phone && (
                   <div>
                     <dt className="text-metallic-500 font-medium">Phone</dt>
-                    <dd className="text-dark-900 font-semibold">{(user as any).phone}</dd>
+                    <dd className="text-dark-900 font-semibold">{customer.phone}</dd>
                   </div>
                 )}
                 <div className="pt-3">
@@ -105,9 +106,10 @@ export const AccountPage = () => {
                   {orders.map((order) => {
                     const style = orderStatusStyle[order.status] || orderStatusStyle.pending;
                     return (
-                      <div
+                      <Link
                         key={order.id}
-                        className="bg-metallic-50 rounded-xl ring-1 ring-black/5 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:shadow-md transition-shadow"
+                        to={`/track-order?order=${encodeURIComponent(order.order_number)}`}
+                        className="group bg-metallic-50 rounded-xl ring-1 ring-black/5 p-4 flex items-center justify-between gap-3 hover:shadow-md hover:ring-primary-300 transition-all"
                       >
                         <div>
                           <div className="font-bold text-dark-900">{order.order_number}</div>
@@ -126,8 +128,12 @@ export const AccountPage = () => {
                           <span className={style.className}>
                             {style.label}
                           </span>
+                          <ChevronRightIcon
+                            className="h-5 w-5 text-metallic-400 group-hover:text-primary-600 group-hover:translate-x-0.5 transition-all"
+                            aria-hidden="true"
+                          />
                         </div>
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>

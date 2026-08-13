@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { ordersService } from '../../services/orders.service';
 import { useAuth } from '../../contexts/AuthContext';
 import { LoadingSpinner, EmptyState } from '../../components/common';
@@ -7,11 +8,41 @@ import type { Order } from '../../types';
 
 export const OrderTrackingPage = () => {
   const { user, isAuthenticated } = useAuth();
-  const [orderNumber, setOrderNumber] = useState('');
+  const [searchParams] = useSearchParams();
+  const orderParam = searchParams.get('order');
+  const [orderNumber, setOrderNumber] = useState(() => orderParam ?? '');
   const [contactEmail, setContactEmail] = useState(isAuthenticated ? user?.email || '' : '');
   const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Auto-search when arriving with ?order=... (e.g. from order history).
+  useEffect(() => {
+    if (!orderParam || !user?.email) return;
+
+    let cancelled = false;
+    ordersService
+      .trackOrder(orderParam, user.email)
+      .then((foundOrder) => {
+        if (cancelled) return;
+        if (foundOrder) {
+          setOrder(foundOrder);
+        } else {
+          setError('Order not found. Please check your order number and email and try again.');
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setError('An error occurred while searching for your order. Please try again.');
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [orderParam, user?.email]);
+
+  const needsEmailToAutoSearch = orderParam !== null && !user?.email;
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -148,6 +179,12 @@ export const OrderTrackingPage = () => {
             </form>
             {error && (
               <p className="mt-4 text-red-600 font-medium">{error}</p>
+            )}
+            {needsEmailToAutoSearch && (
+              <p className="mt-4 text-sm text-metallic-600">
+                Viewing order <span className="font-semibold text-dark-900">{orderNumber}</span> — sign in or
+                enter the email used at checkout to see it.
+              </p>
             )}
           </div>
 
