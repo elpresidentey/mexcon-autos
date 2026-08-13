@@ -2,7 +2,6 @@ import type { ReactNode } from 'react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { WhatsAppButton } from '../customer/WhatsAppButton';
-import { ToastViewport } from '../common';
 
 interface LayoutProps {
   children: ReactNode;
@@ -15,7 +14,6 @@ export const Layout = ({ children }: LayoutProps) => {
       <main className="flex-grow bg-white">{children}</main>
       <Footer />
       <WhatsAppButton />
-      <ToastViewport />
     </div>
   );
 };

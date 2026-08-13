@@ -5,7 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { CartProvider } from './contexts/CartContext';
 import { Layout, AdminLayout } from './components/layout';
-import { ProtectedRoute, LoadingSpinner } from './components/common';
+import { ProtectedRoute, ToastViewport, LoadingSpinner } from './components/common';
 import { HomePage } from './pages/customer/HomePage';
 import { SplashScreen } from './components/customer/SplashScreen';
 
@@ -164,6 +164,7 @@ function App() {
               </Routes>
             </Suspense>
           </Router>
+          <ToastViewport />
         </CartProvider>
       </SettingsProvider>
     </AuthProvider>

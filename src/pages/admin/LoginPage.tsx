@@ -70,13 +70,20 @@ export const LoginPage = () => {
       await login(formData.email, formData.password);
       toast.success('Login successful!');
       navigate('/admin');
-    } catch (error: any) {
+    } catch (error) {
       console.error('Login error:', error);
+      const message = error instanceof Error ? error.message : '';
       
-      if (error.message?.includes('Invalid login credentials')) {
+      if (
+        message.includes('Invalid email or password') ||
+        message.includes('Invalid login credentials') ||
+        message.includes('Email not confirmed')
+      ) {
         toast.error('Invalid email or password');
-      } else if (error.message?.includes('Admin user not found')) {
+      } else if (message.includes('Admin user not found')) {
         toast.error('You do not have admin access');
+      } else if (message.includes('locked')) {
+        toast.error(message);
       } else {
         toast.error('Login failed. Please try again.');
       }
