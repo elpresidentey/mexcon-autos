@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { isAdminUser } from '../../types';
 import { Button, Input, Card } from '../../components/common';
 import { validateEmail } from '../../utils/validation';
 import toast from 'react-hot-toast';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, login } = useAuth();
   
   const [formData, setFormData] = useState({
     email: '',
@@ -21,10 +22,10 @@ export const LoginPage = () => {
   
   const [isLoading, setIsLoading] = useState(false);
 
-  // Redirect if already authenticated
-  if (isAuthenticated) {
-    navigate('/admin');
-    return null;
+  // Redirect if an admin is already signed in (must run during render via
+  // <Navigate>, not navigate(), to avoid updating the router mid-render)
+  if (isAuthenticated && isAdminUser(user)) {
+    return <Navigate to="/admin" replace />;
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
