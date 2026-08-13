@@ -1,7 +1,8 @@
 import { supabase } from './supabase';
 import type { Product, ProductFormData, ProductImage } from '../types';
+import type { ImageGalleryImage } from '../components/common/ImageGallery';
 import { validateProductForm } from '../utils/validation';
-import { uploadImage, deleteImage, STORAGE_BUCKETS } from './supabase';
+import { deleteImage, STORAGE_BUCKETS } from './supabase';
 
 export interface ProductFilters {
   categoryId?: string;
@@ -101,7 +102,6 @@ export class ProductsService {
             `part_number.ilike.%${s}%`,
             `compatibility_notes.ilike.%${s}%`,
             `specifications.ilike.%${s}%`,
-            `compatible_models::text.ilike.%${s}%`,
             ...codeTerms,
           ].join(','));
         }
@@ -114,7 +114,6 @@ export class ProductsService {
         textGroups.push([
           `name.ilike.%${escapeLike(filters.model)}%`,
           `description.ilike.%${escapeLike(filters.model)}%`,
-          `compatible_models::text.ilike.%${escapeLike(filters.model)}%`,
         ].join(','));
       }
 
@@ -292,8 +291,11 @@ export class ProductsService {
 
   /**
    * Create a new product with images
+   *
+   * Images are already uploaded to storage by the gallery; this persists the
+   * matching product_images rows from the gallery's final image list.
    */
-  async createProduct(productData: ProductFormData, images: File[]): Promise<Product> {
+  async createProduct(productData: ProductFormData, images: ImageGalleryImage[]): Promise<Product> {
     try {
       // Validate product data
       const validation = validateProductForm(productData);
@@ -322,40 +324,7 @@ export class ProductsService {
 
       if (productError) throw productError;
 
-      // Upload images
-      const uploadedImages: ProductImage[] = [];
-      for (let i = 0; i < images.length; i++) {
-        const file = images[i];
-        const result = await uploadImage(this.BUCKET, file, `products/${product.id}`);
-
-        if (result) {
-          const { data: imageRecord, error: imageError } = await supabase
-            .from('product_images')
-            .insert({
-              product_id: product.id,
-              path: result.path,
-              url: result.url,
-              alt_text: `Product image ${i + 1}`,
-              is_primary: i === 0,
-              order_index: i,
-            })
-            .select()
-            .single();
-
-          if (imageError) throw imageError;
-          uploadedImages.push(imageRecord);
-        }
-      }
-
-      // Update product with image IDs
-      if (uploadedImages.length > 0) {
-        const { error: updateError } = await supabase
-          .from('products')
-          .update({ primary_image_id: uploadedImages[0].id })
-          .eq('id', product.id);
-
-        if (updateError) throw updateError;
-      }
+      const uploadedImages = await this.syncProductImages(product.id, images);
 
       return {
         ...product,
@@ -368,9 +337,88 @@ export class ProductsService {
   }
 
   /**
-   * Update an existing product
+   * Reconcile the product_images rows against the gallery's final image list:
+   * insert new images (gallery uploads), update ordering/primary flags, and
+   * delete rows whose images were removed from the gallery.
    */
-  async updateProduct(id: string, productData: Partial<ProductFormData>): Promise<Product> {
+  private async syncProductImages(productId: string, images: ImageGalleryImage[]): Promise<ProductImage[]> {
+    const { data: existing, error: fetchError } = await supabase
+      .from('product_images')
+      .select('id, order_index')
+      .eq('product_id', productId);
+
+    if (fetchError) throw fetchError;
+
+    const existingById = new Map((existing || []).map((row) => [row.id, row.order_index]));
+    const keepIds = new Set(images.map((img) => img.id));
+    const synced: ProductImage[] = [];
+
+    for (let i = 0; i < images.length; i++) {
+      const img = images[i];
+      const isPrimary = i === 0;
+
+      if (existingById.has(img.id)) {
+        // Already persisted – only ordering/primary may have changed
+        if (existingById.get(img.id) !== i) {
+          const { error } = await supabase
+            .from('product_images')
+            .update({ order_index: i, is_primary: isPrimary })
+            .eq('id', img.id);
+          if (error) throw error;
+        }
+        synced.push({ id: img.id, product_id: productId, path: img.path, url: img.url, alt_text: img.alt, is_primary: isPrimary, order_index: i, created_at: '' } as ProductImage);
+      } else {
+        // New gallery upload
+        const { data: row, error } = await supabase
+          .from('product_images')
+          .insert({
+            product_id: productId,
+            path: img.path,
+            url: img.url,
+            alt_text: img.alt || `Product image ${i + 1}`,
+            is_primary: isPrimary,
+            order_index: i,
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+        synced.push(row);
+      }
+    }
+
+    // Delete rows whose images were removed in the gallery
+    for (const row of existing || []) {
+      if (!keepIds.has(row.id)) {
+        const { error } = await supabase
+          .from('product_images')
+          .delete()
+          .eq('id', row.id);
+        if (error) throw error;
+      }
+    }
+
+    // Keep the product's primary image in sync (server-side row ids)
+    const primaryId = synced.length > 0 ? synced[0].id : null;
+    const { error: updateError } = await supabase
+      .from('products')
+      .update({ primary_image_id: primaryId })
+      .eq('id', productId);
+
+    if (updateError) throw updateError;
+
+    return synced;
+  }
+
+  /**
+   * Update an existing product. When `images` is provided (final gallery
+   * list), the product_images rows are reconciled against it.
+   */
+  async updateProduct(
+    id: string,
+    productData: Partial<ProductFormData>,
+    images?: ImageGalleryImage[]
+  ): Promise<Product> {
     try {
       // Validate product data if provided
       if (Object.keys(productData).length > 0) {
@@ -393,6 +441,10 @@ export class ProductsService {
         .single();
 
       if (error) throw error;
+
+      if (images) {
+        await this.syncProductImages(id, images);
+      }
 
       return product;
     } catch (error) {
@@ -441,149 +493,7 @@ export class ProductsService {
   }
 
   /**
-   * Upload additional images to a product
-   */
-  async uploadProductImages(productId: string, files: File[]): Promise<ProductImage[]> {
-    try {
-      // Get current images count
-      const { data: currentImages, error: countError } = await supabase
-        .from('product_images')
-        .select('id')
-        .eq('product_id', productId);
-
-      if (countError) throw countError;
-
-      const currentCount = currentImages?.length || 0;
-      const remainingSlots = 10 - currentCount;
-
-      if (files.length > remainingSlots) {
-        throw new Error(`Maximum 10 images allowed. You can upload ${remainingSlots} more image(s).`);
-      }
-
-      const uploadedImages: ProductImage[] = [];
-
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const result = await uploadImage(this.BUCKET, file, `products/${productId}`);
-
-        if (result) {
-          const { data: imageRecord, error: imageError } = await supabase
-            .from('product_images')
-            .insert({
-              product_id: productId,
-              path: result.path,
-              url: result.url,
-              alt_text: `Product image ${currentCount + i + 1}`,
-              is_primary: currentCount === 0 && i === 0,
-              order_index: currentCount + i,
-            })
-            .select()
-            .single();
-
-          if (imageError) throw imageError;
-          uploadedImages.push(imageRecord);
-        }
-      }
-
-      // Update primary image if this is the first image
-      if (currentCount === 0 && uploadedImages.length > 0) {
-        const { error: updateError } = await supabase
-          .from('products')
-          .update({ primary_image_id: uploadedImages[0].id })
-          .eq('id', productId);
-
-        if (updateError) throw updateError;
-      }
-
-      return uploadedImages;
-    } catch (error) {
-      console.error('Error uploading product images:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Delete a product image
-   */
-  async deleteProductImage(productId: string, imageId: string, imagePath: string): Promise<void> {
-    try {
-      // Delete from storage
-      await deleteImage(this.BUCKET, imagePath);
-
-      // Delete from database
-      const { error: deleteError } = await supabase
-        .from('product_images')
-        .delete()
-        .eq('id', imageId)
-        .eq('product_id', productId);
-
-      if (deleteError) throw deleteError;
-
-      // Check if this was the primary image
-      const { data: product } = await supabase
-        .from('products')
-        .select('primary_image_id')
-        .eq('id', productId)
-        .single();
-
-      if (product?.primary_image_id === imageId) {
-        // Set new primary image (first available)
-        const { data: remainingImages } = await supabase
-          .from('product_images')
-          .select('id')
-          .eq('product_id', productId)
-          .order('order_index')
-          .limit(1);
-
-        const newPrimaryId = remainingImages?.[0]?.id || null;
-
-        const { error: updateError } = await supabase
-          .from('products')
-          .update({ primary_image_id: newPrimaryId })
-          .eq('id', productId);
-
-        if (updateError) throw updateError;
-      }
-    } catch (error) {
-      console.error('Error deleting product image:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Reorder product images
-   */
-  async reorderProductImages(productId: string, imageIds: string[]): Promise<void> {
-    try {
-      // Update order for all images
-      for (let i = 0; i < imageIds.length; i++) {
-        const imageId = imageIds[i];
-        const { error } = await supabase
-          .from('product_images')
-          .update({ order_index: i, is_primary: i === 0 })
-          .eq('id', imageId)
-          .eq('product_id', productId);
-
-        if (error) throw error;
-      }
-
-      // Update product's primary image
-      if (imageIds.length > 0) {
-        const { error: updateError } = await supabase
-          .from('products')
-          .update({ primary_image_id: imageIds[0] })
-          .eq('id', productId);
-
-        if (updateError) throw updateError;
-      }
-    } catch (error) {
-      console.error('Error reordering product images:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Toggle product active status
+   * Delete a product and all its images
    */
   async toggleProductActive(id: string): Promise<Product> {
     try {

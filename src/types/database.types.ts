@@ -1,5 +1,8 @@
 // Database entity types for Mexcon Autos Platform
 
+export type ProductStockStatus = 'in_stock' | 'low_stock' | 'out_of_stock' | 'pre_order';
+export type ProductCondition = 'genuine' | 'oem_equivalent' | 'aftermarket' | 'rebuilt' | 'used';
+
 export interface Product {
   id: string;
   name: string;
@@ -13,6 +16,9 @@ export interface Product {
   compatibility_notes?: string;
   compatible_models: string[];
   engine_type?: string;
+  stock_status?: ProductStockStatus;
+  condition_label?: ProductCondition;
+  warranty_months?: number;
   is_featured: boolean;
   is_active: boolean;
   view_count: number;
@@ -37,6 +43,9 @@ export interface ProductFormData {
   compatibility_notes?: string;
   compatible_models?: string[];
   engine_type?: string;
+  stock_status?: ProductStockStatus;
+  condition_label?: ProductCondition;
+  warranty_months?: number;
   is_featured?: boolean;
 }
 

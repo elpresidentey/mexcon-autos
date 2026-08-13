@@ -23,16 +23,14 @@ export const ProductsListPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [activeFilter, setActiveFilter] = useState<boolean | undefined>(undefined);
+  const [reloadKey, setReloadKey] = useState(0);
   const perPage = 10;
 
   useEffect(() => {
-    loadProducts();
-  }, [currentPage, searchTerm, activeFilter]);
+    let cancelled = false;
 
-  const loadProducts = async () => {
-    try {
-      setIsLoading(true);
-      const { data, total } = await productsService.getProducts(
+    productsService
+      .getProducts(
         {
           search: searchTerm || undefined,
           isActive: activeFilter,
@@ -41,18 +39,25 @@ export const ProductsListPage = () => {
           page: currentPage,
           perPage,
         }
-      );
+      )
+      .then(({ data, total }) => {
+        if (cancelled) return;
+        setProducts(data);
+        setTotalCount(total);
+        setTotalPages(Math.ceil(total / perPage));
+      })
+      .catch((error) => {
+        console.error('Error loading products:', error);
+        toast.error('Failed to load products');
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
 
-      setProducts(data);
-      setTotalCount(total);
-      setTotalPages(Math.ceil(total / perPage));
-    } catch (error) {
-      console.error('Error loading products:', error);
-      toast.error('Failed to load products');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    return () => {
+      cancelled = true;
+    };
+  }, [currentPage, searchTerm, activeFilter, reloadKey]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -67,10 +72,10 @@ export const ProductsListPage = () => {
     try {
       await productsService.deleteProduct(id);
       toast.success('Product deleted successfully');
-      loadProducts();
-    } catch (error: any) {
+      setReloadKey((k) => k + 1);
+    } catch (error) {
       console.error('Error deleting product:', error);
-      toast.error(error.message || 'Failed to delete product');
+      toast.error(error instanceof Error ? error.message : 'Failed to delete product');
     }
   };
 
@@ -78,10 +83,10 @@ export const ProductsListPage = () => {
     try {
       await productsService.toggleProductActive(id);
       toast.success('Product status updated');
-      loadProducts();
-    } catch (error: any) {
+      setReloadKey((k) => k + 1);
+    } catch (error) {
       console.error('Error toggling product status:', error);
-      toast.error(error.message || 'Failed to update product status');
+      toast.error(error instanceof Error ? error.message : 'Failed to update product status');
     }
   };
 
@@ -221,9 +226,27 @@ export const ProductsListPage = () => {
                         <span className="text-sm font-medium text-stone-900">{formatPrice(product.price)}</span>
                       </td>
                       <td className="px-6 py-4">
-                        <Badge variant={product.is_active ? 'success' : 'secondary'}>
-                          {product.is_active ? 'Active' : 'Inactive'}
-                        </Badge>
+                        <div className="flex flex-col items-start gap-1">
+                          <Badge variant={product.is_active ? 'success' : 'secondary'}>
+                            {product.is_active ? 'Active' : 'Inactive'}
+                          </Badge>
+                          {product.stock_status === 'out_of_stock' && (
+                            <Badge variant="error">Out of Stock</Badge>
+                          )}
+                          {product.stock_status === 'low_stock' && (
+                            <Badge variant="warning">Low Stock</Badge>
+                          )}
+                          {product.stock_status === 'pre_order' && (
+                            <Badge variant="info">Pre-Order</Badge>
+                          )}
+                          {product.condition_label && product.condition_label !== 'genuine' && (
+                            <Badge variant="secondary">
+                              {product.condition_label === 'oem_equivalent'
+                                ? 'OEM Equivalent'
+                                : product.condition_label.charAt(0).toUpperCase() + product.condition_label.slice(1)}
+                            </Badge>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-end space-x-2">

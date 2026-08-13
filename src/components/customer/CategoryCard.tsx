@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { getCategoryImage } from './categoryImages';
 import type { Category } from '../../types';
 

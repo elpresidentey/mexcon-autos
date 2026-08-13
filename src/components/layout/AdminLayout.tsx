@@ -32,6 +32,7 @@ export const AdminLayout = () => {
     { name: 'Enquiries', href: '/admin/enquiries', icon: EnvelopeIcon },
     { name: 'Orders', href: '/admin/orders', icon: ShoppingBagIcon },
     { name: 'Media Library', href: '/admin/media', icon: PhotoIcon },
+    { name: 'Bulk Images', href: '/admin/bulk-images', icon: PhotoIcon },
     { name: 'Settings', href: '/admin/settings', icon: Cog6ToothIcon },
   ];
 

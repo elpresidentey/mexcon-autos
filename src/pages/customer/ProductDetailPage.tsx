@@ -35,34 +35,33 @@ export const ProductDetailPage = () => {
   const [whatsAppMessage, setWhatsAppMessage] = useState('');
 
   useEffect(() => {
-    if (id) {
-      loadProduct(id);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+    if (!id) return;
+    let cancelled = false;
 
-  const loadProduct = async (productId: string) => {
-    try {
-      setIsLoading(true);
-      const data = await productsService.getProduct(productId);
-
-      if (!data) {
+    productsService
+      .getProduct(id)
+      .then((data) => {
+        if (cancelled) return;
+        if (!data) {
+          navigate('/404');
+          return;
+        }
+        setProduct(data);
+        setWhatsAppMessage(generateProductWhatsAppMessage(data.name, data.oem_number));
+        productsService.incrementViewCount(id);
+      })
+      .catch((error) => {
+        console.error('Error loading product:', error);
         navigate('/404');
-        return;
-      }
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
 
-      setProduct(data);
-      setWhatsAppMessage(generateProductWhatsAppMessage(data.name, data.oem_number));
-
-      // Increment view count
-      productsService.incrementViewCount(productId);
-    } catch (error) {
-      console.error('Error loading product:', error);
-      navigate('/404');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    return () => {
+      cancelled = true;
+    };
+  }, [id, navigate]);
 
   const handlePrevImage = () => {
     if (product?.images?.length) {
@@ -243,11 +242,56 @@ export const ProductDetailPage = () => {
             </h1>
 
             {/* Category */}
-            {product.category && (
-              <div>
+            <div className="flex flex-wrap items-center gap-2">
+              {product.category && (
                 <span className="inline-flex items-center px-4 py-1.5 bg-primary-50 border border-primary-200/60 rounded-full text-sm font-bold text-primary-700">
                   {product.category.name}
                 </span>
+              )}
+              {product.condition_label && (
+                <span className="inline-flex items-center px-4 py-1.5 bg-neutral-100 border border-neutral-200 rounded-full text-sm font-bold text-neutral-700">
+                  {product.condition_label === 'genuine'
+                    ? 'Genuine OEM'
+                    : product.condition_label === 'oem_equivalent'
+                      ? 'OEM Equivalent'
+                      : product.condition_label.charAt(0).toUpperCase() + product.condition_label.slice(1)}
+                </span>
+              )}
+            </div>
+
+            {/* Availability */}
+            {product.stock_status && (
+              <div className="flex items-center gap-2">
+                {product.stock_status === 'in_stock' && (
+                  <span className="inline-flex items-center gap-1.5 text-sm font-bold text-green-600">
+                    <CheckCircleIcon className="w-4 h-4" />
+                    In Stock — ready to ship
+                  </span>
+                )}
+                {product.stock_status === 'low_stock' && (
+                  <span className="inline-flex items-center gap-1.5 text-sm font-bold text-amber-600">
+                    <ClockIcon className="w-4 h-4" />
+                    Low Stock — order soon
+                  </span>
+                )}
+                {product.stock_status === 'pre_order' && (
+                  <span className="inline-flex items-center gap-1.5 text-sm font-bold text-primary-700">
+                    <ClockIcon className="w-4 h-4" />
+                    Available on Pre-Order
+                  </span>
+                )}
+                {product.stock_status === 'out_of_stock' && (
+                  <span className="inline-flex items-center gap-1.5 text-sm font-bold text-red-600">
+                    <ClockIcon className="w-4 h-4" />
+                    Out of Stock — request a quote for re-stock
+                  </span>
+                )}
+                {typeof product.warranty_months === 'number' && product.warranty_months > 0 && (
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500">
+                    <ShieldCheckIcon className="w-4 h-4" />
+                    {product.warranty_months} month{product.warranty_months === 1 ? '' : 's'} warranty
+                  </span>
+                )}
               </div>
             )}
 
@@ -257,9 +301,11 @@ export const ProductDetailPage = () => {
                 <span className="text-2xl lg:text-3xl font-bold text-black tracking-tight">
                   {formatCurrency(product.price)}
                 </span>
-                <span className="text-sm text-neutral-500 font-medium">
-                  (price on request - subject to availability)
-                </span>
+                {product.stock_status !== 'in_stock' && product.stock_status !== 'low_stock' && (
+                  <span className="text-sm text-neutral-500 font-medium">
+                    (price on request - subject to availability)
+                  </span>
+                )}
               </div>
             )}
 
@@ -331,7 +377,7 @@ export const ProductDetailPage = () => {
 
             {/* CTA */}
             <div className="pt-7 border-t border-neutral-200 space-y-4">
-              {product.price > 0 && (
+              {product.price > 0 && product.stock_status !== 'out_of_stock' && (
                 <div className="flex items-stretch gap-4">
                   <div className="flex items-center bg-neutral-100 rounded-2xl border border-neutral-200">
                     <button
@@ -386,9 +432,9 @@ export const ProductDetailPage = () => {
                 </a>
               )}
 
-              {!product.price || product.price === 0 ? (
+              {!product.price || product.price === 0 || product.stock_status === 'out_of_stock' ? (
                 <p className="text-sm text-neutral-500 text-center font-medium">
-                  Price on request — use the quote form or WhatsApp to get pricing.
+                  Price and availability on request — use the quote form or WhatsApp to get pricing.
                 </p>
               ) : (
                 <p className="text-sm text-neutral-500 text-center font-medium">

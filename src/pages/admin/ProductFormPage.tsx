@@ -28,7 +28,6 @@ export const ProductFormPage = () => {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [isLoading, setIsLoading] = useState(isEditMode);
   const [isSaving, setIsSaving] = useState(false);
-  const [newImages] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<ImageGalleryImage[]>([]);
 
   const [formData, setFormData] = useState<ProductFormData>({
@@ -43,77 +42,86 @@ export const ProductFormPage = () => {
     compatibility_notes: '',
     compatible_models: [],
     engine_type: '',
+    stock_status: 'in_stock',
+    condition_label: 'genuine',
+    warranty_months: 6,
     is_featured: false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    loadDropdownData();
-    if (isEditMode && id) {
-      loadProduct(id);
-    }
-  }, [id, isEditMode]);
+    let cancelled = false;
 
-  const loadDropdownData = async () => {
-    try {
-      const [categoriesData, brandsData] = await Promise.all([
-        categoriesService.getCategories(),
-        brandsService.getBrands(),
-      ]);
-      setCategories(categoriesData);
-      setBrands(brandsData);
-    } catch (error) {
-      console.error('Error loading dropdown data:', error);
-      toast.error('Failed to load categories and brands');
-    }
-  };
-
-  const loadProduct = async (productId: string) => {
-    try {
-      setIsLoading(true);
-      const data = await productsService.getProduct(productId);
-      
-      if (!data) {
-        toast.error('Product not found');
-        navigate('/admin/products');
-        return;
-      }
-
-      setFormData({
-        name: data.name,
-        category_id: data.category_id,
-        brand_id: data.brand_id,
-        price: data.price,
-        description: data.description || '',
-        oem_number: data.oem_number || '',
-        part_number: data.part_number || '',
-        specifications: data.specifications || '',
-        compatibility_notes: data.compatibility_notes || '',
-        compatible_models: data.compatible_models || [],
-        engine_type: data.engine_type || '',
-        is_featured: data.is_featured || false,
+    Promise.all([
+      categoriesService.getCategories(),
+      brandsService.getBrands(),
+    ])
+      .then(([categoriesData, brandsData]) => {
+        if (cancelled) return;
+        setCategories(categoriesData);
+        setBrands(brandsData);
+      })
+      .catch((error) => {
+        console.error('Error loading dropdown data:', error);
+        toast.error('Failed to load categories and brands');
       });
 
-      // Convert product images to ImageGallery format
-      if (data.images) {
-        setExistingImages(
-          data.images.map((img) => ({
-            id: img.id,
-            url: img.url,
-            path: img.path,
-            alt: img.alt_text,
-          }))
-        );
-      }
-    } catch (error) {
-      console.error('Error loading product:', error);
-      toast.error('Failed to load product');
-      navigate('/admin/products');
-    } finally {
-      setIsLoading(false);
+    if (isEditMode && id) {
+      productsService
+        .getProduct(id)
+        .then((data) => {
+          if (cancelled) return;
+          if (!data) {
+            toast.error('Product not found');
+            navigate('/admin/products');
+            return;
+          }
+
+          setFormData({
+            name: data.name,
+            category_id: data.category_id,
+            brand_id: data.brand_id,
+            price: data.price,
+            description: data.description || '',
+            oem_number: data.oem_number || '',
+            part_number: data.part_number || '',
+            specifications: data.specifications || '',
+            compatibility_notes: data.compatibility_notes || '',
+            compatible_models: data.compatible_models || [],
+            engine_type: data.engine_type || '',
+            stock_status: data.stock_status || 'in_stock',
+            condition_label: data.condition_label || 'genuine',
+            warranty_months: data.warranty_months ?? 6,
+            is_featured: data.is_featured || false,
+          });
+
+          // Convert product images to ImageGallery format
+          if (data.images) {
+            setExistingImages(
+              data.images.map((img) => ({
+                id: img.id,
+                url: img.url,
+                path: img.path,
+                alt: img.alt_text,
+              }))
+            );
+          }
+        })
+        .catch((error) => {
+          console.error('Error loading product:', error);
+          toast.error('Failed to load product');
+          navigate('/admin/products');
+        })
+        .finally(() => {
+          if (!cancelled) setIsLoading(false);
+        });
     }
-  };
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, isEditMode, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -158,7 +166,7 @@ export const ProductFormPage = () => {
       newErrors.price = 'Valid price is required';
     }
 
-    if (!isEditMode && newImages.length === 0) {
+    if (!isEditMode && existingImages.length === 0) {
       newErrors.images = 'At least one product image is required';
     }
 
@@ -179,24 +187,19 @@ export const ProductFormPage = () => {
     try {
       if (isEditMode && id) {
         // Update existing product
-        await productsService.updateProduct(id, formData);
-        
-        // Upload new images if any
-        if (newImages.length > 0) {
-          await productsService.uploadProductImages(id, newImages);
-        }
+        await productsService.updateProduct(id, formData, existingImages);
 
         toast.success('Product updated successfully');
       } else {
         // Create new product
-        await productsService.createProduct(formData, newImages);
+        await productsService.createProduct(formData, existingImages);
         toast.success('Product created successfully');
       }
 
       navigate('/admin/products');
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error saving product:', error);
-      toast.error(error.message || 'Failed to save product');
+      toast.error(error instanceof Error ? error.message : 'Failed to save product');
     } finally {
       setIsSaving(false);
     }
@@ -372,6 +375,47 @@ export const ProductFormPage = () => {
               onChange={handleChange}
               placeholder="Describe vehicle compatibility..."
               rows={3}
+            />
+          </div>
+        </Card>
+
+        {/* Availability */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold text-stone-900 mb-6">Availability</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Select
+              label="Stock Status"
+              name="stock_status"
+              value={formData.stock_status || 'in_stock'}
+              onChange={handleChange}
+            >
+              <option value="in_stock">In Stock</option>
+              <option value="low_stock">Low Stock</option>
+              <option value="out_of_stock">Out of Stock</option>
+              <option value="pre_order">Pre-Order</option>
+            </Select>
+
+            <Select
+              label="Condition / Origin"
+              name="condition_label"
+              value={formData.condition_label || 'genuine'}
+              onChange={handleChange}
+            >
+              <option value="genuine">Genuine (OEM boxed)</option>
+              <option value="oem_equivalent">OEM Equivalent</option>
+              <option value="aftermarket">Aftermarket</option>
+              <option value="rebuilt">Rebuilt / Refurbished</option>
+              <option value="used">Used (Salvage)</option>
+            </Select>
+
+            <Input
+              label="Warranty (months)"
+              name="warranty_months"
+              type="number"
+              value={formData.warranty_months ?? 6}
+              onChange={handleChange}
+              min={0}
+              helperText="e.g., 6 = six months warranty"
             />
           </div>
         </Card>

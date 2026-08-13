@@ -29,6 +29,7 @@ const CustomerLoginPage = lazy(() => import('./pages/customer/LoginPage').then((
 const CustomerRegisterPage = lazy(() => import('./pages/customer/RegisterPage').then((m) => ({ default: m.RegisterPage })));
 const AccountPage = lazy(() => import('./pages/customer/AccountPage').then((m) => ({ default: m.AccountPage })));
 const UIComponentsDemo = lazy(() => import('./pages/demo/UIComponentsDemo').then((m) => ({ default: m.UIComponentsDemo })));
+const DesignSystemPage = lazy(() => import('./pages/design/DesignSystemPage').then((m) => ({ default: m.DesignSystemPage })));
 const LoginPage = lazy(() => import('./pages/admin/LoginPage').then((m) => ({ default: m.LoginPage })));
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage').then((m) => ({ default: m.DashboardPage })));
 const ProductsListPage = lazy(() => import('./pages/admin/ProductsListPage').then((m) => ({ default: m.ProductsListPage })));
@@ -40,6 +41,7 @@ const EnquiryDetailPage = lazy(() => import('./pages/admin/EnquiryDetailPage').t
 const SettingsPage = lazy(() => import('./pages/admin/SettingsPage').then((m) => ({ default: m.SettingsPage })));
 const ProfilePage = lazy(() => import('./pages/admin/ProfilePage').then((m) => ({ default: m.ProfilePage })));
 const MediaLibraryPage = lazy(() => import('./pages/admin/MediaLibraryPage').then((m) => ({ default: m.MediaLibraryPage })));
+  const BulkImagesPage = lazy(() => import('./pages/admin/BulkImagesPage').then((m) => ({ default: m.BulkImagesPage })));
 const OrdersPage = lazy(() => import('./pages/admin/OrdersPage').then((m) => ({ default: m.OrdersPage })));
 
 function PageFallback() {
@@ -96,6 +98,7 @@ function App() {
                 <Route path="register" element={<Layout><CustomerRegisterPage /></Layout>} />
                 <Route path="account" element={<Layout><AccountPage /></Layout>} />
                 <Route path="demo/ui-components" element={<Layout><UIComponentsDemo /></Layout>} />
+                <Route path="design-system" element={<DesignSystemPage />} />
 
                 {/* Admin Login */}
                 <Route path="/admin/login" element={<LoginPage />} />
@@ -121,6 +124,7 @@ function App() {
                   <Route path="settings" element={<SettingsPage />} />
                   <Route path="profile" element={<ProfilePage />} />
                   <Route path="media" element={<MediaLibraryPage />} />
+                  <Route path="bulk-images" element={<BulkImagesPage />} />
                 </Route>
 
                 {/* 404 Not Found */}
