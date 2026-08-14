@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           setError(null);
           return;
         }
-      } catch (adminError) {
+      } catch {
         // Not an admin, continue to customer check
       }
 
@@ -171,6 +171,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const requestPasswordReset = async (email: string) => {
+    setError(null);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) {
+      const message = error instanceof Error ? error.message : 'Failed to send reset email. Please try again.';
+      setError(message);
+      throw error;
+    }
+  };
+
+  const resetPassword = async (newPassword: string) => {
+    setError(null);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) {
+      const message = error instanceof Error ? error.message : 'Failed to reset password. Please try again.';
+      setError(message);
+      throw error;
+    }
+  };
+
   const logout = async () => {
     setIsLoading(true);
     setError(null);
@@ -197,6 +219,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     login,
     customerLogin,
     customerRegister,
+    requestPasswordReset,
+    resetPassword,
     logout,
     checkAuth,
   };

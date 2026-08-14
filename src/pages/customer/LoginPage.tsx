@@ -19,8 +19,8 @@ export const LoginPage = () => {
     try {
       await customerLogin(email, password);
       navigate('/account');
-    } catch (err: any) {
-      setError(err.message || 'Invalid email or password');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Invalid email or password');
     } finally {
       setIsSubmitting(false);
     }
@@ -61,10 +61,18 @@ export const LoginPage = () => {
                   placeholder="you@example.com"
                 />
               </div>
-              <div>
+              <div className="flex items-center justify-between">
                 <label className="label" htmlFor="login-password">
                   Password
                 </label>
+                <Link
+                  to="/forgot-password"
+                  className="text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+              <div>
                 <input
                   id="login-password"
                   type="password"

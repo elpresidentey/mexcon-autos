@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { isAdminUser } from '../../types';
 import { Button, Input, Card } from '../../components/common';
@@ -152,10 +152,13 @@ export const LoginPage = () => {
           </form>
 
           {/* Additional Links */}
-          <div className="mt-6 text-center">
+          <div className="mt-6 space-y-3 text-center">
+            <Link to="/forgot-password" className="block text-sm text-primary-600 hover:text-primary-700 transition-colors">
+              Forgot password?
+            </Link>
             <a
               href="/"
-              className="text-sm text-primary-600 hover:text-primary-700 transition-colors"
+              className="block text-sm text-primary-600 hover:text-primary-700 transition-colors"
             >
               ← Back to website
             </a>

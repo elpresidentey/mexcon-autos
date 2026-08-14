@@ -100,6 +100,8 @@ export interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   customerLogin: (email: string, password: string) => Promise<void>;
   customerRegister: (email: string, password: string, firstName?: string, lastName?: string, phone?: string) => Promise<void>;
+  requestPasswordReset: (email: string) => Promise<void>;
+  resetPassword: (newPassword: string) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
 }
