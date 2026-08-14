@@ -243,6 +243,29 @@ export class OrdersService {
   }
 
   /**
+   * Public order tracking by product / part / OEM / SKU number (guests +
+   * customers): matches order items (snapshot sku or linked product number)
+   * against the number, plus the email used at checkout / on the account.
+   * Returns ALL matching orders (an order can contain several items).
+   */
+  async trackOrdersByProduct(productNumber: string, email: string): Promise<Order[]> {
+    try {
+      const { data, error } = await supabase.rpc('track_order_by_product', {
+        p_product_number: productNumber,
+        p_email: email,
+      });
+
+      if (error) throw error;
+
+      const results = Array.isArray(data) ? (data as Order[]) : [];
+      return results;
+    } catch (error) {
+      console.error('Error tracking order by product:', error);
+      return [];
+    }
+  }
+
+  /**
    * Get all orders (for admin)
    */
   async getAllOrders(): Promise<Order[]> {
