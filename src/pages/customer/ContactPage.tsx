@@ -226,7 +226,7 @@ export const ContactPage = () => {
                 <div className="aspect-[4/3] bg-metallic-100">
                   <iframe
                     title="Mexcon Autos Location"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253682.21256569885!2d3.2639219999999997!3d6.5243793!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf9c6c8f0d61d%3A0x2ee4e0e8e9d6d9f2!2sLagos%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1700000000000!5m2!1sen!2sng"
+                    src="https://www.google.com/maps?q=6.4295548,3.1972993&z=13&output=embed"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -234,6 +234,16 @@ export const ContactPage = () => {
                     referrerPolicy="no-referrer-when-downgrade"
                     allowFullScreen
                   />
+                </div>
+                <div className="p-4 text-center border-t border-metallic-200/50">
+                  <a
+                    href="https://maps.app.goo.gl/1FjPSHJRgP6uUUseA"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-semibold text-primary-600 hover:text-primary-700"
+                  >
+                    Open in Google Maps →
+                  </a>
                 </div>
               </Card>
             </div>
