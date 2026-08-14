@@ -156,12 +156,63 @@ npm run type-check   # Run TypeScript compiler check
 
 ## 🔐 Authentication
 
-The platform uses Supabase Auth for admin authentication:
+The platform uses Supabase Auth for admin and customer authentication:
 
 - Default admin email: `admin@mexconautos.com`
-- Default password: **Change this in the database!**
+- Default password: **Change this in the database!** (or run `scripts/reset-admin.cjs` with `ADMIN_PASSWORD` set)
 
-To create a bcrypt password hash:
+### Password recovery
+
+The app implements the full forgot-password flow:
+
+- `GET /forgot-password` — enter your email, a reset link is sent via Supabase
+- `GET /reset-password` — the emailed link lands here; set a new password
+
+**Supabase setup required (one-time):**
+
+1. **Site URL** — Supabase → Authentication → URL Configuration → Site URL = your live site (e.g. `https://mexcon-autos.vercel.app`). It must match production; `window.location.origin` is appended with `/reset-password` so the reset link opens the right page in both dev and prod.
+2. **Redirect URLs** — add the same site URL(s) so the auth email links are allowed.
+3. **Email template** — Authentication → Emails → *Reset password*: keep the default `{{ .ConfirmationURL }}` subject/body. The `ConfirmationURL` already includes the `/reset-password` redirect appended by `resetPasswordForEmail`.
+
+Notes:
+
+- Reset links are single-use and expire (~1 hour, Supabase default).
+- The same flow works for admins and customers because both use Supabase Auth. If an account doesn't receive email links, confirm the SMTP/email provider is configured (Supabase → Authentication → Emails → Settings).
+
+### Transactional emails (Resend)
+
+Order confirmations and customer welcome emails are sent from the database
+through the `pg_net` → Resend pipeline (migrations `20260810_order_emails.sql`
+and `20260814_welcome_email.sql`). The API key, sender and base URL live in the
+`app_secrets` table — never in the browser or the repo:
+
+| key                 | example value                         |
+| ------------------- | ------------------------------------- |
+| `resend_api_key`    | Resend API key                        |
+| `resend_from_email` | `Mexcon Autos <info@mexconautos.com>` |
+| `app_base_url`      | `https://mexconautos.com`             |
+
+**Before emails reach real recipients, verify a domain in Resend:**
+
+1. Resend → Domains → Add Domain (e.g. `mexconautos.com`) and add the DNS records your DNS provider.
+2. Wait for the domain to show **Verified**.
+3. Update `app_secrets.resend_from_email` to use that domain (`info@mexconautos.com`).
+4. Check delivery in Supabase → Table Editor → `email_logs` (`status = queued` means the API accepted the job; the actual HTTP result is in `net._http_response`).
+
+Note: on Resend's free tier, unverified accounts can only send to the account owner's own email address.
+
+### Supabase signup-confirmation email
+
+New customer signups trigger Supabase's built-in confirmation email (which
+references the Site URL — the "localhost" link you see before the Site URL is
+configured). To brand it:
+
+1. **Site URL** — Supabase → Authentication → URL Configuration → Site URL = your live site URL (e.g. `https://mexcon-autos.vercel.app`). This is what fixes the "localhost" link.
+2. **Template** — Authentication → Emails → *Confirm signup*: replace the body with the paste-ready branded HTML in [`supabase/email-templates/confirm-signup.html`](supabase/email-templates/confirm-signup.html) (keep the `{{ .ConfirmationURL }}` variable).
+
+### Admin accounts
+
+To create a bcrypt password hash (legacy `password_hash` column, not used by Supabase Auth):
 1. Use https://bcrypt-generator.com/
 2. Or use Node.js: `bcrypt.hash('your-password', 10)`
 3. Update the `password_hash` in the `admin_users` table
