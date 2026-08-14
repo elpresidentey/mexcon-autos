@@ -135,8 +135,8 @@ export const EnquiryDetailPage = () => {
         <Breadcrumbs items={breadcrumbs} />
         <div className="flex items-center justify-between mt-4">
           <div>
-            <h1 className="text-3xl font-bold text-stone-900">Enquiry Details</h1>
-            <p className="text-stone-600 mt-1">Submitted on {formatDate(enquiry.created_at)}</p>
+            <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">Enquiry Details</h1>
+            <p className="text-metallic-600 mt-1">Submitted on {formatDate(enquiry.created_at)}</p>
           </div>
           <Button variant="outline" onClick={() => navigate('/admin/enquiries')} leftIcon={<ArrowLeftIcon className="w-5 h-5" />}>
             Back to Enquiries
@@ -149,15 +149,15 @@ export const EnquiryDetailPage = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* Customer Information */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold text-stone-900 mb-4">Customer Information</h2>
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">Customer Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-1">Name</label>
-                <p className="text-stone-900">{enquiry.customer_name}</p>
+                <label className="block text-sm font-medium text-metallic-700 mb-1">Name</label>
+                <p className="text-ink">{enquiry.customer_name}</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-1">Email</label>
+                <label className="block text-sm font-medium text-metallic-700 mb-1">Email</label>
                 <a
                   href={`mailto:${enquiry.customer_email}`}
                   className="text-primary-600 hover:text-primary-700 flex items-center space-x-2"
@@ -169,24 +169,24 @@ export const EnquiryDetailPage = () => {
 
               {enquiry.customer_phone && (
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 mb-1">Phone</label>
+                  <label className="block text-sm font-medium text-metallic-700 mb-1">Phone</label>
                   <div className="flex items-center space-x-2">
-                    <PhoneIcon className="w-4 h-4 text-stone-500" />
-                    <span className="text-stone-900">{enquiry.customer_phone}</span>
+                    <PhoneIcon className="w-4 h-4 text-metallic-500" />
+                    <span className="text-ink">{enquiry.customer_phone}</span>
                   </div>
                 </div>
               )}
 
               {enquiry.vehicle_details && (
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 mb-1">Vehicle Details</label>
-                  <p className="text-stone-900">{enquiry.vehicle_details}</p>
+                  <label className="block text-sm font-medium text-metallic-700 mb-1">Vehicle Details</label>
+                  <p className="text-ink">{enquiry.vehicle_details}</p>
                 </div>
               )}
             </div>
 
             {enquiry.customer_phone && (
-              <div className="mt-6 pt-6 border-t border-stone-200">
+              <div className="mt-6 pt-6 border-t border-metallic-200">
                 <Button onClick={handleWhatsAppClick} variant="outline" leftIcon={<ChatBubbleLeftIcon className="w-5 h-5" />}>
                   Contact via WhatsApp
                 </Button>
@@ -197,10 +197,10 @@ export const EnquiryDetailPage = () => {
           {/* Product Information */}
           {enquiry.product && (
             <Card className="p-6">
-              <h2 className="text-xl font-semibold text-stone-900 mb-4">Product Information</h2>
+              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">Product Information</h2>
               <div className="flex items-center space-x-4">
                 {enquiry.product.images?.[0]?.url && (
-                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-stone-100 flex-shrink-0">
+                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-metallic-100 flex-shrink-0">
                     <img
                       src={enquiry.product.images[0].url}
                       alt={enquiry.product.name}
@@ -209,12 +209,12 @@ export const EnquiryDetailPage = () => {
                   </div>
                 )}
                 <div>
-                  <h3 className="font-medium text-stone-900">{enquiry.product.name}</h3>
-                  <p className="text-sm text-stone-600 mt-1">
+                  <h3 className="font-medium text-ink">{enquiry.product.name}</h3>
+                  <p className="text-sm text-metallic-600 mt-1">
                     {enquiry.product.category?.name} • {enquiry.product.brand?.name}
                   </p>
                   {enquiry.product.oem_number && (
-                    <p className="text-sm text-stone-500 mt-1">OEM: {enquiry.product.oem_number}</p>
+                    <p className="text-sm text-metallic-500 mt-1">OEM: {enquiry.product.oem_number}</p>
                   )}
                 </div>
               </div>
@@ -223,14 +223,14 @@ export const EnquiryDetailPage = () => {
 
           {/* Customer Message */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold text-stone-900 mb-4">Customer Message</h2>
-            <p className="text-stone-900 whitespace-pre-wrap">{enquiry.message}</p>
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">Customer Message</h2>
+            <p className="text-ink whitespace-pre-wrap">{enquiry.message}</p>
           </Card>
 
           {/* Enquiry Images */}
           {enquiry.images && enquiry.images.length > 0 && (
             <Card className="p-6">
-              <h2 className="text-xl font-semibold text-stone-900 mb-4">Attached Images</h2>
+              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">Attached Images</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {enquiry.images.map((image) => (
                   <a
@@ -238,7 +238,7 @@ export const EnquiryDetailPage = () => {
                     href={image.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-lg overflow-hidden bg-stone-100 hover:shadow-lg transition-shadow"
+                    className="rounded-lg overflow-hidden bg-metallic-100 hover:shadow-lg transition-shadow"
                   >
                     <img src={image.url} alt="Enquiry attachment" className="w-full h-32 object-cover" />
                   </a>
@@ -250,9 +250,9 @@ export const EnquiryDetailPage = () => {
           {/* Admin Notes */}
           {enquiry.admin_notes && (
             <Card className="p-6">
-              <h2 className="text-xl font-semibold text-stone-900 mb-4">Notes History</h2>
-              <div className="bg-stone-50 rounded-lg p-4">
-                <p className="text-stone-900 whitespace-pre-wrap text-sm">{enquiry.admin_notes}</p>
+              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">Notes History</h2>
+              <div className="bg-metallic-50 rounded-lg p-4">
+                <p className="text-ink whitespace-pre-wrap text-sm">{enquiry.admin_notes}</p>
               </div>
             </Card>
           )}
@@ -262,17 +262,17 @@ export const EnquiryDetailPage = () => {
         <div className="space-y-6">
           {/* Status Card */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold text-stone-900 mb-4">Status</h2>
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">Status</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">Current Status</label>
+                <label className="block text-sm font-medium text-metallic-700 mb-2">Current Status</label>
                 <Badge variant={getStatusBadgeVariant(enquiry.status)} className="text-base px-4 py-2">
                   {enquiry.status.charAt(0).toUpperCase() + enquiry.status.slice(1)}
                 </Badge>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">Update Status</label>
+                <label className="block text-sm font-medium text-metallic-700 mb-2">Update Status</label>
                 <Select
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value as EnquiryStatus)}
@@ -284,7 +284,7 @@ export const EnquiryDetailPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">Add Notes</label>
+                <label className="block text-sm font-medium text-metallic-700 mb-2">Add Notes</label>
                 <Textarea
                   value={newNotes}
                   onChange={(e) => setNewNotes(e.target.value)}
@@ -306,23 +306,23 @@ export const EnquiryDetailPage = () => {
 
           {/* Metadata Card */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold text-stone-900 mb-4">Details</h2>
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">Details</h2>
             <div className="space-y-3 text-sm">
               <div>
-                <span className="text-stone-600">Enquiry ID:</span>
-                <p className="text-stone-900 font-mono mt-1">{enquiry.id}</p>
+                <span className="text-metallic-600">Enquiry ID:</span>
+                <p className="text-ink font-mono mt-1">{enquiry.id}</p>
               </div>
               <div>
-                <span className="text-stone-600">Submitted:</span>
-                <p className="text-stone-900 mt-1">{formatDate(enquiry.created_at)}</p>
+                <span className="text-metallic-600">Submitted:</span>
+                <p className="text-ink mt-1">{formatDate(enquiry.created_at)}</p>
               </div>
               <div>
-                <span className="text-stone-600">Last Updated:</span>
-                <p className="text-stone-900 mt-1">{formatDate(enquiry.updated_at || enquiry.created_at)}</p>
+                <span className="text-metallic-600">Last Updated:</span>
+                <p className="text-ink mt-1">{formatDate(enquiry.updated_at || enquiry.created_at)}</p>
               </div>
               <div>
-                <span className="text-stone-600">Read Status:</span>
-                <p className="text-stone-900 mt-1">{enquiry.is_read ? 'Read' : 'Unread'}</p>
+                <span className="text-metallic-600">Read Status:</span>
+                <p className="text-ink mt-1">{enquiry.is_read ? 'Read' : 'Unread'}</p>
               </div>
             </div>
           </Card>

@@ -225,10 +225,10 @@ export const ProductFormPage = () => {
         <Breadcrumbs items={breadcrumbs} />
         <div className="flex items-center justify-between mt-4">
           <div>
-            <h1 className="text-3xl font-bold text-stone-900">
+            <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">
               {isEditMode ? 'Edit Product' : 'Add New Product'}
             </h1>
-            <p className="text-stone-600 mt-1">
+            <p className="text-metallic-600 mt-1">
               {isEditMode ? 'Update product information' : 'Create a new product in the catalogue'}
             </p>
           </div>
@@ -241,7 +241,7 @@ export const ProductFormPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Information */}
         <Card className="p-6">
-          <h2 className="text-xl font-semibold text-stone-900 mb-6">Basic Information</h2>
+          <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-6">Basic Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <Input
@@ -315,7 +315,7 @@ export const ProductFormPage = () => {
 
         {/* Part Numbers */}
         <Card className="p-6">
-          <h2 className="text-xl font-semibold text-stone-900 mb-6">Part Numbers</h2>
+          <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-6">Part Numbers</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Input
               label="OEM Number"
@@ -337,7 +337,7 @@ export const ProductFormPage = () => {
 
         {/* Technical Details */}
         <Card className="p-6">
-          <h2 className="text-xl font-semibold text-stone-900 mb-6">Technical Details</h2>
+          <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-6">Technical Details</h2>
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Input
@@ -381,7 +381,7 @@ export const ProductFormPage = () => {
 
         {/* Availability */}
         <Card className="p-6">
-          <h2 className="text-xl font-semibold text-stone-900 mb-6">Availability</h2>
+          <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-6">Availability</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Select
               label="Stock Status"
@@ -422,7 +422,7 @@ export const ProductFormPage = () => {
 
         {/* Product Images */}
         <Card className="p-6">
-          <h2 className="text-xl font-semibold text-stone-900 mb-6">Product Images</h2>
+          <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-6">Product Images</h2>
           <ImageGallery
             images={existingImages}
             onChange={handleImagesChange}
@@ -438,7 +438,7 @@ export const ProductFormPage = () => {
 
         {/* Settings */}
         <Card className="p-6">
-          <h2 className="text-xl font-semibold text-stone-900 mb-6">Settings</h2>
+          <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-6">Settings</h2>
           <Checkbox
             label="Featured Product"
             name="is_featured"

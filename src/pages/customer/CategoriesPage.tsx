@@ -34,11 +34,13 @@ export const CategoriesPage = () => {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative bg-dark-900 text-white overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-accent-500" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent-400 via-accent-500 to-primary-400" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl" />
         <div className="container-custom relative z-10 py-12 lg:py-16 text-center">
-          <div className="inline-flex items-center justify-center space-x-2 bg-accent-500 border border-accent-500 rounded-full px-3.5 py-1.5 mb-5">
-            <RectangleStackIcon className="w-4 h-4 text-black" />
-            <span className="text-xs font-bold text-black tracking-wide uppercase">
+          <div className="inline-flex items-center justify-center space-x-2 bg-accent-500/20 backdrop-blur-sm border border-accent-500/30 rounded-full px-3.5 py-1.5 mb-5">
+            <RectangleStackIcon className="w-4 h-4 text-accent-400" />
+            <span className="text-xs font-semibold text-accent-400 tracking-wide uppercase">
               Browse by Category
             </span>
           </div>
@@ -58,7 +60,7 @@ export const CategoriesPage = () => {
             <LoadingSpinner />
           </div>
         ) : categories.length === 0 ? (
-          <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-12">
+          <div className="card p-12">
             <EmptyState
               title="No categories available"
               description="Check back soon for new categories"
@@ -68,7 +70,7 @@ export const CategoriesPage = () => {
           <>
             <div className="text-center mb-12">
               <p className="text-metallic-700">
-                Showing <span className="font-black text-dark-900">{categories.length}</span> categories
+                Showing <span className="font-black text-ink">{categories.length}</span> categories
               </p>
             </div>
 
@@ -101,7 +103,7 @@ export const CategoriesPage = () => {
               </Link>
               <Link
                 to="/contact"
-                className="btn btn-lg bg-white text-dark-900 hover:bg-metallic-100"
+                className="btn btn-lg bg-white text-ink hover:bg-metallic-100"
               >
                 Contact Us
               </Link>

@@ -118,7 +118,7 @@ export const ContactPage = () => {
               We're here to help
             </span>
           </div>
-          <h1 className="text-3xl lg:text-4xl font-bold leading-tight tracking-tight mb-3">
+          <h1 className="font-display text-4xl lg:text-5xl font-extrabold uppercase tracking-wide leading-none mb-3">
             Get in <span className="text-accent-400">Touch</span>
           </h1>
           <p className="text-base text-metallic-300 max-w-xl mx-auto leading-relaxed">
@@ -135,7 +135,7 @@ export const ContactPage = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="text-xl lg:text-2xl font-bold text-dark-900 mb-2 tracking-tight">Message Sent!</h2>
+            <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-ink mb-2">Message Sent!</h2>
             <p className="text-metallic-600 mb-8 font-medium">
               Thank you for contacting us. We'll get back to you as soon as possible.
             </p>
@@ -143,7 +143,7 @@ export const ContactPage = () => {
               href={whatsAppLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold rounded-2xl shadow-xl shadow-green-600/25 transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold rounded-2xl shadow-xl shadow-primary-600/25 transition-all duration-300 hover:scale-105"
             >
               <WhatsAppIcon className="w-6 h-6" />
               Chat on WhatsApp
@@ -153,8 +153,8 @@ export const ContactPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             {/* Contact Info */}
             <div className="lg:col-span-2 space-y-6">
-              <Card className="p-7 rounded-3xl border-metallic-200/50 shadow-sm hover:shadow-xl hover:shadow-accent-500/5 transition-all duration-500">
-                <h2 className="text-lg font-bold text-dark-900 mb-5 tracking-tight">Contact Information</h2>
+              <Card className="p-7 rounded-3xl border-metallic-200/50 shadow-card hover:shadow-card-hover transition-all duration-500">
+                <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-5">Contact Information</h2>
                 <div className="space-y-5">
                   <div className="flex items-start space-x-4 group">
                     <div className="w-12 h-12 bg-gradient-to-br from-primary-50 to-primary-100 border border-primary-200/60 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
@@ -201,13 +201,13 @@ export const ContactPage = () => {
                       href={generateWhatsAppLink(whatsappNumber, 'Hello Mexcon Autos, I have an enquiry.')}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-start space-x-4 p-4 bg-gradient-to-br from-green-50 to-green-100/60 rounded-2xl border border-green-200/70 hover:border-green-400/60 hover:shadow-lg hover:shadow-green-500/10 transition-all duration-300"
+                      className="flex items-start space-x-4 p-4 bg-gradient-to-br from-primary-50 to-primary-100/60 rounded-2xl border border-primary-200/70 hover:border-primary-400/60 hover:shadow-lg hover:shadow-primary-500/10 transition-all duration-300"
                     >
-                      <div className="w-12 h-12 bg-gradient-to-br from-green-600 to-green-700 rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl flex items-center justify-center flex-shrink-0">
                         <WhatsAppIcon className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <p className="font-black text-dark-900">WhatsApp</p>
+                        <p className="font-display font-bold uppercase tracking-wide text-ink">WhatsApp</p>
                         <p className="text-metallic-600 text-sm font-medium">Fastest way to reach us</p>
                       </div>
                     </a>
@@ -216,9 +216,9 @@ export const ContactPage = () => {
               </Card>
 
               {/* Map */}
-              <Card className="overflow-hidden rounded-3xl border-metallic-200/50 shadow-sm">
+              <Card className="overflow-hidden rounded-3xl border-metallic-200/50 shadow-card">
                 <div className="p-6 pb-4">
-                  <h2 className="text-lg font-black text-dark-900 flex items-center space-x-2 tracking-tight">
+                  <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink flex items-center space-x-2">
                     <MapPinIcon className="w-5 h-5 text-accent-600" />
                     <span>Find Us</span>
                   </h2>
@@ -250,8 +250,8 @@ export const ContactPage = () => {
 
             {/* Contact Form */}
             <div className="lg:col-span-3">
-              <Card className="p-8 lg:p-10 rounded-3xl border-metallic-200/50 shadow-xl hover:shadow-2xl transition-all duration-500">
-                <h2 className="text-xl lg:text-2xl font-bold text-dark-900 mb-2 tracking-tight">Send Us a Message</h2>
+              <Card className="p-8 lg:p-10 rounded-3xl border-metallic-200/50 shadow-card hover:shadow-card-hover transition-all duration-500">
+                <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-ink mb-2">Send Us a Message</h2>
                 <p className="text-metallic-600 mb-8 font-medium">
                   Fill out the form and we'll respond within 24 hours
                 </p>
@@ -310,7 +310,7 @@ export const ContactPage = () => {
                     placeholder="Tell us what you need..."
                   />
 
-                  <Button type="submit" isLoading={isSubmitting} className="w-full md:w-auto bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 font-black rounded-2xl shadow-xl shadow-primary-500/30" size="lg">
+                  <Button type="submit" isLoading={isSubmitting} className="w-full md:w-auto" size="lg">
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                   </Button>
                 </form>
@@ -325,7 +325,7 @@ export const ContactPage = () => {
                       href={whatsAppLink || '#'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center space-x-2 text-green-700 font-bold hover:text-green-800 transition-colors"
+                      className="inline-flex items-center space-x-2 text-primary-700 font-bold hover:text-primary-800 transition-colors"
                     >
                       <ChatBubbleLeftRightIcon className="w-5 h-5" />
                       <span>Chat with us directly on WhatsApp</span>

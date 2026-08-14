@@ -204,8 +204,8 @@ export const ProfilePage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-stone-900">My Profile</h1>
-        <p className="text-stone-600 mt-1">Manage your account information and security</p>
+        <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">My Profile</h1>
+        <p className="text-metallic-600 mt-1">Manage your account information and security</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -215,15 +215,15 @@ export const ProfilePage = () => {
             <div className="w-24 h-24 rounded-full bg-primary-100 flex items-center justify-center mx-auto mb-4">
               <UserIcon className="w-12 h-12 text-primary-600" />
             </div>
-            <h3 className="text-xl font-semibold text-stone-900">{user.name}</h3>
-            <p className="text-sm text-stone-500 mt-1">{user.email}</p>
+            <h3 className="font-display text-xl font-bold uppercase tracking-wide text-ink">{user.name}</h3>
+            <p className="text-sm text-metallic-500 mt-1">{user.email}</p>
             <div className="mt-4">
               <Badge variant={getRoleBadgeVariant(user.role)}>
                 {getRoleLabel(user.role)}
               </Badge>
             </div>
             {user.last_login && (
-              <p className="text-xs text-stone-400 mt-4">
+              <p className="text-xs text-metallic-400 mt-4">
                 Last login: {new Date(user.last_login).toLocaleString()}
               </p>
             )}
@@ -236,7 +236,7 @@ export const ProfilePage = () => {
           <Card className="p-6">
             <div className="flex items-center space-x-3 mb-6">
               <UserIcon className="w-6 h-6 text-primary-600" />
-              <h2 className="text-xl font-semibold text-stone-900">Personal Information</h2>
+              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink">Personal Information</h2>
             </div>
 
             <form onSubmit={handleProfileSubmit} className="space-y-4">
@@ -273,7 +273,7 @@ export const ProfilePage = () => {
           <Card className="p-6">
             <div className="flex items-center space-x-3 mb-6">
               <KeyIcon className="w-6 h-6 text-primary-600" />
-              <h2 className="text-xl font-semibold text-stone-900">Change Password</h2>
+              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink">Change Password</h2>
             </div>
 
             <form onSubmit={handlePasswordSubmit} className="space-y-4">
@@ -324,8 +324,8 @@ export const ProfilePage = () => {
             <div className="flex items-start space-x-3">
               <ShieldCheckIcon className="w-6 h-6 text-primary-600 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-stone-900 mb-2">Password Requirements</h3>
-                <ul className="text-sm text-stone-600 space-y-1">
+                <h3 className="font-semibold text-ink mb-2">Password Requirements</h3>
+                <ul className="text-sm text-metallic-600 space-y-1">
                   <li>• At least 8 characters long</li>
                   <li>• Contains uppercase letters (A-Z)</li>
                   <li>• Contains lowercase letters (a-z)</li>

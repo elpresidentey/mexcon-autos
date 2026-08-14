@@ -35,14 +35,14 @@ export const LoginPage = () => {
             <div className="w-14 h-14 bg-accent-500 rounded-xl flex items-center justify-center mx-auto mb-4">
               <span className="font-display text-black font-extrabold text-2xl leading-none">M</span>
             </div>
-            <h1 className="font-display text-4xl font-extrabold text-dark-900 uppercase tracking-wide">Welcome back</h1>
+            <h1 className="font-display text-4xl font-extrabold text-ink uppercase tracking-wide">Welcome back</h1>
             <p className="text-metallic-600 mt-2">Log in to your Mexcon Autos account</p>
           </div>
 
-          <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-8">
+          <div className="card p-8">
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 text-sm font-medium rounded-xl px-4 py-3">
+                <div className="error-message bg-red-50 border border-red-200 text-red-700 text-sm font-medium rounded-xl px-4 py-3">
                   {error}
                 </div>
               )}

@@ -62,17 +62,17 @@ export const AccountPage = () => {
 
           <div className="grid md:grid-cols-[1fr_2fr] gap-6">
             {/* Profile card */}
-            <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 h-fit">
-              <h2 className="font-bold text-dark-900 mb-4">Profile</h2>
+            <div className="card p-6 h-fit">
+              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">Profile</h2>
               <dl className="space-y-3 text-sm">
                 <div>
                   <dt className="text-metallic-500 font-medium">Email</dt>
-                  <dd className="text-dark-900 font-semibold break-all">{user?.email}</dd>
+                  <dd className="text-ink font-semibold break-all">{user?.email}</dd>
                 </div>
                 {customer?.phone && (
                   <div>
                     <dt className="text-metallic-500 font-medium">Phone</dt>
-                    <dd className="text-dark-900 font-semibold">{customer.phone}</dd>
+                    <dd className="text-ink font-semibold">{customer.phone}</dd>
                   </div>
                 )}
                 <div className="pt-3">
@@ -84,8 +84,8 @@ export const AccountPage = () => {
             </div>
 
             {/* Orders */}
-            <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6">
-              <h2 className="font-bold text-dark-900 mb-4">Order History</h2>
+            <div className="card p-6">
+              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">Order History</h2>
 
               {isLoading ? (
                 <div className="flex items-center justify-center py-8">
@@ -112,7 +112,7 @@ export const AccountPage = () => {
                         className="group bg-metallic-50 rounded-xl ring-1 ring-black/5 p-4 flex items-center justify-between gap-3 hover:shadow-md hover:ring-primary-300 transition-all"
                       >
                         <div>
-                          <div className="font-bold text-dark-900">{order.order_number}</div>
+                          <div className="font-bold text-ink">{order.order_number}</div>
                           <div className="text-sm text-metallic-600 mt-0.5">
                             {new Date(order.created_at).toLocaleDateString('en-GB', {
                               day: '2-digit',
@@ -124,7 +124,7 @@ export const AccountPage = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="font-black text-dark-900">₦{order.total_amount.toLocaleString()}</span>
+                          <span className="font-black text-ink">₦{order.total_amount.toLocaleString()}</span>
                           <span className={style.className}>
                             {style.label}
                           </span>

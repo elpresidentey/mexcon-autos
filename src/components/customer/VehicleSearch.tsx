@@ -137,7 +137,7 @@ export const VehicleSearch = ({ variant = 'card', className = '' }: VehicleSearc
         />
 
         {!isHero && (
-          <Button type="submit" className="w-full bg-primary-600 hover:bg-primary-700">
+          <Button type="submit" className="w-full">
             Search Parts
           </Button>
         )}
@@ -146,7 +146,7 @@ export const VehicleSearch = ({ variant = 'card', className = '' }: VehicleSearc
       {isHero && (
         <Button
           type="submit"
-          className="mt-4 w-full bg-accent-500 text-black hover:bg-accent-400 font-semibold text-sm rounded-lg"
+          className="mt-4 w-full bg-accent-500 text-black hover:bg-accent-400 font-semibold text-sm"
         >
           Search Parts
         </Button>

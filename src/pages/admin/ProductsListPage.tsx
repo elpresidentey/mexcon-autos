@@ -106,8 +106,8 @@ export const ProductsListPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-stone-900">Products</h1>
-          <p className="text-stone-600 mt-1">Manage your product catalogue</p>
+          <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">Products</h1>
+          <p className="text-metallic-600 mt-1">Manage your product catalogue</p>
         </div>
         <Button onClick={() => navigate('/admin/products/new')} leftIcon={<PlusIcon className="w-5 h-5" />}>
           Add Product
@@ -168,34 +168,34 @@ export const ProductsListPage = () => {
           <>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-stone-50 border-b border-stone-200">
+                <thead className="bg-metallic-50 border-b border-metallic-200">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Product
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Category
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Brand
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Price
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-stone-200">
+                <tbody className="bg-white divide-y divide-metallic-200">
                   {products.map((product) => (
-                    <tr key={product.id} className="hover:bg-stone-50 transition-colors">
+                    <tr key={product.id} className="hover:bg-metallic-50 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-3">
-                          <div className="w-12 h-12 rounded-lg overflow-hidden bg-stone-100 flex-shrink-0">
+                          <div className="w-12 h-12 rounded-lg overflow-hidden bg-metallic-100 flex-shrink-0">
                             {product.images?.[0]?.url ? (
                               <img
                                 src={product.images[0].url}
@@ -203,27 +203,27 @@ export const ProductsListPage = () => {
                                 className="w-full h-full object-cover"
                               />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-stone-400">
+                              <div className="w-full h-full flex items-center justify-center text-metallic-400">
                                 <PlusIcon className="w-6 h-6" />
                               </div>
                             )}
                           </div>
                           <div>
-                            <div className="font-medium text-stone-900">{product.name}</div>
+                            <div className="font-medium text-ink">{product.name}</div>
                             {product.oem_number && (
-                              <div className="text-sm text-stone-500">OEM: {product.oem_number}</div>
+                              <div className="text-sm text-metallic-500">OEM: {product.oem_number}</div>
                             )}
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="text-sm text-stone-900">{product.category?.name || '-'}</span>
+                        <span className="text-sm text-ink">{product.category?.name || '-'}</span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="text-sm text-stone-900">{product.brand?.name || '-'}</span>
+                        <span className="text-sm text-ink">{product.brand?.name || '-'}</span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="text-sm font-medium text-stone-900">{formatPrice(product.price)}</span>
+                        <span className="text-sm font-medium text-ink">{formatPrice(product.price)}</span>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-col items-start gap-1">
@@ -252,7 +252,7 @@ export const ProductsListPage = () => {
                         <div className="flex items-center justify-end space-x-2">
                           <button
                             onClick={() => handleToggleActive(product.id)}
-                            className="p-2 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors"
+                            className="p-2 text-metallic-600 hover:text-ink hover:bg-metallic-100 rounded-lg transition-colors"
                             title={product.is_active ? 'Deactivate' : 'Activate'}
                           >
                             {product.is_active ? (
@@ -285,7 +285,7 @@ export const ProductsListPage = () => {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="px-6 py-4 border-t border-stone-200">
+              <div className="px-6 py-4 border-t border-metallic-200">
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}

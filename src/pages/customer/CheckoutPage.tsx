@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { customersService } from '../../services/customers.service';
 import { ordersService } from '../../services/orders.service';
 import { payWithPaystack, payWithFlutterwave, getGatewayStatus } from '../../services/payment.service';
-import { LoadingSpinner } from '../../components/common';
+import { Button } from '../../components/common';
 import type { CustomerAddressFormData, Order } from '../../types';
 
 export const CheckoutPage = () => {
@@ -47,7 +47,14 @@ export const CheckoutPage = () => {
   const gatewayReady = getGatewayStatus();
 
   // Order state
-  const [placedOrder, setPlacedOrder] = useState<Order | null>(null);
+  const [placedSummary, setPlacedSummary] = useState<{
+    orderNumber: string;
+    items: { product_name: string; quantity: number; unit_price: number; total_price: number }[];
+    subtotal: number;
+    shippingCost: number;
+    totalAmount: number;
+    paymentMethod: string;
+  } | null>(null);
   const [customerNotes, setCustomerNotes] = useState('');
 
   if (cart.length === 0) {
@@ -55,13 +62,10 @@ export const CheckoutPage = () => {
       <div className="min-h-screen bg-white">
         <div className="container-custom py-20">
           <div className="max-w-2xl mx-auto text-center">
-            <h1 className="text-3xl font-black text-dark-900 mb-4">Your cart is empty</h1>
-            <button
-              onClick={() => navigate('/shop')}
-              className="mt-4 bg-primary-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-primary-700 transition-colors"
-            >
+            <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink mb-4">Your cart is empty</h1>
+            <Button onClick={() => navigate('/shop')} size="lg" className="mt-4">
               Browse Products
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -166,7 +170,6 @@ export const CheckoutPage = () => {
           customerEmail: guestContact.email,
           customerNotes,
         })) as unknown as Order;
-        setPlacedOrder(order);
       } else {
         if (!user || userType !== 'customer') {
           throw new Error('Please sign in to place your order');
@@ -178,8 +181,21 @@ export const CheckoutPage = () => {
           effectiveMethod,
           customerNotes
         );
-        setPlacedOrder(order);
       }
+
+      setPlacedSummary({
+        orderNumber: order.order_number,
+        items: cart.map((item) => ({
+          product_name: item.product?.name || 'Unknown Product',
+          quantity: item.quantity,
+          unit_price: item.product?.price || 0,
+          total_price: (item.product?.price || 0) * item.quantity,
+        })),
+        subtotal: cartTotal,
+        shippingCost,
+        totalAmount,
+        paymentMethod: effectiveMethod,
+      });
 
       // 2) If a card gateway was chosen: route to the gateway popup, then
       //    mark the order paid on a successful callback.
@@ -224,7 +240,7 @@ export const CheckoutPage = () => {
     <div className="min-h-screen bg-white">
       <div className="container-custom py-20">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl lg:text-4xl font-black text-dark-900 mb-8">Checkout</h1>
+          <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink mb-8">Checkout</h1>
 
           {/* Progress Steps */}
           <div className="flex items-center justify-between mb-8">
@@ -256,25 +272,30 @@ export const CheckoutPage = () => {
               {isAuthenticated && userType === 'customer' ? (
                 <div className="text-center">
                   <p className="text-lg text-metallic-700 mb-4">Welcome back, {(user as any)?.first_name || user?.email}!</p>
-                  <button
-                    onClick={() => setStep('shipping')}
-                    className="bg-primary-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-primary-700 transition-colors"
-                  >
+                  <Button size="lg" onClick={() => setStep('shipping')}>
                     Continue to Shipping
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 <>
                   <div className="flex gap-4 mb-6">
                     <button
                       onClick={() => setAuthMode('login')}
-                      className={`flex-1 py-2 rounded-lg font-semibold transition-colors ${authMode === 'login' ? 'bg-primary-600 text-white' : 'bg-white text-metallic-700'}`}
+                      className={`flex-1 py-2.5 rounded-lg font-semibold transition-colors border ${
+                        authMode === 'login'
+                          ? 'bg-primary-600 text-white border-primary-600'
+                          : 'bg-white text-metallic-700 border-metallic-200 hover:border-primary-400'
+                      }`}
                     >
                       Login
                     </button>
                     <button
                       onClick={() => setAuthMode('register')}
-                      className={`flex-1 py-2 rounded-lg font-semibold transition-colors ${authMode === 'register' ? 'bg-primary-600 text-white' : 'bg-white text-metallic-700'}`}
+                      className={`flex-1 py-2.5 rounded-lg font-semibold transition-colors border ${
+                        authMode === 'register'
+                          ? 'bg-primary-600 text-white border-primary-600'
+                          : 'bg-white text-metallic-700 border-metallic-200 hover:border-primary-400'
+                      }`}
                     >
                       Register
                     </button>
@@ -283,65 +304,72 @@ export const CheckoutPage = () => {
                     {authMode === 'register' && (
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-semibold text-dark-900 mb-1">First Name</label>
+                          <label className="label" htmlFor="first_name">First Name</label>
                           <input
+                            id="first_name"
                             type="text"
                             value={authForm.firstName}
                             onChange={(e) => setAuthForm({ ...authForm, firstName: e.target.value })}
-                            className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                            className="input"
                             required
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-semibold text-dark-900 mb-1">Last Name</label>
+                          <label className="label" htmlFor="last_name">Last Name</label>
                           <input
+                            id="last_name"
                             type="text"
                             value={authForm.lastName}
                             onChange={(e) => setAuthForm({ ...authForm, lastName: e.target.value })}
-                            className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                            className="input"
                             required
                           />
                         </div>
                       </div>
                     )}
                     <div>
-                      <label className="block text-sm font-semibold text-dark-900 mb-1">Email</label>
+                      <label className="label" htmlFor="checkout_email">Email</label>
                       <input
+                        id="checkout_email"
                         type="email"
                         value={authForm.email}
                         onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                        className="input"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-dark-900 mb-1">Password</label>
+                      <label className="label" htmlFor="checkout_password">Password</label>
                       <input
+                        id="checkout_password"
                         type="password"
                         value={authForm.password}
                         onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                        className="input"
                         required
                       />
                     </div>
                     {authMode === 'register' && (
                       <div>
-                        <label className="block text-sm font-semibold text-dark-900 mb-1">Phone</label>
+                        <label className="label" htmlFor="checkout_phone">Phone</label>
                         <input
+                          id="checkout_phone"
                           type="tel"
                           value={authForm.phone}
                           onChange={(e) => setAuthForm({ ...authForm, phone: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                          className="input"
                         />
                       </div>
                     )}
-                    <button
+                    <Button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full bg-primary-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-primary-700 transition-colors disabled:opacity-50"
+                      isLoading={isLoading}
+                      className="w-full"
+                      size="lg"
                     >
-                      {isLoading ? <LoadingSpinner /> : authMode === 'login' ? 'Login' : 'Register'}
-                    </button>
+                      {authMode === 'login' ? 'Login' : 'Register'}
+                    </Button>
                   </form>
 
                   <div className="flex items-center gap-4 my-6">
@@ -350,12 +378,14 @@ export const CheckoutPage = () => {
                     <div className="flex-1 h-px bg-metallic-200" />
                   </div>
 
-                  <button
+                  <Button
+                    variant="outline"
+                    size="lg"
                     onClick={() => { setIsGuest(true); setStep('shipping'); }}
-                    className="w-full bg-white text-dark-900 px-6 py-3 rounded-xl font-bold border border-metallic-200 hover:bg-metallic-50 transition-colors"
+                    className="w-full !border-metallic-300 !text-ink hover:!bg-metallic-50"
                   >
                     Continue as Guest
-                  </button>
+                  </Button>
                   <p className="mt-3 text-xs text-metallic-500 text-center">
                     No account needed — you can track your order with your email and order number.
                   </p>
@@ -367,99 +397,109 @@ export const CheckoutPage = () => {
           {/* Shipping Step */}
           {step === 'shipping' && (
             <div className="bg-metallic-50 rounded-2xl p-8 border border-metallic-200">
-              <h2 className="text-2xl font-black text-dark-900 mb-6">Shipping Address</h2>
+              <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-ink mb-6">Shipping Address</h2>
               <form onSubmit={handleShipping} className="space-y-4">
               {isGuest && (
                 <div className="grid md:grid-cols-3 gap-4 p-4 bg-white rounded-xl border border-metallic-200">
                   <div>
-                    <label className="block text-sm font-semibold text-dark-900 mb-1">Full Name</label>
+                    <label className="label" htmlFor="guest_name">Full Name</label>
                     <input
+                      id="guest_name"
                       type="text"
                       value={guestContact.name}
                       onChange={(e) => setGuestContact({ ...guestContact, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                      className="input"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-dark-900 mb-1">Email</label>
+                    <label className="label" htmlFor="guest_email">Email</label>
                     <input
+                      id="guest_email"
                       type="email"
                       value={guestContact.email}
                       onChange={(e) => setGuestContact({ ...guestContact, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                      className="input"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-dark-900 mb-1">Phone</label>
+                    <label className="label" htmlFor="guest_phone">Phone</label>
                     <input
+                      id="guest_phone"
                       type="tel"
                       value={guestContact.phone}
                       onChange={(e) => setGuestContact({ ...guestContact, phone: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                      className="input"
                       required
                     />
                   </div>
                 </div>
               )}
                 <div>
-                  <label className="block text-sm font-semibold text-dark-900 mb-1">Address Line 1</label>
+                  <label className="label" htmlFor="address_line1">Address Line 1</label>
                   <input
+                    id="address_line1"
                     type="text"
                     value={shippingForm.address_line1}
                     onChange={(e) => setShippingForm({ ...shippingForm, address_line1: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                    className="input"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-dark-900 mb-1">Address Line 2 (Optional)</label>
+                  <label className="label" htmlFor="address_line2">Address Line 2 (Optional)</label>
                   <input
+                    id="address_line2"
                     type="text"
                     value={shippingForm.address_line2}
                     onChange={(e) => setShippingForm({ ...shippingForm, address_line2: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                    className="input"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-semibold text-dark-900 mb-1">City</label>
+                    <label className="label" htmlFor="city">City</label>
                     <input
+                      id="city"
                       type="text"
                       value={shippingForm.city}
                       onChange={(e) => setShippingForm({ ...shippingForm, city: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                      className="input"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-dark-900 mb-1">State</label>
+                    <label className="label" htmlFor="state">State</label>
                     <input
+                      id="state"
                       type="text"
                       value={shippingForm.state}
                       onChange={(e) => setShippingForm({ ...shippingForm, state: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                      className="input"
                       required
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-dark-900 mb-1">Postal Code</label>
+                  <label className="label" htmlFor="postal_code">Postal Code</label>
                   <input
+                    id="postal_code"
                     type="text"
                     value={shippingForm.postal_code}
                     onChange={(e) => setShippingForm({ ...shippingForm, postal_code: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                    className="input"
                   />
                 </div>
-                <button
+                <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-primary-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-primary-700 transition-colors disabled:opacity-50"
+                  isLoading={isLoading}
+                  size="lg"
+                  className="w-full"
                 >
-                  {isLoading ? <LoadingSpinner /> : 'Continue to Payment'}
-                </button>
+                  Continue to Payment
+                </Button>
               </form>
             </div>
           )}
@@ -467,7 +507,7 @@ export const CheckoutPage = () => {
           {/* Payment Step */}
           {step === 'payment' && (
             <div className="bg-metallic-50 rounded-2xl p-8 border border-metallic-200">
-              <h2 className="text-2xl font-black text-dark-900 mb-6">Payment Method</h2>
+              <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-ink mb-6">Payment Method</h2>
               {!gatewayReady.paystack && !gatewayReady.flutterwave && (
                 <p className="mb-4 p-3 bg-accent-50 text-accent-700 text-sm rounded-lg border border-accent-200">
                   Card payments are coming soon — please use Bank Transfer or Pay on Delivery for now.
@@ -485,7 +525,7 @@ export const CheckoutPage = () => {
                       className="w-5 h-5 text-primary-600"
                     />
                     <div>
-                      <span className="font-semibold text-dark-900">Pay on Delivery</span>
+                      <span className="font-semibold text-ink">Pay on Delivery</span>
                       <p className="text-sm text-metallic-600">Pay cash when your order arrives</p>
                     </div>
                   </label>
@@ -500,13 +540,13 @@ export const CheckoutPage = () => {
                       className="w-5 h-5 text-primary-600"
                     />
                     <div>
-                      <span className="font-semibold text-dark-900">Paystack</span>
+                      <span className="font-semibold text-ink">Paystack</span>
                       <p className="text-sm text-metallic-600">
                         {gatewayReady.paystack ? 'Pay securely with Paystack' : 'Card payments coming soon'}
                       </p>
                     </div>
                   </label>
-                  <label className={`flex items-center gap-3 p-4 bg-white rounded-xl border border-metallic-200 cursor-pointer ${gatewayReady.flutterwave ? 'cursor-pointer hover:border-primary-600' : 'opacity-50 cursor-not-allowed'}`}>
+                  <label className={`flex items-center gap-3 p-4 bg-white rounded-xl border border-metallic-200 ${gatewayReady.flutterwave ? 'cursor-pointer hover:border-primary-600' : 'opacity-50 cursor-not-allowed'}`}>
                     <input
                       type="radio"
                       name="payment"
@@ -517,7 +557,7 @@ export const CheckoutPage = () => {
                       className="w-5 h-5 text-primary-600"
                     />
                     <div>
-                      <span className="font-semibold text-dark-900">Flutterwave</span>
+                      <span className="font-semibold text-ink">Flutterwave</span>
                       <p className="text-sm text-metallic-600">
                         {gatewayReady.flutterwave ? 'Pay securely with Flutterwave' : 'Card payments coming soon'}
                       </p>
@@ -533,7 +573,7 @@ export const CheckoutPage = () => {
                       className="w-5 h-5 text-primary-600"
                     />
                     <div>
-                      <span className="font-semibold text-dark-900">Bank Transfer</span>
+                      <span className="font-semibold text-ink">Bank Transfer</span>
                       <p className="text-sm text-metallic-600">Transfer to our bank account</p>
                     </div>
                   </label>
@@ -541,7 +581,7 @@ export const CheckoutPage = () => {
 
                 {/* Order Summary */}
                 <div className="mt-6 p-4 bg-white rounded-xl border border-metallic-200">
-                  <h3 className="font-bold text-dark-900 mb-3">Order Summary</h3>
+                  <h3 className="font-display font-bold uppercase tracking-wide text-ink mb-3">Order Summary</h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between text-metallic-700">
                       <span>Subtotal</span>
@@ -551,7 +591,7 @@ export const CheckoutPage = () => {
                       <span>Shipping</span>
                       <span>₦{shippingCost.toLocaleString()}</span>
                     </div>
-                    <div className="border-t border-metallic-300 pt-2 flex justify-between text-dark-900 font-black text-lg">
+                    <div className="border-t border-metallic-300 pt-2 flex justify-between text-ink font-black text-lg">
                       <span>Total</span>
                       <span>₦{totalAmount.toLocaleString()}</span>
                     </div>
@@ -560,76 +600,121 @@ export const CheckoutPage = () => {
 
                 {/* Order Notes */}
                 <div>
-                  <label className="block text-sm font-semibold text-dark-900 mb-1">Order Notes (Optional)</label>
+                  <label className="label" htmlFor="order_notes">Order Notes (Optional)</label>
                   <textarea
+                    id="order_notes"
                     value={customerNotes}
                     onChange={(e) => setCustomerNotes(e.target.value)}
                     rows={3}
                     placeholder="Any special instructions for delivery?"
-                    className="w-full px-4 py-3 rounded-xl border border-metallic-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                    className="input"
                   />
                 </div>
 
-                <button
+                <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-primary-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-primary-700 transition-colors disabled:opacity-50"
+                  isLoading={isLoading}
+                  size="lg"
+                  className="w-full"
                 >
-                  {isLoading ? <LoadingSpinner /> : 'Place Order'}
-                </button>
+                  Place Order
+                </Button>
               </form>
             </div>
           )}
 
           {/* Confirmation Step */}
-          {step === 'confirmation' && (
-            <div className="bg-metallic-50 rounded-2xl p-8 border border-metallic-200 text-center">
-              <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-black text-dark-900 mb-2">Order Placed Successfully!</h2>
-              <p className="text-metallic-700 mb-2">Thank you for your order. You will receive an email confirmation shortly.</p>
-              {placedOrder && (
-                <p className="text-metallic-700 mb-6">
-                  Your order number is{' '}
-                  <span className="font-bold text-dark-900">{placedOrder.order_number}</span> — you can
-                  track it{' '}
-                  {isGuest ? (
-                    <button
-                      onClick={() => navigate('/track-order')}
-                      className="text-primary-600 font-semibold hover:underline"
-                    >
-                      here
-                    </button>
-                  ) : (
-                    <>
-                      in{' '}
-                      <button
-                        onClick={() => navigate('/account')}
-                        className="text-primary-600 font-semibold hover:underline"
-                      >
-                        My Account
-                      </button>
-                    </>
-                  )}
-                  .
+          {step === 'confirmation' && placedSummary && (
+            <div className="max-w-3xl mx-auto">
+              {/* Success Hero */}
+              <div className="card p-8 lg:p-10 text-center mb-6">
+                <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="font-display text-3xl font-extrabold uppercase tracking-wide text-ink mb-2">
+                  Order Placed Successfully!
+                </h2>
+                <p className="text-metallic-700">
+                  Thank you{isGuest ? '' : ' for your purchase'} — your order is confirmed and a receipt is on its way to your email.
                 </p>
-              )}
-              <div className="flex gap-4 justify-center">
-                <button
-                  onClick={() => navigate(isGuest ? '/track-order' : '/account')}
-                  className="bg-primary-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-primary-700 transition-colors"
+                <p className="mt-4 text-sm text-metallic-600">
+                  Order number:{' '}
+                  <span className="font-mono font-bold text-ink text-base">{placedSummary.orderNumber}</span>
+                </p>
+              </div>
+
+              {/* Order Summary */}
+              <div className="card p-8 mb-6">
+                <h3 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">Your Order</h3>
+                <div className="space-y-3">
+                  {placedSummary.items.map((item, index) => (
+                    <div key={index} className="flex items-center justify-between py-3 border-b border-metallic-200 last:border-0">
+                      <div>
+                        <p className="font-semibold text-ink">{item.product_name}</p>
+                        <p className="text-sm text-metallic-600">Qty: {item.quantity} × ₦{item.unit_price.toLocaleString()}</p>
+                      </div>
+                      <span className="font-bold text-ink">₦{item.total_price.toLocaleString()}</span>
+                    </div>
+                  ))}
+                  <div className="pt-3 space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-metallic-600">Subtotal</span>
+                      <span className="font-semibold text-ink">₦{placedSummary.subtotal.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-metallic-600">Shipping</span>
+                      <span className="font-semibold text-ink">₦{placedSummary.shippingCost.toLocaleString()}</span>
+                    </div>
+                    <div className="border-t border-metallic-300 pt-2 flex justify-between text-ink font-black text-lg">
+                      <span>Total</span>
+                      <span>₦{placedSummary.totalAmount.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between pt-2">
+                      <span className="text-metallic-600">Payment Method</span>
+                      <span className="font-semibold capitalize text-ink">{placedSummary.paymentMethod.replace('_', ' ')}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* What happens next */}
+              <div className="card p-8 mb-8">
+                <h3 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">What Happens Next</h3>
+                <div className="space-y-4 text-sm">
+                  <div className="flex gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+                    <p className="text-metallic-700">
+                      <span className="font-semibold text-ink">Order confirmed</span> — we received your order and are preparing it for dispatch.
+                    </p>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+                    <p className="text-metallic-700">
+                      <span className="font-semibold text-ink">Tracking updates</span> — use your order number on the tracking page to see progress.
+                    </p>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+                    <p className="text-metallic-700">
+                      <span className="font-semibold text-ink">Delivery</span> — pay on delivery or as selected at checkout.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  onClick={() => navigate(`/track-order?order=${encodeURIComponent(placedSummary.orderNumber)}`)}
+                  size="lg"
                 >
-                  {isGuest ? 'Track My Order' : 'View My Orders'}
-                </button>
-                <button
-                  onClick={() => navigate('/')}
-                  className="bg-white text-dark-900 px-6 py-3 rounded-xl font-bold border border-metallic-200 hover:bg-metallic-50 transition-colors"
-                >
-                  Return to Home
-                </button>
+                  Track My Order
+                </Button>
+                <Button variant="outline" onClick={() => navigate('/shop')} size="lg">
+                  Continue Shopping
+                </Button>
               </div>
             </div>
           )}

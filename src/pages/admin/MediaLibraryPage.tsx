@@ -195,8 +195,8 @@ export const MediaLibraryPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-stone-900">Media Library</h1>
-          <p className="text-stone-600 mt-1">Manage your uploaded images and files</p>
+          <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">Media Library</h1>
+          <p className="text-metallic-600 mt-1">Manage your uploaded images and files</p>
         </div>
         <label htmlFor="media-upload">
           <input
@@ -236,19 +236,19 @@ export const MediaLibraryPage = () => {
               <PhotoIcon className="w-6 h-6 text-primary-600" />
             </div>
             <div>
-              <p className="text-sm text-stone-600">Total Files</p>
-              <p className="text-2xl font-bold text-stone-900">{files.length}</p>
+              <p className="text-sm text-metallic-600">Total Files</p>
+              <p className="text-2xl font-bold text-ink">{files.length}</p>
             </div>
           </div>
         </Card>
         <Card className="p-6">
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
-              <PhotoIcon className="w-6 h-6 text-green-600" />
+            <div className="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center">
+              <PhotoIcon className="w-6 h-6 text-primary-600" />
             </div>
             <div>
-              <p className="text-sm text-stone-600">Search Results</p>
-              <p className="text-2xl font-bold text-stone-900">{filteredFiles.length}</p>
+              <p className="text-sm text-metallic-600">Search Results</p>
+              <p className="text-2xl font-bold text-ink">{filteredFiles.length}</p>
             </div>
           </div>
         </Card>
@@ -258,8 +258,8 @@ export const MediaLibraryPage = () => {
               <PhotoIcon className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-              <p className="text-sm text-stone-600">Total Size</p>
-              <p className="text-2xl font-bold text-stone-900">
+              <p className="text-sm text-metallic-600">Total Size</p>
+              <p className="text-2xl font-bold text-ink">
                 {formatFileSize(files.reduce((acc, file) => acc + file.size, 0))}
               </p>
             </div>
@@ -303,7 +303,7 @@ export const MediaLibraryPage = () => {
             <Card key={file.url} className="group relative overflow-hidden hover:shadow-lg transition-shadow">
               {/* Image */}
               <div 
-                className="aspect-square bg-stone-100 cursor-pointer"
+                className="aspect-square bg-metallic-100 cursor-pointer"
                 onClick={() => openPreview(file)}
               >
                 <img
@@ -319,14 +319,14 @@ export const MediaLibraryPage = () => {
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => copyToClipboard(file.url)}
-                    className="p-2 bg-white rounded-lg hover:bg-stone-100 transition-colors"
+                    className="p-2 bg-white rounded-lg hover:bg-metallic-100 transition-colors"
                     title="Copy URL"
                   >
-                    <PhotoIcon className="w-5 h-5 text-stone-700" />
+                    <PhotoIcon className="w-5 h-5 text-metallic-700" />
                   </button>
                   <button
                     onClick={() => handleDelete(file)}
-                    className="p-2 bg-white rounded-lg hover:bg-red-50 transition-colors"
+                    className="p-2 bg-white rounded-lg hover:bg-metallic-100 transition-colors"
                     title="Delete"
                   >
                     <TrashIcon className="w-5 h-5 text-red-600" />
@@ -336,10 +336,10 @@ export const MediaLibraryPage = () => {
 
               {/* File Info */}
               <div className="p-3">
-                <p className="text-xs text-stone-900 font-medium truncate" title={file.name}>
+                <p className="text-xs text-ink font-medium truncate" title={file.name}>
                   {file.name}
                 </p>
-                <p className="text-xs text-stone-500 mt-1">{formatFileSize(file.size)}</p>
+                <p className="text-xs text-metallic-500 mt-1">{formatFileSize(file.size)}</p>
               </div>
             </Card>
           ))}
@@ -355,7 +355,7 @@ export const MediaLibraryPage = () => {
       >
         {selectedFile && (
           <div className="space-y-4">
-            <div className="bg-stone-100 rounded-lg overflow-hidden">
+            <div className="bg-metallic-100 rounded-lg overflow-hidden">
               <img
                 src={selectedFile.url}
                 alt={selectedFile.name}
@@ -365,16 +365,16 @@ export const MediaLibraryPage = () => {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-stone-700">Filename:</span>
-                <span className="text-sm text-stone-900">{selectedFile.name}</span>
+                <span className="text-sm font-medium text-metallic-700">Filename:</span>
+                <span className="text-sm text-ink">{selectedFile.name}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-stone-700">Size:</span>
-                <span className="text-sm text-stone-900">{formatFileSize(selectedFile.size)}</span>
+                <span className="text-sm font-medium text-metallic-700">Size:</span>
+                <span className="text-sm text-ink">{formatFileSize(selectedFile.size)}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-stone-700">Uploaded:</span>
-                <span className="text-sm text-stone-900">
+                <span className="text-sm font-medium text-metallic-700">Uploaded:</span>
+                <span className="text-sm text-ink">
                   {new Date(selectedFile.created_at).toLocaleDateString()}
                 </span>
               </div>

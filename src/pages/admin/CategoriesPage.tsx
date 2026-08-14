@@ -208,8 +208,8 @@ export const CategoriesPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-stone-900">Categories</h1>
-          <p className="text-stone-600 mt-1">Organize your products into categories</p>
+          <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">Categories</h1>
+          <p className="text-metallic-600 mt-1">Organize your products into categories</p>
         </div>
         <Button onClick={() => openModal()} leftIcon={<PlusIcon className="w-5 h-5" />}>
           Add Category
@@ -235,11 +235,11 @@ export const CategoriesPage = () => {
             <Card key={category.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start space-x-4">
                 {/* Category Image */}
-                <div className="w-16 h-16 rounded-lg overflow-hidden bg-stone-100 flex-shrink-0">
+                <div className="w-16 h-16 rounded-lg overflow-hidden bg-metallic-100 flex-shrink-0">
                   {category.image_url ? (
                     <img src={category.image_url} alt={category.name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-stone-400">
+                    <div className="w-full h-full flex items-center justify-center text-metallic-400">
                       <PhotoIcon className="w-8 h-8" />
                     </div>
                   )}
@@ -249,8 +249,8 @@ export const CategoriesPage = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-semibold text-stone-900 truncate">{category.name}</h3>
-                      <p className="text-sm text-stone-500 mt-1">/{category.slug}</p>
+                      <h3 className="text-lg font-semibold text-ink truncate">{category.name}</h3>
+                      <p className="text-sm text-metallic-500 mt-1">/{category.slug}</p>
                     </div>
                     <Badge variant={category.is_active ? 'success' : 'secondary'} className="ml-2">
                       {category.is_active ? 'Active' : 'Inactive'}
@@ -258,18 +258,18 @@ export const CategoriesPage = () => {
                   </div>
 
                   {category.description && (
-                    <p className="text-sm text-stone-600 mt-2 line-clamp-2">{category.description}</p>
+                    <p className="text-sm text-metallic-600 mt-2 line-clamp-2">{category.description}</p>
                   )}
 
                   <div className="flex items-center justify-between mt-4">
-                    <span className="text-sm text-stone-500">
+                    <span className="text-sm text-metallic-500">
                       {(category as any).products?.[0]?.count || 0} products
                     </span>
 
                     <div className="flex items-center space-x-1">
                       <button
                         onClick={() => handleToggleActive(category.id)}
-                        className="p-2 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors"
+                        className="p-2 text-metallic-600 hover:text-ink hover:bg-metallic-100 rounded-lg transition-colors"
                         title={category.is_active ? 'Deactivate' : 'Activate'}
                       >
                         {category.is_active ? (
@@ -287,7 +287,7 @@ export const CategoriesPage = () => {
                       </button>
                       <button
                         onClick={() => handleDelete(category.id, category.name)}
-                        className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 text-red-600 hover:text-red-700 hover:bg-metallic-100 rounded-lg transition-colors"
                         title="Delete"
                       >
                         <TrashIcon className="w-4 h-4" />
@@ -341,10 +341,10 @@ export const CategoriesPage = () => {
 
           {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">Category Image</label>
+            <label className="block text-sm font-medium text-metallic-700 mb-2">Category Image</label>
             <div className="flex items-start space-x-4">
               {imagePreview && (
-                <div className="w-24 h-24 rounded-lg overflow-hidden bg-stone-100">
+                <div className="w-24 h-24 rounded-lg overflow-hidden bg-metallic-100">
                   <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                 </div>
               )}
@@ -353,7 +353,7 @@ export const CategoriesPage = () => {
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="block w-full text-sm text-stone-500
+                  className="block w-full text-sm text-metallic-500
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-lg file:border-0
                     file:text-sm file:font-medium
@@ -361,7 +361,7 @@ export const CategoriesPage = () => {
                     hover:file:bg-primary-100
                     cursor-pointer"
                 />
-                <p className="text-xs text-stone-500 mt-1">PNG, JPG, WebP up to 5MB</p>
+                <p className="text-xs text-metallic-500 mt-1">PNG, JPG, WebP up to 5MB</p>
               </div>
             </div>
           </div>

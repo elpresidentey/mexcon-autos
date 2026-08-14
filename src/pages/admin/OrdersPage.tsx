@@ -185,8 +185,8 @@ export const OrdersPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-stone-900">Orders</h1>
-          <p className="text-stone-600 mt-1">Review, approve and fulfil customer orders</p>
+          <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">Orders</h1>
+          <p className="text-metallic-600 mt-1">Review, approve and fulfil customer orders</p>
         </div>
       </div>
 
@@ -222,54 +222,54 @@ export const OrdersPage = () => {
           <>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-stone-50 border-b border-stone-200">
+                <thead className="bg-metallic-50 border-b border-metallic-200">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Order
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Customer
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Date
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Items
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Total
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Payment
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-stone-200">
+                <tbody className="bg-white divide-y divide-metallic-200">
                   {orders.map((order) => (
-                    <tr key={order.id} className="hover:bg-stone-50 transition-colors">
+                    <tr key={order.id} className="hover:bg-metallic-50 transition-colors">
                       <td className="px-6 py-4">
-                        <div className="font-medium text-stone-900">{order.order_number}</div>
+                        <div className="font-medium text-ink">{order.order_number}</div>
                         {order.payment_reference && (
-                          <div className="text-xs text-stone-500">Ref: {order.payment_reference.slice(0, 16)}</div>
+                          <div className="text-xs text-metallic-500">Ref: {order.payment_reference.slice(0, 16)}</div>
                         )}
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm font-medium text-stone-900">{customerName(order)}</div>
+                        <div className="text-sm font-medium text-ink">{customerName(order)}</div>
                         {order.customer?.phone && (
-                          <div className="text-xs text-stone-500">{order.customer.phone}</div>
+                          <div className="text-xs text-metallic-500">{order.customer.phone}</div>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-sm text-stone-600">{formatDate(order.created_at)}</td>
-                      <td className="px-6 py-4 text-sm text-stone-600">
+                      <td className="px-6 py-4 text-sm text-metallic-600">{formatDate(order.created_at)}</td>
+                      <td className="px-6 py-4 text-sm text-metallic-600">
                         {order.items?.length || 0}
                       </td>
-                      <td className="px-6 py-4 text-sm font-semibold text-stone-900">
+                      <td className="px-6 py-4 text-sm font-semibold text-ink">
                         {formatPrice(order.total_amount)}
                       </td>
                       <td className="px-6 py-4">
@@ -286,7 +286,7 @@ export const OrdersPage = () => {
                         <div className="flex items-center justify-end space-x-2">
                           <button
                             onClick={() => setSelectedOrder(order)}
-                            className="p-2 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors"
+                            className="p-2 text-metallic-600 hover:text-ink hover:bg-metallic-100 rounded-lg transition-colors"
                             title="View details"
                           >
                             <EyeIcon className="w-5 h-5" />
@@ -304,7 +304,7 @@ export const OrdersPage = () => {
                           {(order.status === 'pending' || order.status === 'confirmed' || order.status === 'processing') && (
                             <button
                               onClick={() => handleCancel(order)}
-                              className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                              className="p-2 text-red-600 hover:text-red-700 hover:bg-metallic-100 rounded-lg transition-colors"
                               title="Cancel order"
                             >
                               <XCircleIcon className="w-5 h-5" />
@@ -319,7 +319,7 @@ export const OrdersPage = () => {
             </div>
 
             {totalPages > 1 && (
-              <div className="px-6 py-4 border-t border-stone-200">
+              <div className="px-6 py-4 border-t border-metallic-200">
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}
@@ -340,8 +340,8 @@ export const OrdersPage = () => {
             {/* Header info */}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
-                <h3 className="text-lg font-bold text-stone-900">{selectedOrder.order_number}</h3>
-                <p className="text-sm text-stone-500">Placed {formatDate(selectedOrder.created_at)}</p>
+                <h3 className="text-lg font-bold text-ink">{selectedOrder.order_number}</h3>
+                <p className="text-sm text-metallic-500">Placed {formatDate(selectedOrder.created_at)}</p>
               </div>
               <div className="flex items-center gap-2">
                 <Badge variant={orderStatusBadge[selectedOrder.status] || 'secondary'}>
@@ -355,60 +355,60 @@ export const OrdersPage = () => {
 
             {/* Customer + shipping */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              <div className="bg-stone-50 rounded-lg p-4">
-                <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Customer</p>
-                <p className="font-medium text-stone-900">{customerName(selectedOrder)}</p>
-                <p className="text-stone-600">{selectedOrder.customer?.email}</p>
+              <div className="bg-metallic-50 rounded-lg p-4">
+                <p className="text-xs font-semibold text-metallic-500 uppercase tracking-wider mb-2">Customer</p>
+                <p className="font-medium text-ink">{customerName(selectedOrder)}</p>
+                <p className="text-metallic-600">{selectedOrder.customer?.email}</p>
                 {selectedOrder.customer?.phone && (
-                  <p className="text-stone-600">{selectedOrder.customer.phone}</p>
+                  <p className="text-metallic-600">{selectedOrder.customer.phone}</p>
                 )}
                 {selectedOrder.customer_notes && (
-                  <p className="text-stone-600 mt-2 italic">&ldquo;{selectedOrder.customer_notes}&rdquo;</p>
+                  <p className="text-metallic-600 mt-2 italic">&ldquo;{selectedOrder.customer_notes}&rdquo;</p>
                 )}
               </div>
-              <div className="bg-stone-50 rounded-lg p-4">
-                <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Shipping</p>
+              <div className="bg-metallic-50 rounded-lg p-4">
+                <p className="text-xs font-semibold text-metallic-500 uppercase tracking-wider mb-2">Shipping</p>
                 <p className="text-stone-800">
                   {selectedOrder.shipping_address_line1}
                   {selectedOrder.shipping_address_line2 ? `, ${selectedOrder.shipping_address_line2}` : ''}
                 </p>
-                <p className="text-stone-600">
+                <p className="text-metallic-600">
                   {[selectedOrder.shipping_city, selectedOrder.shipping_state, selectedOrder.shipping_country].filter(Boolean).join(', ')}
                 </p>
                 {selectedOrder.shipping_phone && (
-                  <p className="text-stone-600">{selectedOrder.shipping_phone}</p>
+                  <p className="text-metallic-600">{selectedOrder.shipping_phone}</p>
                 )}
                 {selectedOrder.tracking_number && (
-                  <p className="text-stone-600 mt-2">Tracking: {selectedOrder.tracking_number}</p>
+                  <p className="text-metallic-600 mt-2">Tracking: {selectedOrder.tracking_number}</p>
                 )}
               </div>
             </div>
 
             {/* Items */}
             <div>
-              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Items</p>
-              <div className="border border-stone-200 rounded-lg overflow-hidden">
+              <p className="text-xs font-semibold text-metallic-500 uppercase tracking-wider mb-2">Items</p>
+              <div className="border border-metallic-200 rounded-lg overflow-hidden">
                 <table className="w-full">
-                  <thead className="bg-stone-50 border-b border-stone-200">
+                  <thead className="bg-metallic-50 border-b border-metallic-200">
                     <tr>
-                      <th className="px-4 py-2 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">Item</th>
-                      <th className="px-4 py-2 text-right text-xs font-medium text-stone-500 uppercase tracking-wider">Qty</th>
-                      <th className="px-4 py-2 text-right text-xs font-medium text-stone-500 uppercase tracking-wider">Unit Price</th>
-                      <th className="px-4 py-2 text-right text-xs font-medium text-stone-500 uppercase tracking-wider">Total</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">Item</th>
+                      <th className="px-4 py-2 text-right text-xs font-medium text-metallic-500 uppercase tracking-wider">Qty</th>
+                      <th className="px-4 py-2 text-right text-xs font-medium text-metallic-500 uppercase tracking-wider">Unit Price</th>
+                      <th className="px-4 py-2 text-right text-xs font-medium text-metallic-500 uppercase tracking-wider">Total</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-stone-200">
+                  <tbody className="bg-white divide-y divide-metallic-200">
                     {selectedOrder.items?.map((item) => (
                       <tr key={item.id}>
                         <td className="px-4 py-3">
-                          <div className="text-sm font-medium text-stone-900">{item.product_name}</div>
+                          <div className="text-sm font-medium text-ink">{item.product_name}</div>
                           {item.product_sku && (
-                            <div className="text-xs text-stone-500">SKU: {item.product_sku}</div>
+                            <div className="text-xs text-metallic-500">SKU: {item.product_sku}</div>
                           )}
                         </td>
-                        <td className="px-4 py-3 text-sm text-stone-600 text-right">{item.quantity}</td>
-                        <td className="px-4 py-3 text-sm text-stone-600 text-right">{formatPrice(item.unit_price)}</td>
-                        <td className="px-4 py-3 text-sm font-medium text-stone-900 text-right">{formatPrice(item.total_price)}</td>
+                        <td className="px-4 py-3 text-sm text-metallic-600 text-right">{item.quantity}</td>
+                        <td className="px-4 py-3 text-sm text-metallic-600 text-right">{formatPrice(item.unit_price)}</td>
+                        <td className="px-4 py-3 text-sm font-medium text-ink text-right">{formatPrice(item.total_price)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -419,21 +419,21 @@ export const OrdersPage = () => {
             {/* Totals */}
             <div className="flex justify-end">
               <div className="w-full max-w-xs space-y-1.5 text-sm">
-                <div className="flex justify-between text-stone-600">
+                <div className="flex justify-between text-metallic-600">
                   <span>Subtotal</span>
                   <span>{formatPrice(selectedOrder.subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-stone-600">
+                <div className="flex justify-between text-metallic-600">
                   <span>Shipping</span>
                   <span>{formatPrice(selectedOrder.shipping_cost)}</span>
                 </div>
                 {selectedOrder.discount_amount > 0 && (
-                  <div className="flex justify-between text-stone-600">
+                  <div className="flex justify-between text-metallic-600">
                     <span>Discount</span>
                     <span>-{formatPrice(selectedOrder.discount_amount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between font-bold text-stone-900 border-t border-stone-200 pt-2">
+                <div className="flex justify-between font-bold text-ink border-t border-metallic-200 pt-2">
                   <span>Total</span>
                   <span>{formatPrice(selectedOrder.total_amount)}</span>
                 </div>
@@ -442,7 +442,7 @@ export const OrdersPage = () => {
 
             {/* Status workflow */}
             <div>
-              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">Update Status</p>
+              <p className="text-xs font-semibold text-metallic-500 uppercase tracking-wider mb-2">Update Status</p>
               <div className="flex flex-wrap gap-2">
                 {selectedOrder.status === 'pending' && (
                   <Button size="sm" onClick={() => handleStatusUpdate(selectedOrder, 'confirmed')} disabled={isUpdating} leftIcon={<CheckBadgeIcon className="w-4 h-4" />}>

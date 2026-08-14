@@ -63,7 +63,7 @@ export const AboutUsPage = () => {
               Our Story
             </span>
           </div>
-          <h1 className="text-3xl lg:text-4xl font-bold leading-tight tracking-tight mb-3">
+          <h1 className="font-display text-4xl lg:text-5xl font-extrabold uppercase tracking-wide leading-none mb-3">
             About <span className="text-accent-400">Mexcon Autos</span>
           </h1>
           <p className="text-base text-metallic-300 max-w-xl mx-auto leading-relaxed">
@@ -76,7 +76,7 @@ export const AboutUsPage = () => {
       <div className="container-custom py-14 lg:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           <div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-dark-900 mb-4 tracking-tight">
+            <h2 className="font-display text-2xl lg:text-3xl font-bold uppercase tracking-wide text-ink mb-4">
               Our <span className="text-primary-600">Story</span>
             </h2>
             <div className="space-y-4 text-metallic-600 leading-relaxed text-base">
@@ -99,8 +99,8 @@ export const AboutUsPage = () => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-white to-metallic-50 rounded-3xl p-8 lg:p-10 border border-metallic-200/50 shadow-xl hover:shadow-2xl hover:shadow-accent-500/5 transition-all duration-500">
-            <h3 className="text-lg font-bold text-dark-900 mb-6 tracking-tight">Our Mission & Vision</h3>
+          <div className="bg-gradient-to-br from-white to-metallic-50 rounded-3xl p-8 lg:p-10 border border-metallic-200/50 shadow-card hover:shadow-card-hover transition-all duration-500">
+            <h3 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-6">Our Mission & Vision</h3>
             <div className="space-y-6">
               <div className="pl-5 border-l-4 border-primary-500 hover:border-primary-600 transition-colors">
                 <h4 className="font-semibold text-primary-600 mb-1.5 text-base">Our Mission</h4>
@@ -126,7 +126,7 @@ export const AboutUsPage = () => {
       <div className="bg-gradient-to-b from-metallic-50 to-white py-14 lg:py-20 border-y border-metallic-200/50">
         <div className="container-custom">
           <div className="text-center mb-10">
-            <h2 className="text-2xl lg:text-3xl font-bold text-dark-900 mb-2 tracking-tight">
+            <h2 className="font-display text-2xl lg:text-3xl font-bold uppercase tracking-wide text-ink mb-2">
               Why Choose <span className="text-accent-500">Us</span>
             </h2>
             <p className="text-sm lg:text-base text-metallic-600 max-w-xl mx-auto">
@@ -135,11 +135,11 @@ export const AboutUsPage = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {values.map((value) => (
-              <div key={value.title} className="p-8 rounded-3xl bg-white border border-metallic-200/50 hover:border-accent-400/50 hover:shadow-2xl hover:shadow-accent-500/10 transition-all duration-500 hover:-translate-y-2">
+              <div key={value.title} className="group p-8 rounded-3xl bg-white border border-metallic-200/50 hover:border-accent-400/50 hover:shadow-2xl hover:shadow-accent-500/10 transition-all duration-500 hover:-translate-y-2">
                 <div className="w-14 h-14 bg-gradient-to-br from-accent-400 to-accent-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-accent-500/25 group-hover:scale-110 transition-transform duration-300">
                   <value.icon className="w-7 h-7 text-black" />
                 </div>
-                <h3 className="text-base font-bold text-dark-900 mb-2 tracking-tight">{value.title}</h3>
+                <h3 className="font-display text-lg font-bold uppercase tracking-wide text-ink mb-2">{value.title}</h3>
                 <p className="text-metallic-600 leading-relaxed">{value.description}</p>
               </div>
             ))}

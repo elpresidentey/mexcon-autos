@@ -110,42 +110,42 @@ export const DashboardPage = () => {
       label: 'Total Products',
       value: stats.totalProducts.toString(),
       icon: CubeIcon,
-      color: 'bg-primary-500',
+      color: 'bg-primary-600',
       href: '/admin/products',
     },
     {
       label: 'Categories',
       value: stats.totalCategories.toString(),
       icon: RectangleStackIcon,
-      color: 'bg-green-500',
+      color: 'bg-primary-800',
       href: '/admin/categories',
     },
     {
       label: 'Brands',
       value: stats.totalBrands.toString(),
       icon: BuildingStorefrontIcon,
-      color: 'bg-purple-500',
+      color: 'bg-primary-900',
       href: '/admin/brands',
     },
     {
       label: 'New Enquiries',
       value: stats.newEnquiries.toString(),
       icon: EnvelopeIcon,
-      color: 'bg-orange-500',
+      color: 'bg-accent-500',
       href: '/admin/enquiries',
     },
     {
       label: 'Featured Products',
       value: stats.featuredProducts.toString(),
       icon: EyeIcon,
-      color: 'bg-pink-500',
+      color: 'bg-accent-700',
       href: '/admin/products?featured=true',
     },
     {
       label: 'Total Enquiries',
       value: stats.totalEnquiries.toString(),
       icon: UserGroupIcon,
-      color: 'bg-indigo-500',
+      color: 'bg-metallic-700',
       href: '/admin/enquiries',
     },
   ];
@@ -184,8 +184,8 @@ export const DashboardPage = () => {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-stone-900">Dashboard</h1>
-        <p className="text-stone-600 mt-2">
+        <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">Dashboard</h1>
+        <p className="text-metallic-600 mt-2">
           Welcome back, {isAdminUser(user) ? user.name : 'Admin'}
         </p>
       </div>
@@ -204,8 +204,8 @@ export const DashboardPage = () => {
                   <stat.icon className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-stone-600">{stat.label}</p>
-                  <p className="text-2xl font-bold text-stone-900">{stat.value}</p>
+                  <p className="text-sm text-metallic-600">{stat.label}</p>
+                  <p className="text-2xl font-bold text-ink">{stat.value}</p>
                 </div>
               </div>
             </Card>
@@ -216,21 +216,21 @@ export const DashboardPage = () => {
       {/* Enquiry Status Breakdown */}
       {stats.totalEnquiries > 0 && (
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-stone-900 mb-4">
+          <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-4">
             Enquiries by Status
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {enquiryStatusCounts.map((statusCount) => (
               <div
                 key={statusCount.status}
-                className="flex items-center justify-between p-4 bg-stone-50 rounded-lg"
+                className="flex items-center justify-between p-4 bg-metallic-50 rounded-lg"
               >
                 <div>
                   <Badge variant={getStatusBadgeVariant(statusCount.status)}>
                     {getStatusLabel(statusCount.status)}
                   </Badge>
                 </div>
-                <p className="text-2xl font-bold text-stone-900">{statusCount.count}</p>
+                <p className="text-2xl font-bold text-ink">{statusCount.count}</p>
               </div>
             ))}
           </div>
@@ -241,15 +241,15 @@ export const DashboardPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Enquiries */}
         <Card>
-          <div className="p-6 border-b border-stone-200">
-            <h2 className="text-lg font-semibold text-stone-900">
+          <div className="p-6 border-b border-metallic-200">
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink">
               Recent Enquiries
             </h2>
           </div>
           <div className="p-6">
             {recentEnquiries.length === 0 ? (
-              <div className="text-center py-8 text-stone-600">
-                <EnvelopeIcon className="w-12 h-12 mx-auto mb-3 text-stone-400" />
+              <div className="text-center py-8 text-metallic-600">
+                <EnvelopeIcon className="w-12 h-12 mx-auto mb-3 text-metallic-300" />
                 <p>No enquiries yet</p>
                 <p className="text-sm mt-1">Enquiries will appear here when customers submit quote requests</p>
               </div>
@@ -259,16 +259,16 @@ export const DashboardPage = () => {
                   <button
                     key={enquiry.id}
                     onClick={() => navigate(`/admin/enquiries/${enquiry.id}`)}
-                    className="w-full text-left p-4 border border-stone-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                    className="w-full text-left p-4 border border-metallic-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
                   >
                     <div className="flex items-start justify-between mb-2">
-                      <p className="font-medium text-stone-900">{enquiry.customer_name}</p>
+                      <p className="font-medium text-ink">{enquiry.customer_name}</p>
                       <Badge variant={getStatusBadgeVariant(enquiry.status)}>
                         {getStatusLabel(enquiry.status)}
                       </Badge>
                     </div>
-                    <p className="text-sm text-stone-600 line-clamp-2">{enquiry.message}</p>
-                    <p className="text-xs text-stone-400 mt-2">
+                    <p className="text-sm text-metallic-600 line-clamp-2">{enquiry.message}</p>
+                    <p className="text-xs text-metallic-400 mt-2">
                       {new Date(enquiry.created_at).toLocaleDateString()}
                     </p>
                   </button>
@@ -288,15 +288,15 @@ export const DashboardPage = () => {
 
         {/* Popular Products */}
         <Card>
-          <div className="p-6 border-b border-stone-200">
-            <h2 className="text-lg font-semibold text-stone-900">
+          <div className="p-6 border-b border-metallic-200">
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink">
               Most Popular Products
             </h2>
           </div>
           <div className="p-6">
             {popularProducts.length === 0 ? (
-              <div className="text-center py-8 text-stone-600">
-                <CubeIcon className="w-12 h-12 mx-auto mb-3 text-stone-400" />
+              <div className="text-center py-8 text-metallic-600">
+                <CubeIcon className="w-12 h-12 mx-auto mb-3 text-metallic-300" />
                 <p>No products yet</p>
                 <p className="text-sm mt-1">
                   <button
@@ -313,15 +313,15 @@ export const DashboardPage = () => {
                   <button
                     key={product.id}
                     onClick={() => navigate(`/admin/products/${product.id}/edit`)}
-                    className="w-full text-left p-4 border border-stone-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
+                    className="w-full text-left p-4 border border-metallic-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
                   >
                     <div className="flex items-start justify-between mb-1">
-                      <p className="font-medium text-stone-900 flex-1 line-clamp-1">{product.name}</p>
+                      <p className="font-medium text-ink flex-1 line-clamp-1">{product.name}</p>
                       {product.is_featured && (
                         <Badge variant="warning" className="ml-2">Featured</Badge>
                       )}
                     </div>
-                    <div className="flex items-center space-x-4 text-sm text-stone-600">
+                    <div className="flex items-center space-x-4 text-sm text-metallic-600">
                       <div className="flex items-center space-x-1">
                         <EyeIcon className="w-4 h-4" />
                         <span>{product.view_count} views</span>
@@ -348,8 +348,8 @@ export const DashboardPage = () => {
 
       {/* Quick Actions */}
       <Card>
-        <div className="p-6 border-b border-stone-200">
-          <h2 className="text-lg font-semibold text-stone-900">
+        <div className="p-6 border-b border-metallic-200">
+          <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink">
             Quick Actions
           </h2>
         </div>
@@ -357,31 +357,31 @@ export const DashboardPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <button
               onClick={() => navigate('/admin/products/new')}
-              className="p-4 border-2 border-dashed border-stone-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center"
+              className="p-4 border-2 border-dashed border-metallic-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center"
             >
-              <CubeIcon className="w-8 h-8 mx-auto mb-2 text-stone-600" />
-              <p className="font-medium text-stone-900">Add Product</p>
+              <CubeIcon className="w-8 h-8 mx-auto mb-2 text-metallic-600" />
+              <p className="font-medium text-ink">Add Product</p>
             </button>
             <button
               onClick={() => navigate('/admin/categories')}
-              className="p-4 border-2 border-dashed border-stone-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center"
+              className="p-4 border-2 border-dashed border-metallic-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center"
             >
-              <RectangleStackIcon className="w-8 h-8 mx-auto mb-2 text-stone-600" />
-              <p className="font-medium text-stone-900">Manage Categories</p>
+              <RectangleStackIcon className="w-8 h-8 mx-auto mb-2 text-metallic-600" />
+              <p className="font-medium text-ink">Manage Categories</p>
             </button>
             <button
               onClick={() => navigate('/admin/brands')}
-              className="p-4 border-2 border-dashed border-stone-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center"
+              className="p-4 border-2 border-dashed border-metallic-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center"
             >
-              <BuildingStorefrontIcon className="w-8 h-8 mx-auto mb-2 text-stone-600" />
-              <p className="font-medium text-stone-900">Manage Brands</p>
+              <BuildingStorefrontIcon className="w-8 h-8 mx-auto mb-2 text-metallic-600" />
+              <p className="font-medium text-ink">Manage Brands</p>
             </button>
             <button
               onClick={() => navigate('/admin/enquiries')}
-              className="p-4 border-2 border-dashed border-stone-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center"
+              className="p-4 border-2 border-dashed border-metallic-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center"
             >
-              <EnvelopeIcon className="w-8 h-8 mx-auto mb-2 text-stone-600" />
-              <p className="font-medium text-stone-900">View Enquiries</p>
+              <EnvelopeIcon className="w-8 h-8 mx-auto mb-2 text-metallic-600" />
+              <p className="font-medium text-ink">View Enquiries</p>
             </button>
           </div>
         </div>

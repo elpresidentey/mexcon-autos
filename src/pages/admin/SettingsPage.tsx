@@ -163,8 +163,8 @@ export const SettingsPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-stone-900">Platform Settings</h1>
-        <p className="text-stone-600 mt-1">Manage your business information and platform configuration</p>
+        <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">Platform Settings</h1>
+        <p className="text-metallic-600 mt-1">Manage your business information and platform configuration</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -172,7 +172,7 @@ export const SettingsPage = () => {
         <Card className="p-6">
           <div className="flex items-center space-x-3 mb-6">
             <BuildingOfficeIcon className="w-6 h-6 text-primary-600" />
-            <h2 className="text-xl font-semibold text-stone-900">Company Information</h2>
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink">Company Information</h2>
           </div>
 
           <div className="space-y-4">
@@ -228,8 +228,8 @@ export const SettingsPage = () => {
         {/* WhatsApp Configuration */}
         <Card className="p-6">
           <div className="flex items-center space-x-3 mb-6">
-            <ChatBubbleLeftRightIcon className="w-6 h-6 text-green-600" />
-            <h2 className="text-xl font-semibold text-stone-900">WhatsApp Integration</h2>
+            <ChatBubbleLeftRightIcon className="w-6 h-6 text-primary-600" />
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink">WhatsApp Integration</h2>
           </div>
 
           <div className="space-y-4">
@@ -249,7 +249,7 @@ export const SettingsPage = () => {
         <Card className="p-6">
           <div className="flex items-center space-x-3 mb-6">
             <GlobeAltIcon className="w-6 h-6 text-primary-600" />
-            <h2 className="text-xl font-semibold text-stone-900">Social Media Links</h2>
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink">Social Media Links</h2>
           </div>
 
           <div className="space-y-4">
@@ -295,7 +295,7 @@ export const SettingsPage = () => {
         <Card className="p-6">
           <div className="flex items-center space-x-3 mb-6">
             <GlobeAltIcon className="w-6 h-6 text-primary-600" />
-            <h2 className="text-xl font-semibold text-stone-900">SEO Configuration</h2>
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink">SEO Configuration</h2>
           </div>
 
           <div className="space-y-4">
@@ -330,7 +330,7 @@ export const SettingsPage = () => {
         </Card>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end space-x-4 sticky bottom-6 bg-white p-4 rounded-lg shadow-lg border border-stone-200">
+        <div className="flex items-center justify-end space-x-4 sticky bottom-6 bg-white p-4 rounded-lg shadow-lg border border-metallic-200">
           <Button 
             type="button" 
             variant="outline" 
@@ -348,7 +348,7 @@ export const SettingsPage = () => {
       {/* Last Updated Info */}
       {settings?.updated_at && (
         <Card className="p-4">
-          <p className="text-sm text-stone-500 text-center">
+          <p className="text-sm text-metallic-500 text-center">
             Last updated: {new Date(settings.updated_at).toLocaleString()}
           </p>
         </Card>

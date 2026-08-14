@@ -23,8 +23,8 @@ export const CartPage = () => {
       <div className="min-h-screen bg-white">
         <div className="container-custom py-20">
           <div className="max-w-2xl mx-auto">
-            <h1 className="font-display text-4xl font-extrabold text-dark-900 uppercase tracking-wide mb-8">Shopping Cart</h1>
-            <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-12">
+            <h1 className="font-display text-4xl font-extrabold text-ink uppercase tracking-wide mb-8">Shopping Cart</h1>
+            <div className="card p-12">
               <EmptyState
                 title="Your cart is empty"
                 description="Add some products to get started"
@@ -46,7 +46,7 @@ export const CartPage = () => {
     <div className="min-h-screen bg-white">
       <div className="container-custom py-20">
         <div className="max-w-4xl mx-auto">
-          <h1 className="font-display text-4xl font-extrabold text-dark-900 uppercase tracking-wide mb-8">Shopping Cart</h1>
+          <h1 className="font-display text-4xl font-extrabold text-ink uppercase tracking-wide mb-8">Shopping Cart</h1>
           
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Cart Items */}
@@ -54,7 +54,7 @@ export const CartPage = () => {
               {cart.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 hover:shadow-lg hover:shadow-dark-900/8 transition-all duration-300"
+                  className="card card-hover p-6"
                 >
                   <div className="flex gap-4">
                     {/* Product Image */}
@@ -119,8 +119,8 @@ export const CartPage = () => {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6 sticky top-24">
-                <h2 className="text-xl font-black text-dark-900 mb-6">Order Summary</h2>
+              <div className="card p-6 sticky top-24">
+                <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink mb-6">Order Summary</h2>
                 
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between text-metallic-700">
@@ -131,7 +131,7 @@ export const CartPage = () => {
                     <span>Shipping</span>
                     <span className="font-semibold">Calculated at checkout</span>
                   </div>
-                  <div className="border-t border-metallic-300 pt-3 flex justify-between text-dark-900 font-black text-lg">
+                  <div className="border-t border-metallic-300 pt-3 flex justify-between text-ink font-black text-lg">
                     <span>Total</span>
                     <span>₦{cartTotal.toLocaleString()}</span>
                   </div>

@@ -231,8 +231,8 @@ export const BrandsPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-stone-900">Brands</h1>
-          <p className="text-stone-600 mt-1">Manage vehicle brands and manufacturers</p>
+          <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">Brands</h1>
+          <p className="text-metallic-600 mt-1">Manage vehicle brands and manufacturers</p>
         </div>
         <Button onClick={() => openModal()} leftIcon={<PlusIcon className="w-5 h-5" />}>
           Add Brand
@@ -258,11 +258,11 @@ export const BrandsPage = () => {
             <Card key={brand.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start space-x-4">
                 {/* Brand Logo */}
-                <div className="w-16 h-16 rounded-lg overflow-hidden bg-stone-100 flex-shrink-0">
+                <div className="w-16 h-16 rounded-lg overflow-hidden bg-metallic-100 flex-shrink-0">
                   {brand.logo_url ? (
                     <img src={brand.logo_url} alt={brand.name} className="w-full h-full object-contain p-2" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-stone-400">
+                    <div className="w-full h-full flex items-center justify-center text-metallic-400">
                       <PhotoIcon className="w-8 h-8" />
                     </div>
                   )}
@@ -273,14 +273,14 @@ export const BrandsPage = () => {
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2">
-                        <h3 className="text-lg font-semibold text-stone-900 truncate">{brand.name}</h3>
+                        <h3 className="text-lg font-semibold text-ink truncate">{brand.name}</h3>
                         {brand.is_featured && (
-                          <StarIconSolid className="w-4 h-4 text-yellow-500 flex-shrink-0" title="Featured" />
+                          <StarIconSolid className="w-4 h-4 text-accent-500 flex-shrink-0" title="Featured" />
                         )}
                       </div>
-                      <p className="text-sm text-stone-500 mt-1">/{brand.slug}</p>
+                      <p className="text-sm text-metallic-500 mt-1">/{brand.slug}</p>
                       {brand.country && (
-                        <p className="text-xs text-stone-400 mt-1">{brand.country}</p>
+                        <p className="text-xs text-metallic-400 mt-1">{brand.country}</p>
                       )}
                     </div>
                     <Badge variant={brand.is_active ? 'success' : 'secondary'} className="ml-2">
@@ -289,18 +289,18 @@ export const BrandsPage = () => {
                   </div>
 
                   {brand.description && (
-                    <p className="text-sm text-stone-600 mt-2 line-clamp-2">{brand.description}</p>
+                    <p className="text-sm text-metallic-600 mt-2 line-clamp-2">{brand.description}</p>
                   )}
 
                   <div className="flex items-center justify-between mt-4">
-                    <span className="text-sm text-stone-500">
+                    <span className="text-sm text-metallic-500">
                       {brand.product_count || 0} products
                     </span>
 
                     <div className="flex items-center space-x-1">
                       <button
                         onClick={() => handleToggleActive(brand.id)}
-                        className="p-2 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors"
+                        className="p-2 text-metallic-600 hover:text-ink hover:bg-metallic-100 rounded-lg transition-colors"
                         title={brand.is_active ? 'Deactivate' : 'Activate'}
                       >
                         {brand.is_active ? (
@@ -318,7 +318,7 @@ export const BrandsPage = () => {
                       </button>
                       <button
                         onClick={() => handleDelete(brand.id, brand.name)}
-                        className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 text-red-600 hover:text-red-700 hover:bg-metallic-100 rounded-lg transition-colors"
                         title="Delete"
                       >
                         <TrashIcon className="w-4 h-4" />
@@ -397,9 +397,9 @@ export const BrandsPage = () => {
               name="is_featured"
               checked={formData.is_featured}
               onChange={handleChange}
-              className="w-4 h-4 text-primary-600 border-stone-300 rounded focus:ring-primary-500"
+              className="w-4 h-4 text-primary-600 border-metallic-300 rounded focus:ring-primary-500"
             />
-            <label htmlFor="is_featured" className="flex items-center text-sm font-medium text-stone-700 cursor-pointer">
+            <label htmlFor="is_featured" className="flex items-center text-sm font-medium text-metallic-700 cursor-pointer">
               <StarIcon className="w-4 h-4 mr-1" />
               Featured Brand
             </label>
@@ -407,10 +407,10 @@ export const BrandsPage = () => {
 
           {/* Logo Upload */}
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">Brand Logo</label>
+            <label className="block text-sm font-medium text-metallic-700 mb-2">Brand Logo</label>
             <div className="flex items-start space-x-4">
               {logoPreview && (
-                <div className="w-24 h-24 rounded-lg overflow-hidden bg-stone-100 flex items-center justify-center p-2">
+                <div className="w-24 h-24 rounded-lg overflow-hidden bg-metallic-100 flex items-center justify-center p-2">
                   <img src={logoPreview} alt="Preview" className="max-w-full max-h-full object-contain" />
                 </div>
               )}
@@ -419,7 +419,7 @@ export const BrandsPage = () => {
                   type="file"
                   accept="image/*"
                   onChange={handleLogoChange}
-                  className="block w-full text-sm text-stone-500
+                  className="block w-full text-sm text-metallic-500
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-lg file:border-0
                     file:text-sm file:font-medium
@@ -427,7 +427,7 @@ export const BrandsPage = () => {
                     hover:file:bg-primary-100
                     cursor-pointer"
                 />
-                <p className="text-xs text-stone-500 mt-1">PNG, JPG, WebP up to 5MB</p>
+                <p className="text-xs text-metallic-500 mt-1">PNG, JPG, WebP up to 5MB</p>
               </div>
             </div>
           </div>

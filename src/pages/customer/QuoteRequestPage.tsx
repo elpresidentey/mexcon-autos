@@ -107,8 +107,8 @@ export const QuoteRequestPage = () => {
           <h2 className="font-display text-2xl font-extrabold text-dark-900 uppercase tracking-wide mb-2">Request Submitted!</h2>
           <p className="text-metallic-600 mb-8 font-medium">We'll get back to you within 24 hours with pricing and availability.</p>
           <div className="space-y-3">
-            <Button onClick={() => navigate('/')} className="w-full btn btn-primary btn-lg">Back to Home</Button>
-            <Button onClick={() => navigate('/shop')} variant="outline" className="w-full !border-accent-400 !text-accent-600 hover:!bg-accent-50 font-bold rounded-2xl">Continue Shopping</Button>
+            <Button onClick={() => navigate('/')} className="w-full btn-lg">Back to Home</Button>
+            <Button onClick={() => navigate('/shop')} variant="outline" className="w-full !border-accent-400 !text-accent-600 hover:!bg-accent-50 font-bold">Continue Shopping</Button>
           </div>
         </Card>
       </div>
@@ -163,14 +163,14 @@ export const QuoteRequestPage = () => {
                     {images.map((img, i) => (
                       <div key={i} className="relative">
                         <img src={URL.createObjectURL(img)} alt="" className="w-16 h-16 object-cover rounded-2xl border border-metallic-200" />
-                        <button type="button" onClick={() => removeImage(i)} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs shadow-lg hover:bg-red-600 transition-colors">×</button>
+                        <button type="button" onClick={() => removeImage(i)} className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 text-xs shadow-lg hover:bg-red-700 transition-colors">×</button>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
 
-              <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting} className="w-full btn btn-primary btn-lg">
+              <Button type="submit" isLoading={isSubmitting} disabled={isSubmitting} className="w-full btn-lg">
                 {isSubmitting ? 'Submitting...' : 'Submit Request'}
               </Button>
             </form>

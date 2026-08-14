@@ -216,8 +216,8 @@ export const BulkImagesPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-stone-900">Bulk Image Assigner</h1>
-          <p className="text-stone-600 mt-1">
+          <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">Bulk Image Assigner</h1>
+          <p className="text-metallic-600 mt-1">
             Upload product photos in one go — filenames matching a part number or OEM number auto-assign to that product.
           </p>
         </div>
@@ -254,7 +254,7 @@ export const BulkImagesPage = () => {
 
       {/* Pending assignments */}
       {assignedCount > 0 && (
-        <div className="flex items-center gap-2 px-4 py-3 bg-green-50 border border-green-200 rounded-lg text-sm font-medium text-green-700">
+        <div className="flex items-center gap-2 px-4 py-3 bg-primary-50 border border-primary-200 rounded-lg text-sm font-medium text-primary-700">
           <CheckCircleIcon className="w-5 h-5" />
           {assignedCount} image(s) assigned to products this session.
         </div>
@@ -290,25 +290,25 @@ export const BulkImagesPage = () => {
           <Card className="p-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {pending.map((img) => (
-                <div key={img.id} className="border border-stone-200 rounded-xl overflow-hidden bg-white">
-                  <div className="relative aspect-square bg-stone-100">
+                <div key={img.id} className="border border-metallic-200 rounded-xl overflow-hidden bg-white">
+                  <div className="relative aspect-square bg-metallic-100">
                     <img src={img.url} alt={img.fileName} className="w-full h-full object-cover" />
                     <button
                       onClick={() => removePending(img.id)}
-                      className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow hover:bg-stone-100"
+                      className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow hover:bg-metallic-100"
                       title="Remove from list"
                     >
-                      <XMarkIcon className="w-4 h-4 text-stone-600" />
+                      <XMarkIcon className="w-4 h-4 text-metallic-600" />
                     </button>
                     {img.matchedByName && (
-                      <div className="absolute bottom-2 left-2 flex items-center gap-1 px-2 py-1 bg-green-600 text-white text-xs font-bold rounded-lg">
+                      <div className="absolute bottom-2 left-2 flex items-center gap-1 px-2 py-1 bg-primary-600 text-white text-xs font-bold rounded-lg">
                         <CheckCircleIcon className="w-3.5 h-3.5" />
                         Matched
                       </div>
                     )}
                   </div>
                   <div className="p-3 space-y-2">
-                    <p className="text-xs text-stone-500 font-medium truncate" title={img.fileName}>
+                    <p className="text-xs text-metallic-500 font-medium truncate" title={img.fileName}>
                       {img.fileName}
                     </p>
                     <select
@@ -319,7 +319,7 @@ export const BulkImagesPage = () => {
                         )
                       }
                       className={`w-full text-sm border rounded-lg px-3 py-2 ${
-                        img.productId ? 'border-stone-300 bg-white' : 'border-amber-400 bg-amber-50'
+                        img.productId ? 'border-metallic-300 bg-white' : 'border-amber-400 bg-amber-50'
                       }`}
                     >
                       <option value="">-- Select product --</option>
@@ -336,7 +336,7 @@ export const BulkImagesPage = () => {
 
             {/* Actions */}
             <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-sm text-stone-600">
+              <div className="flex items-center gap-2 text-sm text-metallic-600">
                 {pending.length} pending, {assignedTotal} ready to assign
               </div>
               <div className="flex items-center gap-3">

@@ -55,34 +55,34 @@ export const AdminLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary-50">
+    <div className="min-h-screen bg-metallic-50">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-secondary-200 transform transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-metallic-200 transform transition-transform duration-300 lg:translate-x-0 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between p-6 border-b border-secondary-200">
+          <div className="flex items-center justify-between p-6 border-b border-metallic-200">
             <Link to="/admin" className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">M</span>
               </div>
-              <span className="text-xl font-bold text-secondary-900">
+              <span className="font-display text-xl font-bold uppercase tracking-wide text-ink">
                 Admin
               </span>
             </Link>
             <button
-              className="lg:hidden p-2 hover:bg-secondary-100 rounded-lg"
+              className="lg:hidden p-2 hover:bg-metallic-100 rounded-lg"
               onClick={() => setIsSidebarOpen(false)}
             >
               <XMarkIcon className="w-6 h-6" />
@@ -99,7 +99,7 @@ export const AdminLayout = () => {
                     className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                       isActive(item.href)
                         ? 'bg-primary-50 text-primary-700 font-medium'
-                        : 'text-secondary-700 hover:bg-secondary-100'
+                        : 'text-metallic-600 hover:bg-metallic-100'
                     }`}
                     onClick={() => setIsSidebarOpen(false)}
                   >
@@ -112,21 +112,21 @@ export const AdminLayout = () => {
           </nav>
 
           {/* User Menu */}
-          <div className="p-4 border-t border-secondary-200">
+          <div className="p-4 border-t border-metallic-200">
             <div className="flex items-center space-x-3 px-4 py-3 mb-2">
-              <UserCircleIcon className="w-8 h-8 text-secondary-600" />
+              <UserCircleIcon className="w-8 h-8 text-metallic-500" />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-secondary-900 truncate">
+                <p className="text-sm font-medium text-ink truncate">
                   {isAdminUser(user) ? user.name : 'Admin'}
                 </p>
-                <p className="text-xs text-secondary-600 truncate">
+                <p className="text-xs text-metallic-500 truncate">
                   {user?.email}
                 </p>
               </div>
             </div>
             <Link
               to="/admin/profile"
-              className="flex items-center space-x-3 px-4 py-2 rounded-lg text-secondary-700 hover:bg-secondary-100 transition-colors mb-2"
+              className="flex items-center space-x-3 px-4 py-2 rounded-lg text-metallic-600 hover:bg-metallic-100 transition-colors mb-2"
               onClick={() => setIsSidebarOpen(false)}
             >
               <UserCircleIcon className="w-5 h-5" />
@@ -146,10 +146,10 @@ export const AdminLayout = () => {
       {/* Main Content */}
       <div className="lg:ml-64">
         {/* Top Header */}
-        <header className="bg-white border-b border-secondary-200 sticky top-0 z-30">
+        <header className="bg-white border-b border-metallic-200 sticky top-0 z-30">
           <div className="flex items-center justify-between px-6 py-4">
             <button
-              className="lg:hidden p-2 hover:bg-secondary-100 rounded-lg"
+              className="lg:hidden p-2 hover:bg-metallic-100 rounded-lg"
               onClick={() => setIsSidebarOpen(true)}
             >
               <Bars3Icon className="w-6 h-6" />

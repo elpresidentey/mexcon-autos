@@ -135,8 +135,8 @@ export const EnquiriesListPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-stone-900">Enquiries</h1>
-          <p className="text-stone-600 mt-1">Manage customer quote requests</p>
+          <h1 className="font-display text-3xl lg:text-4xl font-extrabold uppercase tracking-wide text-ink">Enquiries</h1>
+          <p className="text-metallic-600 mt-1">Manage customer quote requests</p>
         </div>
         <Button
           onClick={handleExportCSV}
@@ -181,33 +181,33 @@ export const EnquiriesListPage = () => {
           <>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-stone-50 border-b border-stone-200">
+                <thead className="bg-metallic-50 border-b border-metallic-200">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Customer
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Contact
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Product
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Date
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-stone-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-right text-xs font-medium text-metallic-500 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-stone-200">
+                <tbody className="bg-white divide-y divide-metallic-200">
                   {enquiries.map((enquiry) => (
                     <tr
                       key={enquiry.id}
-                      className={`hover:bg-stone-50 transition-colors cursor-pointer ${
+                      className={`hover:bg-metallic-50 transition-colors cursor-pointer ${
                         !enquiry.is_read ? 'bg-primary-50' : ''
                       }`}
                       onClick={() => navigate(`/admin/enquiries/${enquiry.id}`)}
@@ -218,23 +218,23 @@ export const EnquiriesListPage = () => {
                             <div className="w-2 h-2 bg-primary-600 rounded-full flex-shrink-0" title="Unread" />
                           )}
                           <div>
-                            <div className="font-medium text-stone-900">{enquiry.customer_name}</div>
+                            <div className="font-medium text-ink">{enquiry.customer_name}</div>
                             {enquiry.vehicle_details && (
-                              <div className="text-sm text-stone-500">{enquiry.vehicle_details}</div>
+                              <div className="text-sm text-metallic-500">{enquiry.vehicle_details}</div>
                             )}
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm">
-                          <div className="text-stone-900">{enquiry.customer_email}</div>
+                          <div className="text-ink">{enquiry.customer_email}</div>
                           {enquiry.customer_phone && (
-                            <div className="text-stone-500">{enquiry.customer_phone}</div>
+                            <div className="text-metallic-500">{enquiry.customer_phone}</div>
                           )}
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="text-sm text-stone-900">
+                        <span className="text-sm text-ink">
                           {enquiry.product?.name || 'General Enquiry'}
                         </span>
                       </td>
@@ -244,7 +244,7 @@ export const EnquiriesListPage = () => {
                         </Badge>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="text-sm text-stone-900">{formatDate(enquiry.created_at)}</span>
+                        <span className="text-sm text-ink">{formatDate(enquiry.created_at)}</span>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-end space-x-2">
@@ -253,7 +253,7 @@ export const EnquiriesListPage = () => {
                               e.stopPropagation();
                               handleToggleRead(enquiry.id);
                             }}
-                            className="p-2 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors"
+                            className="p-2 text-metallic-600 hover:text-ink hover:bg-metallic-100 rounded-lg transition-colors"
                             title={enquiry.is_read ? 'Mark as unread' : 'Mark as read'}
                           >
                             {enquiry.is_read ? (
@@ -282,7 +282,7 @@ export const EnquiriesListPage = () => {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="px-6 py-4 border-t border-stone-200">
+              <div className="px-6 py-4 border-t border-metallic-200">
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}
