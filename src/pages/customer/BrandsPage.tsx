@@ -73,7 +73,7 @@ export const BrandsPage = () => {
             <LoadingSpinner />
           </div>
         ) : brands.length === 0 ? (
-          <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-12">
+          <div className="card p-12">
             <EmptyState
               title="No brands available"
               description="Check back soon for new brands"
@@ -83,7 +83,7 @@ export const BrandsPage = () => {
           <>
             <div className="text-center mb-14">
               <p className="text-metallic-600 font-medium">
-                Showing <span className="font-black text-dark-900">{brands.length}</span> brands
+                Showing <span className="font-black text-ink">{brands.length}</span> brands
               </p>
             </div>
 

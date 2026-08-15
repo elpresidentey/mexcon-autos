@@ -21,11 +21,11 @@ export const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-metallic-200">
       <nav className="container-custom">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="bg-white p-2 rounded-lg shadow-sm border border-neutral-200">
+            <div className="bg-white p-2 rounded-lg shadow-sm border border-metallic-200">
               <img
                 src="/Logo 1.png"
                 alt="Mexcon Group"
@@ -36,7 +36,7 @@ export const Header = () => {
               />
             </div>
             <div className="leading-none">
-              <span className="font-display text-[1.35rem] font-extrabold tracking-wide text-black uppercase group-hover:text-primary-700 transition-colors">
+              <span className="font-display text-[1.35rem] font-extrabold tracking-wide text-ink uppercase group-hover:text-primary-700 transition-colors">
                 Mexcon Group
               </span>
             </div>
@@ -50,8 +50,8 @@ export const Header = () => {
                 className={({ isActive }) =>
                   `px-4 py-2 text-sm font-medium transition-colors rounded-full ${
                     isActive
-                      ? 'text-white bg-black'
-                      : 'text-neutral-600 hover:text-black hover:bg-neutral-100'
+                      ? 'text-white bg-dark-900'
+                      : 'text-metallic-600 hover:text-ink hover:bg-metallic-100'
                   }`
                 }
               >
@@ -63,7 +63,7 @@ export const Header = () => {
           <div className="flex items-center gap-2 sm:gap-3">
             <a
               href="tel:+2349035777779"
-              className="hidden md:inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-700 hover:text-primary-700 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 text-sm font-semibold text-metallic-700 hover:text-primary-700 transition-colors"
             >
               <PhoneIcon className="w-4 h-4 text-primary-600" />
               <span>0903 577 7779</span>
@@ -72,7 +72,7 @@ export const Header = () => {
             {isCustomer ? (
               <Link
                 to="/account"
-                className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-700 hover:text-primary-700 transition-colors"
+                className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-metallic-700 hover:text-primary-700 transition-colors"
                 title="My account"
               >
                 <UserIcon className="w-5 h-5 text-primary-600" />
@@ -83,7 +83,7 @@ export const Header = () => {
             ) : (
               <Link
                 to="/login"
-                className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-black hover:text-neutral-700 transition-colors"
+                className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-ink hover:text-metallic-700 transition-colors"
               >
                 <UserIcon className="w-5 h-5" />
                 <span>Login</span>
@@ -92,10 +92,10 @@ export const Header = () => {
 
             <Link
               to="/cart"
-              className="relative p-2 rounded-full hover:bg-neutral-100 transition-colors"
+              className="relative p-2 rounded-full hover:bg-metallic-100 transition-colors"
               aria-label="Shopping cart"
             >
-              <ShoppingBagIcon className="w-6 h-6 text-black" />
+              <ShoppingBagIcon className="w-6 h-6 text-ink" />
               {cartItemCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-accent-500 text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center ring-2 ring-white">
                   {cartItemCount}
@@ -105,21 +105,21 @@ export const Header = () => {
 
             <Link
               to="/quote-request"
-              className="hidden sm:inline-flex bg-black text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-neutral-800 shadow-sm transition-colors"
+              className="hidden sm:inline-flex bg-dark-900 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-dark-800 shadow-sm transition-colors"
             >
               Get Quote
             </Link>
 
             <button
-              className="lg:hidden p-2 rounded-full hover:bg-neutral-100 transition-colors"
+              className="lg:hidden p-2 rounded-full hover:bg-metallic-100 transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
               aria-expanded={isMobileMenuOpen}
             >
               {isMobileMenuOpen ? (
-                <XMarkIcon className="w-6 h-6 text-black" />
+                <XMarkIcon className="w-6 h-6 text-ink" />
               ) : (
-                <Bars3Icon className="w-6 h-6 text-black" />
+                <Bars3Icon className="w-6 h-6 text-ink" />
               )}
             </button>
           </div>
@@ -131,14 +131,14 @@ export const Header = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden border-t border-neutral-200 overflow-hidden"
+              className="lg:hidden border-t border-metallic-200 overflow-hidden"
             >
               <div className="py-3 space-y-0.5">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
-                    className="block px-3 py-2.5 text-neutral-700 hover:bg-neutral-100 hover:text-black rounded-lg font-medium transition-colors"
+                    className="block px-3 py-2.5 text-metallic-700 hover:bg-metallic-100 hover:text-ink rounded-lg font-medium transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.name}
@@ -173,7 +173,7 @@ export const Header = () => {
                 )}
                 <Link
                   to="/quote-request"
-                  className="block mx-1 mt-2 bg-black text-white px-4 py-2.5 rounded-lg font-semibold text-center hover:bg-neutral-800 transition-colors"
+                  className="block mx-1 mt-2 bg-dark-900 text-white px-4 py-2.5 rounded-lg font-semibold text-center hover:bg-dark-800 transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Get Quote

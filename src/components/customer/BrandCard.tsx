@@ -18,7 +18,7 @@ export const BrandCard = ({ brand, variant = 'default' }: BrandCardProps) => {
     return (
       <Link
         to={`/brands/${brand.slug}`}
-        className="group flex flex-col items-center justify-center gap-2 p-4 bg-white rounded-2xl ring-1 ring-black/5 shadow-sm hover:shadow-lg hover:shadow-black/8 hover:ring-primary-500/50 hover:-translate-y-1 transition-all duration-300"
+        className="group card card-hover flex flex-col items-center justify-center gap-2 p-4 hover:ring-primary-500/50"
         title={brand.name}
       >
         {logoUrl ? (

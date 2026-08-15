@@ -106,7 +106,7 @@ export const CategoryProductsPage = () => {
         </div>
 
         {products.length === 0 ? (
-          <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-12">
+          <div className="card p-12">
             <EmptyState title="No products found" description="Try adjusting your search" />
           </div>
         ) : (

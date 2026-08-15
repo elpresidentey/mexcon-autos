@@ -50,10 +50,10 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Link
       to={`/products/${product.id}`}
-      className="group relative block bg-white rounded-2xl overflow-hidden ring-1 ring-black/5 shadow-sm hover:shadow-xl hover:shadow-black/10 hover:ring-2 hover:ring-primary-500/60 transition-all duration-300"
+      className="group relative block card card-hover hover:ring-primary-500/60"
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] bg-neutral-50 overflow-hidden">
+      <div className="relative aspect-[4/3] bg-metallic-50 overflow-hidden">
         <img
           src={effectivePrimary}
           alt={product.name}
@@ -126,18 +126,18 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             {product.brand?.name || 'Mexcon Autos'}
           </p>
           {product.part_number && (
-            <p className="text-[10px] font-mono text-neutral-400 truncate">
+            <p className="text-[10px] font-mono text-metallic-400 truncate">
               {product.part_number}
             </p>
           )}
         </div>
 
-        <h3 className="font-display text-base font-bold text-black leading-snug line-clamp-2 group-hover:text-primary-700 transition-colors">
+        <h3 className="font-display text-base font-bold text-ink leading-snug line-clamp-2 group-hover:text-primary-700 transition-colors">
           {product.name}
         </h3>
 
         <div className="flex items-center justify-between pt-1">
-          <span className="text-lg font-black text-black">
+          <span className="text-lg font-black text-ink">
             {formatNaira(product.price)}
           </span>
           <span className="hidden md:inline-flex items-center text-xs font-semibold text-primary-700 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">

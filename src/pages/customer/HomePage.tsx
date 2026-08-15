@@ -481,7 +481,7 @@ export const HomePage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative flex gap-5 p-6 lg:p-7 bg-white rounded-2xl ring-1 ring-black/5 shadow-sm hover:shadow-lg hover:shadow-dark-900/8 hover:-translate-y-1 transition-all duration-300"
+                className="group relative flex gap-5 p-6 lg:p-7 card card-hover"
               >
                 <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-accent-400 to-accent-600 text-black flex items-center justify-center rounded-xl shadow-md shadow-accent-500/25 group-hover:scale-105 transition-transform duration-300">
                   <feature.icon className="w-6 h-6" />
@@ -776,10 +776,9 @@ export const HomePage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative bg-white rounded-2xl p-7 ring-1 ring-black/5 shadow-sm hover:shadow-lg hover:shadow-dark-900/8 hover:-translate-y-1 transition-all duration-300"
+                className="group relative card card-hover p-7"
               >
-                <span className="absolute top-5 right-6 font-display text-6xl leading-none text-metallic-100 select-none" aria-hidden>
-                  &rdquo;
+                <span className="absolute top-5 right-6 font-display text-6xl leading-none text-metallic-100 select-none" aria-hidden>                  &rdquo;
                 </span>
                 <div className="flex items-center gap-0.5 text-accent-500 mb-4" aria-label="5 star rating">
                   {Array.from({ length: 5 }).map((_, i) => (

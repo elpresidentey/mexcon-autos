@@ -79,7 +79,7 @@ export const ResetPasswordPage = () => {
             <p className="text-metallic-600 mt-2">Choose a strong password you haven&apos;t used before.</p>
           </div>
 
-          <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-8">
+          <div className="card p-8">
             {isChecking ? (
               <div className="text-center py-6">
                 <div className="spinner w-6 h-6 mx-auto" />

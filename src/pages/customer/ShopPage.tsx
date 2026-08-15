@@ -258,9 +258,9 @@ className={`px-5 py-2.5 text-sm font-medium rounded-full border transition-all d
           {/* Sidebar Filters - Desktop */}
           <aside className="hidden lg:block w-72 flex-shrink-0">
             <div className="sticky top-24 space-y-8">
-              <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-6">
+              <div className="card p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="font-display text-lg font-bold tracking-wide uppercase text-black flex items-center gap-2">
+                  <h2 className="font-display text-lg font-bold tracking-wide uppercase text-ink flex items-center gap-2">
                     <FunnelIcon className="w-4 h-4 text-primary-600" />
                     Filters
                   </h2>
@@ -347,16 +347,16 @@ className={`px-5 py-2.5 text-sm font-medium rounded-full border transition-all d
               variant="outline"
               onClick={() => setIsFiltersOpen(!isFiltersOpen)}
               leftIcon={<FunnelIcon className="w-5 h-5" />}
-              className="w-full !border-neutral-300 !text-black hover:!bg-neutral-50 font-semibold rounded-xl"
+              className="w-full !border-metallic-300 !text-ink hover:!bg-metallic-50 font-semibold"
             >
               {isFiltersOpen ? 'Hide Filters' : 'Show Filters'}
               {hasActiveFilters && ` (${[selectedCategory, selectedBrand, selectedYear].filter(Boolean).length})`}
             </Button>
 
             {isFiltersOpen && (
-              <div className="mt-4 bg-white rounded-2xl border border-neutral-200 p-6">
+              <div className="mt-4 card p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="font-display text-lg font-bold tracking-wide uppercase text-black flex items-center gap-2">
+                  <h2 className="font-display text-lg font-bold tracking-wide uppercase text-ink flex items-center gap-2">
                     <FunnelIcon className="w-4 h-4 text-primary-600" />
                     Filters
                   </h2>
@@ -439,13 +439,13 @@ className={`px-5 py-2.5 text-sm font-medium rounded-full border transition-all d
 
           <div className="flex-1">
             <div className="flex items-center justify-between mb-8">
-              <p className="text-base text-neutral-600">
+              <p className="text-base text-metallic-600">
                 {isLoading ? (
                   'Loading...'
                 ) : (
                   <>
-                    Showing <span className="font-semibold text-black">{products.length}</span> of{' '}
-                    <span className="font-semibold text-black">{totalCount}</span> products
+                    Showing <span className="font-semibold text-ink">{products.length}</span> of{' '}
+                    <span className="font-semibold text-ink">{totalCount}</span> products
                   </>
                 )}
               </p>
@@ -456,7 +456,7 @@ className={`px-5 py-2.5 text-sm font-medium rounded-full border transition-all d
                 <LoadingSpinner />
               </div>
             ) : products.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-neutral-200 p-12">
+              <div className="card p-12">
                 <EmptyState
                   title="No products found"
                   description={

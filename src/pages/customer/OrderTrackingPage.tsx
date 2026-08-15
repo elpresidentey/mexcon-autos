@@ -76,10 +76,10 @@ const STATUS_STEPS = ['pending', 'confirmed', 'processing', 'shipped', 'delivere
 const OrderCard = ({ order }: { order: Order }) => (
   <div className="space-y-6">
     {/* Order Status Card */}
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-8">
+    <div className="card p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-black text-dark-900">{order.order_number}</h2>
+          <h2 className="font-display text-2xl font-extrabold uppercase tracking-wide text-ink">{order.order_number}</h2>
           <p className="text-metallic-600">Placed on {new Date(order.created_at).toLocaleDateString()}</p>
         </div>
         <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${getStatusColor(order.status)}`}>
@@ -164,10 +164,10 @@ const OrderCard = ({ order }: { order: Order }) => (
     </div>
 
     {/* Shipping Address */}
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-8">
-      <h3 className="font-bold text-dark-900 mb-4">Shipping Address</h3>
+    <div className="card p-8">
+      <h3 className="font-display text-lg font-bold uppercase tracking-wide text-ink mb-4">Shipping Address</h3>
       <div className="text-metallic-700">
-        <p className="font-semibold text-dark-900">{order.shipping_address_line1}</p>
+        <p className="font-semibold text-ink">{order.shipping_address_line1}</p>
         {order.shipping_address_line2 && <p>{order.shipping_address_line2}</p>}
         <p>{order.shipping_city}, {order.shipping_state}</p>
         <p>{order.shipping_country}</p>
@@ -178,8 +178,8 @@ const OrderCard = ({ order }: { order: Order }) => (
 
     {/* Tracking Information */}
     {order.tracking_number && (
-      <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-8">
-        <h3 className="font-bold text-dark-900 mb-4">Tracking Information</h3>
+      <div className="card p-8">
+        <h3 className="font-display text-lg font-bold uppercase tracking-wide text-ink mb-4">Tracking Information</h3>
         <div className="space-y-2">
           <div className="flex justify-between">
             <span className="text-metallic-600">Tracking Number</span>
@@ -200,16 +200,16 @@ const OrderCard = ({ order }: { order: Order }) => (
     )}
 
     {/* Order Items */}
-    <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-8">
-      <h3 className="font-bold text-dark-900 mb-4">Order Items</h3>
+    <div className="card p-8">
+      <h3 className="font-display text-lg font-bold uppercase tracking-wide text-ink mb-4">Order Items</h3>
       <div className="space-y-4">
         {order.items?.map((item) => (
           <div key={item.id} className="flex items-center justify-between py-3 border-b border-metallic-200 last:border-0">
             <div>
-              <p className="font-semibold text-dark-900">{item.product_name}</p>
+              <p className="font-semibold text-ink">{item.product_name}</p>
               <p className="text-sm text-metallic-600">Qty: {item.quantity} × ₦{item.unit_price.toLocaleString()}</p>
             </div>
-            <span className="font-bold text-dark-900">₦{item.total_price.toLocaleString()}</span>
+            <span className="font-bold text-ink">₦{item.total_price.toLocaleString()}</span>
           </div>
         ))}
       </div>
@@ -217,8 +217,8 @@ const OrderCard = ({ order }: { order: Order }) => (
 
     {/* Customer Notes */}
     {order.customer_notes && (
-      <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-8">
-        <h3 className="font-bold text-dark-900 mb-4">Customer Notes</h3>
+      <div className="card p-8">
+        <h3 className="font-display text-lg font-bold uppercase tracking-wide text-ink mb-4">Customer Notes</h3>
         <p className="text-metallic-700">{order.customer_notes}</p>
       </div>
     )}
@@ -343,7 +343,7 @@ export const OrderTrackingPage = () => {
           </div>
 
           {/* Search Form */}
-          <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-8 mb-8">
+          <div className="card p-8 mb-8">
             <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <input
@@ -403,7 +403,7 @@ export const OrderTrackingPage = () => {
           )}
 
           {!order && orders.length === 0 && !isLoading && !error && (
-            <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-12 text-center">
+            <div className="card p-12 text-center">
               <EmptyState
                 title="Track Your Order"
                 description="Enter your order number or product number above to see the status of your order"

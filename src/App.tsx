@@ -153,10 +153,10 @@ function App() {
                 <Route path="*" element={
                   <Layout>
                     <div className="container-custom py-20 text-center">
-                      <h1 className="text-4xl font-bold text-secondary-900 mb-4">
+                      <h1 className="font-display text-4xl font-extrabold text-ink uppercase tracking-wide mb-4">
                         Page Not Found
                       </h1>
-                      <p className="text-secondary-600 mb-8">
+                      <p className="text-metallic-600 mb-8">
                         The page you're looking for doesn't exist.
                       </p>
                       <a href="/" className="btn btn-primary">

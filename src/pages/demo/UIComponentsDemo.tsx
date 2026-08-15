@@ -29,8 +29,8 @@ export const UIComponentsDemo = () => {
   return (
     <div className="container-custom py-8 space-y-12">
       <div>
-        <h1 className="text-3xl font-bold mb-2">UI Components Demo</h1>
-        <p className="text-secondary-600">
+        <h1 className="font-display text-3xl font-extrabold uppercase tracking-wide text-ink mb-2">UI Components Demo</h1>
+        <p className="text-metallic-600">
           Testing all newly created UI components
         </p>
       </div>
@@ -45,7 +45,7 @@ export const UIComponentsDemo = () => {
             placeholder="Search for auto parts..."
             className="max-w-md"
           />
-          <p className="mt-4 text-sm text-secondary-600">
+          <p className="mt-4 text-sm text-metallic-600">
             Current value: {searchValue || '(empty)'}
           </p>
         </Card>
@@ -195,7 +195,7 @@ export const UIComponentsDemo = () => {
                 onPageChange={() => {}}
               />
             </div>
-            <p className="text-sm text-secondary-600">
+            <p className="text-sm text-metallic-600">
               Current page: {currentPage}
             </p>
           </div>
@@ -206,7 +206,7 @@ export const UIComponentsDemo = () => {
       <section>
         <h2 className="text-2xl font-semibold mb-4">Responsive Test</h2>
         <Card className="p-6">
-          <p className="text-secondary-600 mb-4">
+          <p className="text-metallic-600 mb-4">
             Resize your browser window to test mobile responsiveness.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

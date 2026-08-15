@@ -54,7 +54,7 @@ export const ForgotPasswordPage = () => {
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-8">
+          <div className="card p-8">
             {sent ? (
               <div className="text-center">
                 <p className="text-sm text-metallic-600 mb-6">

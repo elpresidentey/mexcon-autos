@@ -41,7 +41,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-dark-900 text-white">
       <div className="h-1 bg-accent-500" />
 
       <div className="border-b border-white/10">
@@ -66,7 +66,7 @@ export const Footer = () => {
               />
               <button
                 type="submit"
-                className="px-8 py-4 bg-white text-black text-base font-semibold rounded-xl hover:bg-neutral-200 shadow-lg shadow-black/30 hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
+                className="px-8 py-4 bg-white text-ink text-base font-semibold rounded-xl hover:bg-metallic-200 shadow-lg shadow-black/30 hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
               >
                 Subscribe
               </button>

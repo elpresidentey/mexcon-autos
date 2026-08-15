@@ -62,7 +62,7 @@ export const RegisterPage = () => {
             <p className="text-metallic-600 mt-2">Register to buy parts and track your orders</p>
           </div>
 
-          <div className="bg-white rounded-2xl ring-1 ring-black/5 shadow-sm p-8">
+          <div className="card p-8">
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
                 <div className="bg-red-50 border border-red-200 text-red-700 text-sm font-medium rounded-xl px-4 py-3">
