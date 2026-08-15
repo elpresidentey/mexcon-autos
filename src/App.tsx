@@ -8,6 +8,7 @@ import { Layout, AdminLayout } from './components/layout';
 import { ProtectedRoute, ToastViewport, LoadingSpinner } from './components/common';
 import { HomePage } from './pages/customer/HomePage';
 import { SplashScreen } from './components/customer/SplashScreen';
+import { InstallPromptBanner } from './components/customer/InstallPromptBanner';
 
 const ShopPage = lazy(() => import('./pages/customer/ShopPage').then((m) => ({ default: m.ShopPage })));
 const CustomerCategoriesPage = lazy(() => import('./pages/customer/CategoriesPage').then((m) => ({ default: m.CategoriesPage })));
@@ -84,6 +85,13 @@ function SplashGate() {
   );
 }
 
+/** PWA install banner — customer pages only, hidden in the admin area. */
+function InstallGate() {
+  const { pathname } = useLocation();
+  if (pathname.startsWith('/admin')) return null;
+  return <InstallPromptBanner />;
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -92,6 +100,7 @@ function App() {
           <Router>
             <ScrollToTop />
             <SplashGate />
+            <InstallGate />
             <Suspense fallback={<PageFallback />}>
               <Routes>
                 {/* Customer Routes */}
