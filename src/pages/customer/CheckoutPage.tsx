@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { customersService } from '../../services/customers.service';
 import { ordersService } from '../../services/orders.service';
 import { payWithPaystack, payWithFlutterwave, getGatewayStatus } from '../../services/payment.service';
+import { uploadImage, STORAGE_BUCKETS } from '../../services/supabase';
 import { Button } from '../../components/common';
 import type { CustomerAddressFormData, Order } from '../../types';
 
@@ -45,6 +46,8 @@ export const CheckoutPage = () => {
   // Payment form state
   const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'flutterwave' | 'bank_transfer' | 'pay_on_delivery'>('pay_on_delivery');
   const gatewayReady = getGatewayStatus();
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
 
   // Order state
   const [placedSummary, setPlacedSummary] = useState<{
@@ -57,7 +60,7 @@ export const CheckoutPage = () => {
   } | null>(null);
   const [customerNotes, setCustomerNotes] = useState('');
 
-  if (cart.length === 0) {
+  if (cart.length === 0 && step !== 'confirmation') {
     return (
       <div className="min-h-screen bg-white">
         <div className="container-custom py-20">
@@ -132,12 +135,44 @@ export const CheckoutPage = () => {
     }
   };
 
+  const handleReceiptChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file (PNG, JPG or WebP)');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Receipt image must be less than 5MB');
+      return;
+    }
+
+    setReceiptFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => setReceiptPreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
       const effectiveMethod = paymentMethod;
+
+      // 0) Bank transfer requires a payment receipt proof
+      let receipt: { path: string; url: string } | null = null;
+      if (effectiveMethod === 'bank_transfer') {
+        if (!receiptFile) {
+          toast.error('Please upload your payment receipt before placing the order');
+          return;
+        }
+        receipt = await uploadImage(STORAGE_BUCKETS.RECEIPTS, receiptFile, 'receipts');
+        if (!receipt) {
+          throw new Error('Could not upload your receipt. Please try again.');
+        }
+      }
 
       // 1) Create the order (dataset different for guests vs logged-in buyers)
       let order: Order;
@@ -169,6 +204,7 @@ export const CheckoutPage = () => {
           customerName: guestContact.name,
           customerEmail: guestContact.email,
           customerNotes,
+          receipt,
         })) as unknown as Order;
       } else {
         if (!user || userType !== 'customer') {
@@ -179,7 +215,8 @@ export const CheckoutPage = () => {
           cart,
           addressSnapshot,
           effectiveMethod,
-          customerNotes
+          customerNotes,
+          receipt
         );
       }
 
@@ -619,6 +656,48 @@ export const CheckoutPage = () => {
                         </div>
                       ))}
                     </div>
+
+                    {/* Receipt Upload */}
+                    <div className="mt-4 p-4 rounded-lg border border-dashed border-primary-400 bg-primary-50">
+                      <p className="text-sm font-bold text-ink mb-1">Upload Payment Receipt *</p>
+                      <p className="text-xs text-metallic-600 mb-3">
+                        After transferring, upload the receipt (screenshot or photo) so we can confirm your payment.
+                      </p>
+                      <div className="flex items-start gap-4">
+                        {receiptPreview && (
+                          <div className="w-20 h-20 rounded-lg overflow-hidden bg-white ring-1 ring-black/5 flex-shrink-0">
+                            <img src={receiptPreview} alt="Receipt preview" className="w-full h-full object-cover" />
+                          </div>
+                        )}
+                        <div className="flex-1">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleReceiptChange}
+                            className="block w-full text-sm text-metallic-500
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-lg file:border-0
+                              file:text-sm file:font-medium
+                              file:bg-white file:text-primary-700
+                              hover:file:bg-primary-100
+                              cursor-pointer"
+                          />
+                          <p className="text-xs text-metallic-500 mt-1">PNG, JPG, WebP up to 5MB</p>
+                        </div>
+                        {receiptPreview && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setReceiptFile(null);
+                              setReceiptPreview(null);
+                            }}
+                            className="text-red-600 text-sm font-semibold hover:underline flex-shrink-0"
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 )}
 
@@ -681,7 +760,9 @@ export const CheckoutPage = () => {
                   Order Placed Successfully!
                 </h2>
                 <p className="text-metallic-700">
-                  Thank you{isGuest ? '' : ' for your purchase'} — your order is confirmed and a receipt is on its way to your email.
+                  {placedSummary.paymentMethod === 'bank_transfer'
+                    ? 'Thank you — we received your payment receipt and will confirm your payment shortly.'
+                    : 'Thank you — your order is confirmed and a receipt is on its way to your email.'}
                 </p>
                 <p className="mt-4 text-sm text-metallic-600">
                   Order number:{' '}

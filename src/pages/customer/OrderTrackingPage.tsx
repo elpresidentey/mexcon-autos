@@ -63,7 +63,7 @@ const getPaymentStatusText = (status: string) => {
     case 'paid':
       return 'Paid';
     case 'failed':
-      return 'Failed';
+      return 'Rejected';
     case 'refunded':
       return 'Refunded';
     default:
@@ -148,7 +148,7 @@ const OrderCard = ({ order }: { order: Order }) => (
             </div>
             <div className="flex justify-between">
               <span className="text-metallic-600">Payment Status</span>
-              <span className={`font-semibold ${order.payment_status === 'paid' ? 'text-green-600' : 'text-yellow-600'}`}>
+              <span className={`font-semibold ${order.payment_status === 'paid' ? 'text-green-600' : order.payment_status === 'failed' ? 'text-red-600' : 'text-yellow-600'}`}>
                 {getPaymentStatusText(order.payment_status)}
               </span>
             </div>
@@ -156,6 +156,26 @@ const OrderCard = ({ order }: { order: Order }) => (
               <div className="flex justify-between">
                 <span className="text-metallic-600">Reference</span>
                 <span className="font-semibold">{order.payment_reference}</span>
+              </div>
+            )}
+            {order.receipt_url && (
+              <div className="flex justify-between">
+                <span className="text-metallic-600">Payment Receipt</span>
+                <a href={order.receipt_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-600 hover:underline">
+                  View receipt
+                </a>
+              </div>
+            )}
+            {order.payment_verified_at && (
+              <div className="flex justify-between">
+                <span className="text-metallic-600">Payment Confirmed</span>
+                <span className="font-semibold text-green-600">{new Date(order.payment_verified_at).toLocaleDateString()}</span>
+              </div>
+            )}
+            {order.payment_note && (
+              <div className="flex justify-between">
+                <span className="text-metallic-600">Note</span>
+                <span className="font-semibold text-red-600 text-right">{order.payment_note}</span>
               </div>
             )}
           </div>

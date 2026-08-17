@@ -317,6 +317,11 @@ export interface Order {
   billing_country?: string;
   payment_reference?: string;
   payment_gateway_response?: Record<string, any>;
+  receipt_path?: string;
+  receipt_url?: string;
+  payment_verified_at?: string;
+  payment_verified_by?: string;
+  payment_note?: string;
   customer_notes?: string;
   admin_notes?: string;
   tracking_number?: string;

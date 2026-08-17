@@ -19,6 +19,7 @@ import {
   TruckIcon,
   CheckCircleIcon,
   ClockIcon,
+  PhotoIcon,
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 
@@ -169,6 +170,45 @@ export const OrdersPage = () => {
     }
   };
 
+  const handleVerifyPayment = async (order: Order) => {
+    if (!window.confirm(`Confirm payment for order ${order.order_number}? The customer will be notified by email.`)) {
+      return;
+    }
+    try {
+      setIsUpdating(true);
+      await ordersService.updatePaymentStatus(order.id, 'paid', order.order_number, undefined, {
+        verifiedBy: 'admin',
+      });
+      toast.success(`Payment for ${order.order_number} confirmed`);
+      await refresh();
+    } catch (error: any) {
+      console.error('Error verifying payment:', error);
+      toast.error(error.message || 'Failed to verify payment');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleRejectReceipt = async (order: Order) => {
+    const reason = window.prompt(
+      `Reason for rejecting the receipt for ${order.order_number} (this is shown to the customer):`
+    );
+    if (reason === null) return;
+    try {
+      setIsUpdating(true);
+      await ordersService.updatePaymentStatus(order.id, 'failed', undefined, undefined, {
+        paymentNote: reason.trim() || 'Receipt could not be verified',
+      });
+      toast.success(`Receipt for ${order.order_number} rejected`);
+      await refresh();
+    } catch (error: any) {
+      console.error('Error rejecting receipt:', error);
+      toast.error(error.message || 'Failed to reject receipt');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   const customerName = (order: Order) => {
     const c = order.customer;
     if (!c) return 'Guest';
@@ -276,6 +316,15 @@ export const OrdersPage = () => {
                         <Badge variant={paymentStatusBadge[order.payment_status] || 'secondary'}>
                           {order.payment_status}
                         </Badge>
+                        {order.receipt_url && (
+                          <div className="mt-1 flex items-center gap-1 text-xs text-metallic-500" title="Receipt uploaded">
+                            <PhotoIcon className="w-3.5 h-3.5" />
+                            Receipt
+                          </div>
+                        )}
+                        {order.payment_verified_at && (
+                          <div className="mt-1 text-xs text-green-600">Verified {formatDate(order.payment_verified_at)}</div>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <Badge variant={orderStatusBadge[order.status] || 'secondary'}>
@@ -438,6 +487,69 @@ export const OrdersPage = () => {
                   <span>{formatPrice(selectedOrder.total_amount)}</span>
                 </div>
               </div>
+            </div>
+
+            {/* Payment / Receipt */}
+            <div className="bg-metallic-50 rounded-lg p-4">
+              <p className="text-xs font-semibold text-metallic-500 uppercase tracking-wider mb-3">Payment & Receipt</p>
+              <div className="flex flex-wrap gap-2 mb-3">
+                <Badge variant={paymentStatusBadge[selectedOrder.payment_status] || 'secondary'}>
+                  {selectedOrder.payment_status}
+                </Badge>
+                <Badge variant="info">
+                  {String(selectedOrder.payment_method || '').replace('_', ' ')}
+                </Badge>
+              </div>
+              {selectedOrder.payment_reference && (
+                <p className="text-xs text-metallic-600 mb-1">
+                  Reference: <span className="font-mono">{selectedOrder.payment_reference}</span>
+                </p>
+              )}
+              {selectedOrder.payment_verified_at && (
+                <p className="text-xs text-green-700 mb-1">
+                  Verified {formatDate(selectedOrder.payment_verified_at)}
+                  {selectedOrder.payment_verified_by ? ` by ${selectedOrder.payment_verified_by}` : ''}
+                </p>
+              )}
+              {selectedOrder.payment_note && (
+                <p className="text-xs text-red-600 mb-2">
+                  Note: {selectedOrder.payment_note}
+                </p>
+              )}
+              {selectedOrder.receipt_url && (
+                <div className="mt-2">
+                  <p className="text-xs font-semibold text-metallic-500 uppercase tracking-wider mb-2">Customer Receipt</p>
+                  <a href={selectedOrder.receipt_url} target="_blank" rel="noopener noreferrer" className="block">
+                    <img
+                      src={selectedOrder.receipt_url}
+                      alt={`Receipt for ${selectedOrder.order_number}`}
+                      className="w-full max-w-xs max-h-64 object-contain bg-white rounded-lg ring-1 ring-black/5 p-2 cursor-zoom-in"
+                    />
+                  </a>
+                  <p className="text-xs text-metallic-500 mt-1">Click to open full size in a new tab</p>
+                </div>
+              )}
+              {selectedOrder.receipt_url && selectedOrder.payment_status !== 'paid' && (
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <Button
+                    size="sm"
+                    onClick={() => handleVerifyPayment(selectedOrder)}
+                    disabled={isUpdating}
+                    leftIcon={<CheckCircleIcon className="w-4 h-4" />}
+                  >
+                    Confirm Payment
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    onClick={() => handleRejectReceipt(selectedOrder)}
+                    disabled={isUpdating}
+                    leftIcon={<XCircleIcon className="w-4 h-4" />}
+                  >
+                    Reject Receipt
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Status workflow */}

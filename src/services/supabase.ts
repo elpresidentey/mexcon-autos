@@ -35,6 +35,7 @@ export const STORAGE_BUCKETS = {
   ENQUIRIES: 'enquiries',
   MEDIA_LIBRARY: 'media-library',
   BANNERS: 'banners',
+  RECEIPTS: 'receipts',
 } as const;
 
 // Helper function to upload image

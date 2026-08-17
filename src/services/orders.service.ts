@@ -23,7 +23,8 @@ export class OrdersService {
     cartItems: CartItem[],
     shippingAddress: any,
     paymentMethod: string,
-    customerNotes?: string
+    customerNotes?: string,
+    receipt?: { path: string; url: string } | null
   ): Promise<Order> {
     try {
       const orderNumber = this.generateOrderNumber();
@@ -66,6 +67,8 @@ export class OrdersService {
           billing_postal_code: shippingAddress.postal_code,
           billing_country: shippingAddress.country,
           customer_notes: customerNotes,
+          receipt_path: receipt?.path ?? null,
+          receipt_url: receipt?.url ?? null,
         })
         .select()
         .single();
@@ -187,6 +190,7 @@ export class OrdersService {
     customerName?: string;
     customerEmail?: string;
     customerNotes?: string;
+    receipt?: { path: string; url: string } | null;
   }): Promise<{ id: string; order_number: string }> {
     try {
       const taxAmount = payload.taxAmount ?? 0;
@@ -210,6 +214,8 @@ export class OrdersService {
         p_customer_name: payload.customerName,
         p_customer_email: payload.customerEmail,
         p_customer_notes: payload.customerNotes,
+        p_receipt_path: payload.receipt?.path ?? null,
+        p_receipt_url: payload.receipt?.url ?? null,
       });
 
       if (error) throw error;
@@ -363,28 +369,35 @@ export class OrdersService {
   }
 
   /**
-   * Update payment status
+   * Update payment status. When the status moves to 'paid' the order is
+   * stamped with the verification time + who verified it (admin or gateway).
+   * An optional note is kept for rejections (e.g. unclear receipt).
    */
-  async updatePaymentStatus(orderId: string, paymentStatus: string, paymentReference?: string, gatewayResponse?: any): Promise<Order> {
-    try {
-      const { data, error } = await supabase
-        .from('orders')
-        .update({
-          payment_status: paymentStatus,
-          payment_reference: paymentReference,
-          payment_gateway_response: gatewayResponse,
-        })
-        .eq('id', orderId)
-        .select()
-        .single();
+  async updatePaymentStatus(
+    orderId: string,
+    paymentStatus: string,
+    paymentReference?: string,
+    gatewayResponse?: any,
+    options?: { paymentNote?: string; verifiedBy?: string }
+  ): Promise<Order> {
+    const isPaid = paymentStatus === 'paid';
+    const { data, error } = await supabase
+      .from('orders')
+      .update({
+        payment_status: paymentStatus,
+        payment_reference: paymentReference ?? undefined,
+        payment_gateway_response: gatewayResponse ?? undefined,
+        payment_note: options?.paymentNote ?? undefined,
+        payment_verified_at: isPaid ? new Date().toISOString() : undefined,
+        payment_verified_by: isPaid ? (options?.verifiedBy ?? 'system') : undefined,
+      })
+      .eq('id', orderId)
+      .select()
+      .single();
 
-      if (error) throw error;
+    if (error) throw error;
 
-      return data;
-    } catch (error) {
-      console.error('Error updating payment status:', error);
-      throw error;
-    }
+    return data;
   }
 
   /**
