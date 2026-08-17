@@ -344,16 +344,38 @@ export class OrdersService {
   }
 
   /**
-   * Update order status (admin approval workflow: pending -> confirmed -> ...)
+   * Update order status (admin approval workflow: pending -> confirmed -> ...).
+   * Pay-on-delivery orders are settled automatically when marked delivered
+   * (cash is collected at the door), so payment_status flips to 'paid'.
    */
   async updateOrderStatus(orderId: string, status: string): Promise<Order> {
     try {
+      const { data: current, error: fetchError } = await supabase
+        .from('orders')
+        .select('payment_method, payment_status')
+        .eq('id', orderId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      const settledOnDelivery =
+        status === 'delivered' &&
+        current.payment_method === 'pay_on_delivery' &&
+        current.payment_status === 'pending';
+
       const { data, error } = await supabase
         .from('orders')
-        .update({ 
+        .update({
           status,
           ...(status === 'shipped' ? { shipped_at: new Date().toISOString() } : {}),
           ...(status === 'delivered' ? { delivered_at: new Date().toISOString() } : {}),
+          ...(settledOnDelivery
+            ? {
+                payment_status: 'paid',
+                payment_verified_at: new Date().toISOString(),
+                payment_verified_by: 'delivery',
+              }
+            : {}),
         })
         .eq('id', orderId)
         .select()
