@@ -73,6 +73,17 @@ const getPaymentStatusText = (status: string) => {
 
 const STATUS_STEPS = ['pending', 'confirmed', 'processing', 'shipped', 'delivered'];
 
+// Order stored in this session after checkout (guests land here with
+// order number + email pre-filled so tracking is one click away).
+const getStoredOrderInfo = (): { orderNumber: string; email: string; receiptUrl?: string } | null => {
+  try {
+    const raw = sessionStorage.getItem('mexcon_last_order');
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
 const OrderCard = ({ order }: { order: Order }) => (
   <div className="space-y-6">
     {/* Order Status Card */}
@@ -159,10 +170,14 @@ const OrderCard = ({ order }: { order: Order }) => (
               </div>
             )}
             {order.receipt_url && (
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center gap-4">
                 <span className="text-metallic-600">Payment Receipt</span>
-                <a href={order.receipt_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary-600 hover:underline">
-                  View receipt
+                <a href={order.receipt_url} target="_blank" rel="noopener noreferrer" title="View full receipt">
+                  <img
+                    src={order.receipt_url}
+                    alt="Payment receipt"
+                    className="w-20 h-20 object-cover rounded-lg border border-metallic-200 hover:opacity-80 transition-opacity"
+                  />
                 </a>
               </div>
             )}
@@ -250,21 +265,26 @@ export const OrderTrackingPage = () => {
   const [searchParams] = useSearchParams();
   const orderParam = searchParams.get('order');
   const [mode, setMode] = useState<'order' | 'product'>('order');
-  const [orderNumber, setOrderNumber] = useState(() => orderParam ?? '');
+  const [orderNumber, setOrderNumber] = useState(() => orderParam ?? getStoredOrderInfo()?.orderNumber ?? '');
   const [productNumber, setProductNumber] = useState('');
-  const [contactEmail, setContactEmail] = useState(isAuthenticated ? user?.email || '' : '');
+  const [contactEmail, setContactEmail] = useState(
+    () => isAuthenticated ? user?.email || '' : (getStoredOrderInfo()?.email || '')
+  );
   const [order, setOrder] = useState<Order | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Auto-search when arriving with ?order=... (e.g. from order history).
+  // Auto-search when arriving with ?order=... (e.g. from order history or
+  // the checkout confirmation). Guests use the email stored at checkout.
   useEffect(() => {
-    if (!orderParam || !user?.email) return;
+    if (!orderParam) return;
+    const email = user?.email || getStoredOrderInfo()?.email;
+    if (!email) return;
 
     let cancelled = false;
     ordersService
-      .trackOrder(orderParam, user.email)
+      .trackOrder(orderParam, email)
       .then((foundOrder) => {
         if (cancelled) return;
         if (foundOrder) {
@@ -284,7 +304,7 @@ export const OrderTrackingPage = () => {
     };
   }, [orderParam, user?.email]);
 
-  const needsEmailToAutoSearch = orderParam !== null && !user?.email;
+  const needsEmailToAutoSearch = orderParam !== null && !user?.email && !getStoredOrderInfo()?.email;
 
   const switchMode = (next: 'order' | 'product') => {
     setMode(next);
