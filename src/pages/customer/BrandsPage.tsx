@@ -145,7 +145,7 @@ export const BrandsPage = () => {
             </h2>
             <p className="text-metallic-300 text-sm lg:text-base leading-relaxed mb-6">
               We stock genuine and OEM-equivalent parts for all major Japanese and Korean manufacturers.
-              From Toyota to Hyundai, Honda to Kia, we have the parts you need to keep your vehicle running smoothly.
+              From Toyota to Hyundai, Mitsubishi to Acura, we have the parts you need to keep your vehicle running smoothly.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link

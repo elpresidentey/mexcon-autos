@@ -110,28 +110,19 @@ export const isAdminUser = (
   user: import('./database.types').AdminUser | import('./database.types').Customer | null,
 ): user is import('./database.types').AdminUser => !!user && 'role' in user;
 
-// Japanese manufacturers
+// Japanese manufacturers we stock
 export const JAPANESE_MANUFACTURERS = [
   'Toyota',
   'Lexus',
-  'Honda',
-  'Acura',
   'Nissan',
-  'Infiniti',
-  'Mazda',
   'Mitsubishi',
-  'Subaru',
-  'Suzuki',
-  'Isuzu',
-  'Daihatsu',
+  'Acura',
 ] as const;
 
-// South Korean manufacturers
+// South Korean manufacturers we stock
 export const KOREAN_MANUFACTURERS = [
   'Hyundai',
   'Kia',
-  'Genesis',
-  'KG Mobility (SsangYong)',
 ] as const;
 
 export const ALL_MANUFACTURERS = [

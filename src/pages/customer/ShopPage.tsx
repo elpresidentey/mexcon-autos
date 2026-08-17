@@ -187,10 +187,9 @@ export const ShopPage = () => {
     }
   };
 
-  // Popular Japanese & Korean brands shown as quick-filter chips
+  // Popular brands we stock shown as quick-filter chips
   const popularBrandNames = [
-    'Toyota', 'Honda', 'Nissan', 'Mitsubishi', 'Mazda', 'Subaru', 'Suzuki',
-    'Hyundai', 'Kia', 'Genesis',
+    'Lexus', 'Toyota', 'Mitsubishi', 'Nissan', 'Acura', 'Kia', 'Hyundai',
   ];
   const popularBrands = popularBrandNames
     .map((name) => brands.find((b) => b.name === name))

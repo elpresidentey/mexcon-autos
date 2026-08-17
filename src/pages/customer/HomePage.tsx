@@ -46,7 +46,7 @@ const fallbackSlides: HeroSlide[] = [
     title: 'Genuine Japanese',
     accent: '& Korean Parts',
     subtitle:
-      'OEM-quality parts for Toyota, Honda, Hyundai, Kia and more — fair pricing, nationwide delivery, quotes in 24 hours.',
+      'OEM-quality parts for Lexus, Toyota, Mitsubishi, Nissan, Acura, Kia and Hyundai — fair pricing, nationwide delivery, quotes in 24 hours.',
     ctaText: 'Browse Catalog',
     ctaLink: '/shop',
   },
@@ -83,7 +83,7 @@ const testimonials = [
   {
     name: 'Aisha B.',
     role: 'Car Owner, Abuja',
-    quote: 'They helped me source a radiator for my Honda CR-V that I had been searching for months. Excellent communication throughout.',
+    quote: 'They helped me source a water pump for my Toyota Camry that I had been searching for months. Excellent communication throughout.',
   },
   {
     name: 'Chinedu N.',
@@ -326,7 +326,7 @@ export const HomePage = () => {
         description="Mexcon Autos supplies genuine Japanese and Korean auto spare parts in Nigeria. Search by vehicle, browse categories and request quotes within 24 hours."
         canonicalPath="/"
         image="/og-image.png"
-        keywords="auto spare parts Nigeria, Japanese car parts, Korean car parts, Toyota parts, Honda parts, Hyundai parts, Kia parts, OEM auto parts, Mexcon Autos"
+        keywords="auto spare parts Nigeria, Japanese car parts, Korean car parts, Toyota parts, Lexus parts, Nissan parts, Mitsubishi parts, Hyundai parts, Kia parts, Acura parts, OEM auto parts, Mexcon Autos"
         jsonLd={[
           organizationJsonLd({
             phone: '+2349035777779',

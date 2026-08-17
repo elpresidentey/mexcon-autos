@@ -30,8 +30,7 @@ export const Footer = () => {
   ];
 
   const manufacturers = [
-    'Toyota', 'Honda', 'Nissan', 'Mazda',
-    'Hyundai', 'Kia', 'Lexus', 'Genesis',
+    'Lexus', 'Toyota', 'Mitsubishi', 'Nissan', 'Acura', 'Kia', 'Hyundai',
   ];
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {

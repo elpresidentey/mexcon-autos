@@ -1,5 +1,6 @@
 // Hierarchical vehicle data for the vehicle-based search (Req 3)
 // manufacturer -> models -> years -> engine types
+// Limited to the brands we stock: Lexus, Toyota, Mitsubishi, Nissan, Acura, Kia, Hyundai
 
 export interface VehicleModel {
   name: string;
@@ -29,14 +30,13 @@ export const VEHICLES: VehicleManufacturer[] = [
     ],
   },
   {
-    name: 'Honda',
+    name: 'Lexus',
     models: [
-      { name: 'Accord', years: [1994, 1998, 2003, 2008, 2013, 2017, 2021], engineTypes: ['2.2L F22B', '2.4L K24', '3.0L J30A', '3.5L J35Y'] },
-      { name: 'Civic', years: [1996, 2000, 2005, 2010, 2015, 2018, 2021], engineTypes: ['1.5L D15B', '1.8L R18A', '2.0L K20', '1.5L L15B Turbo'] },
-      { name: 'CR-V', years: [1997, 2002, 2006, 2010, 2015, 2018, 2021], engineTypes: ['2.0L B20', '2.4L K24', '1.5L L15B Turbo'] },
-      { name: 'Pilot', years: [2003, 2006, 2010, 2013, 2016, 2019], engineTypes: ['3.5L J35A', '3.5L J35Y'] },
-      { name: 'Odyssey', years: [1995, 2000, 2004, 2008, 2012, 2016, 2019], engineTypes: ['2.2L F22B', '3.5L J35A'] },
-      { name: 'Fit / Jazz', years: [2002, 2007, 2011, 2014, 2018, 2020], engineTypes: ['1.3L L13A', '1.5L L15A', '1.5L L15B'] },
+      { name: 'RX350', years: [2004, 2008, 2010, 2013, 2016, 2020], engineTypes: ['3.5L 2GR-FE', '3.5L 2GR-FKS'] },
+      { name: 'ES350', years: [2007, 2010, 2013, 2016, 2019, 2021], engineTypes: ['3.5L 2GR-FE', '3.5L 2GR-FKS'] },
+      { name: 'GX460', years: [2010, 2014, 2018, 2021], engineTypes: ['4.6L 1UR-FE'] },
+      { name: 'LX570', years: [2008, 2013, 2016, 2021], engineTypes: ['5.7L 3UR-FE'] },
+      { name: 'NX300', years: [2015, 2018, 2021], engineTypes: ['2.0L 8AR-FTS Turbo'] },
     ],
   },
   {
@@ -51,16 +51,6 @@ export const VEHICLES: VehicleManufacturer[] = [
     ],
   },
   {
-    name: 'Mazda',
-    models: [
-      { name: 'Mazda 3', years: [2004, 2008, 2011, 2014, 2017, 2020], engineTypes: ['2.0L LF', '2.3L L3', '2.5L PY'] },
-      { name: 'Mazda 6', years: [2003, 2006, 2009, 2012, 2014, 2017, 2020], engineTypes: ['2.0L L8', '2.3L L3', '2.5L PY'] },
-      { name: 'CX-5', years: [2012, 2015, 2017, 2019, 2021], engineTypes: ['2.0L PE', '2.5L PY', '2.2L SH-VPTS Diesel'] },
-      { name: 'CX-9', years: [2007, 2010, 2013, 2016, 2019, 2021], engineTypes: ['3.7L MZI', '2.5L PY Turbo'] },
-      { name: 'Demio / Mazda 2', years: [2003, 2007, 2010, 2014, 2017, 2020], engineTypes: ['1.3L ZJ', '1.5L ZY', '1.5L P5'] },
-    ],
-  },
-  {
     name: 'Mitsubishi',
     models: [
       { name: 'Lancer', years: [2001, 2005, 2008, 2012, 2015, 2017], engineTypes: ['1.6L 4G18', '2.0L 4B11', '2.4L 4B12'] },
@@ -71,38 +61,12 @@ export const VEHICLES: VehicleManufacturer[] = [
     ],
   },
   {
-    name: 'Subaru',
+    name: 'Acura',
     models: [
-      { name: 'Impreza', years: [1998, 2002, 2006, 2010, 2014, 2017, 2020], engineTypes: ['2.0L EJ20', '2.5L EJ25', '2.0L FB20'] },
-      { name: 'Forester', years: [1998, 2002, 2005, 2009, 2013, 2016, 2019], engineTypes: ['2.0L EJ20', '2.5L EJ25', '2.5L FB25'] },
-      { name: 'Outback', years: [1999, 2003, 2006, 2010, 2013, 2016, 2019], engineTypes: ['2.5L EJ25', '3.6L EZ36'] },
-      { name: 'Legacy', years: [1999, 2003, 2006, 2010, 2013, 2016, 2019], engineTypes: ['2.5L EJ25', '3.6L EZ36'] },
-      { name: 'XV Crosstrek', years: [2013, 2015, 2018, 2020], engineTypes: ['2.0L FB20', '2.5L FB25'] },
-    ],
-  },
-  {
-    name: 'Suzuki',
-    models: [
-      { name: 'Swift', years: [2005, 2008, 2011, 2014, 2017, 2020], engineTypes: ['1.3L M13A', '1.5L M15A', '1.2L K12M'] },
-      { name: 'Vitara', years: [2005, 2008, 2011, 2015, 2017, 2020], engineTypes: ['1.6L M16A', '1.4L K14C Turbo'] },
-      { name: 'Jimny', years: [1998, 2004, 2008, 2012, 2018, 2021], engineTypes: ['1.3L M13A', '1.5L K15B'] },
-      { name: 'Grand Vitara', years: [2000, 2005, 2008, 2012, 2015], engineTypes: ['2.0L J20A', '2.4L J24B'] },
-    ],
-  },
-  {
-    name: 'Isuzu',
-    models: [
-      { name: 'D-Max', years: [2002, 2008, 2012, 2016, 2019, 2021], engineTypes: ['2.5L 4JA1 Diesel', '3.0L 4JJ1 Diesel', '1.9L RZ4E Diesel'] },
-      { name: 'Trooper', years: [1995, 1999, 2002, 2004], engineTypes: ['3.1L 4JG2 Diesel', '3.5L 6VE1'] },
-      { name: 'MU-7', years: [2005, 2008, 2012], engineTypes: ['3.0L 4JJ1 Diesel'] },
-    ],
-  },
-  {
-    name: 'Daihatsu',
-    models: [
-      { name: 'Terios', years: [1998, 2002, 2006, 2008, 2012, 2016], engineTypes: ['1.3L K3-VE', '1.5L 3SZ-VE'] },
-      { name: 'Mira / Cuore', years: [1998, 2002, 2006, 2009, 2013, 2018], engineTypes: ['0.66L EF', '0.66L KF'] },
-      { name: 'Move', years: [1998, 2002, 2006, 2010, 2014, 2018], engineTypes: ['0.66L EF', '0.66L KF'] },
+      { name: 'MDX', years: [2001, 2004, 2008, 2010, 2014, 2017, 2020], engineTypes: ['3.5L J35A', '3.5L J35Y', '3.0L J30Y'] },
+      { name: 'TLX', years: [2015, 2018, 2021], engineTypes: ['2.4L K24W', '3.5L J35Y', '2.0L K20C Turbo'] },
+      { name: 'RDX', years: [2007, 2010, 2013, 2016, 2019], engineTypes: ['2.3L K23A', '2.0L K20C Turbo'] },
+      { name: 'TSX', years: [2004, 2007, 2010, 2012], engineTypes: ['2.4L K24A'] },
     ],
   },
   {
@@ -125,22 +89,6 @@ export const VEHICLES: VehicleManufacturer[] = [
       { name: 'Sorento', years: [2003, 2006, 2009, 2012, 2015, 2018, 2020], engineTypes: ['2.4L G4JS', '3.3L G6DB', '2.2L D4HB Diesel'] },
       { name: 'Picanto', years: [2004, 2008, 2011, 2014, 2017, 2020], engineTypes: ['1.0L G4HE', '1.2L G4LA'] },
       { name: 'Grand Carnival', years: [2006, 2009, 2012, 2015, 2018, 2020], engineTypes: ['2.2L D4HB Diesel', '3.3L G6DC'] },
-    ],
-  },
-  {
-    name: 'Genesis',
-    models: [
-      { name: 'Genesis G80', years: [2017, 2019, 2021], engineTypes: ['3.8L G6DN', '3.3L G6DP Turbo'] },
-      { name: 'Genesis GV80', years: [2021], engineTypes: ['3.5L G6DP Turbo'] },
-    ],
-  },
-  {
-    name: 'KG Mobility (SsangYong)',
-    models: [
-      { name: 'Rexton', years: [2003, 2008, 2012, 2014, 2017, 2020], engineTypes: ['2.7L D27DT Diesel', '2.2L D22DTR Diesel'] },
-      { name: 'Korando', years: [2011, 2014, 2017, 2020], engineTypes: ['2.0L D20DTF Diesel', '1.5L G15T Turbo'] },
-      { name: 'Tivoli', years: [2015, 2017, 2019, 2021], engineTypes: ['1.6L G16D', '1.6L D16T Diesel'] },
-      { name: 'Musso', years: [2018, 2020], engineTypes: ['2.2L D22DTR Diesel'] },
     ],
   },
 ];
