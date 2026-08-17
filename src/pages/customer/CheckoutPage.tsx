@@ -579,6 +579,49 @@ export const CheckoutPage = () => {
                   </label>
                 </div>
 
+                {/* Bank Transfer Account Details */}
+                {paymentMethod === 'bank_transfer' && (
+                  <div className="bg-white rounded-xl border border-primary-200 p-4">
+                    <div className="flex items-center gap-2 mb-1">
+                      <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                      </svg>
+                      <h3 className="font-bold text-ink">Transfer To Any Of These Accounts</h3>
+                    </div>
+                    <p className="text-sm text-metallic-600 mb-4">
+                      Transfer the total amount to either account below, then we'll confirm your order.
+                    </p>
+                    <div className="space-y-3">
+                      {[
+                        { bank: 'Opay', number: '9035777779', name: 'Olisaemeka Okafor' },
+                        { bank: 'Access Bank', number: '1516838947', name: 'Mexcon Auto Resources' },
+                      ].map((account) => (
+                        <div key={account.number} className="flex items-center justify-between gap-4 p-3 rounded-lg border border-metallic-200 bg-metallic-50">
+                          <div>
+                            <p className="text-sm font-bold text-ink">{account.bank}</p>
+                            <p className="font-mono text-lg font-black text-ink tracking-wider">{account.number}</p>
+                            <p className="text-xs text-metallic-600">{account.name}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              try {
+                                await navigator.clipboard.writeText(account.number);
+                                toast.success(`${account.number} copied`);
+                              } catch {
+                                toast.error('Could not copy account number');
+                              }
+                            }}
+                            className="text-primary-600 text-sm font-semibold hover:underline flex-shrink-0"
+                          >
+                            Copy
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Order Summary */}
                 <div className="mt-6 p-4 bg-white rounded-xl border border-metallic-200">
                   <h3 className="font-display font-bold uppercase tracking-wide text-ink mb-3">Order Summary</h3>
