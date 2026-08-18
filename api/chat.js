@@ -55,7 +55,7 @@ const SYSTEM_PROMPT = [
 // ---------------------------------------------------------------------------
 
 async function callGemini(contents, functions) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(GEMINI_KEY)}`;
   const body = {
     contents,
     systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
@@ -281,7 +281,10 @@ export default async function handler(req, res) {
 
       contents.push({
         role: 'model',
-        parts: calls.map((c) => ({ functionCall: c.functionCall })),
+        parts: calls.map((c) => ({
+          functionCall: c.functionCall,
+          ...(c.thoughtSignature ? { thoughtSignature: c.thoughtSignature } : {}),
+        })),
       });
 
       const toolResponses = await Promise.all(
