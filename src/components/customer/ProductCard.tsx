@@ -15,6 +15,13 @@ interface ProductCardProps {
 
 const formatNaira = (amount: number) => `₦${amount.toLocaleString()}`;
 
+const stockLabel = (status?: Product['stock_status']) => {
+  if (status === 'low_stock') return { text: 'Low stock', className: 'bg-accent-500 text-black' };
+  if (status === 'out_of_stock') return { text: 'Out of stock', className: 'bg-black/75 text-white' };
+  if (status === 'pre_order') return { text: 'Pre-order', className: 'bg-primary-600 text-white' };
+  return null;
+};
+
 export const ProductCard = ({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
@@ -32,11 +39,13 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const [brandLogoFailed, setBrandLogoFailed] = useState(false);
   const effectiveBrandLogo = !brandLogoFailed ? brandLogo : null;
   const effectivePrimary = primaryImage || placeholderImage;
+  const stock = stockLabel(product.stock_status);
+  const canAdd = product.stock_status !== 'out_of_stock';
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isAdding) return;
+    if (isAdding || !canAdd) return;
     setIsAdding(true);
     try {
       await addToCart(product);
@@ -50,9 +59,8 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Link
       to={`/products/${product.id}`}
-      className="group relative block card card-hover hover:ring-primary-500/60"
+      className="group relative flex flex-col card card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
     >
-      {/* Image */}
       <div className="relative aspect-[4/3] bg-metallic-50 overflow-hidden">
         <img
           src={effectivePrimary}
@@ -73,13 +81,17 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             loading="lazy"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col items-start gap-1.5">
           {product.is_featured && (
             <span className="bg-accent-500 text-black text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md shadow-sm">
               Featured
+            </span>
+          )}
+          {stock && (
+            <span className={`${stock.className} text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md shadow-sm`}>
+              {stock.text}
             </span>
           )}
           {product.oem_number && (
@@ -89,9 +101,8 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           )}
         </div>
 
-        {/* Brand logo */}
         {effectiveBrandLogo && (
-          <span className="absolute top-3 right-3 w-9 h-9 rounded-lg bg-white/90 backdrop-blur-sm p-1.5 ring-1 ring-black/5 shadow-sm">
+          <span className="absolute top-3 right-3 w-9 h-9 rounded-lg bg-white/95 backdrop-blur-sm p-1.5 ring-1 ring-black/5 shadow-sm">
             <img
               src={effectiveBrandLogo}
               alt={product.brand?.name || ''}
@@ -103,24 +114,24 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           </span>
         )}
 
-        {/* Quick add to cart */}
-        <button
-          onClick={handleAddToCart}
-          disabled={isAdding}
-          aria-label={`Add ${product.name} to cart`}
-          title="Add to cart"
-          className="absolute bottom-3 right-3 w-10 h-10 rounded-full bg-accent-500 text-black flex items-center justify-center shadow-lg shadow-accent-500/30 opacity-100 md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 hover:bg-accent-400 active:scale-95 disabled:opacity-70"
-        >
-          {isAdding ? (
-            <span className="w-4 h-4 rounded-full border-2 border-black/30 border-t-black animate-spin" />
-          ) : (
-            <ShoppingBagIcon className="w-5 h-5" />
-          )}
-        </button>
+        {canAdd && (
+          <button
+            onClick={handleAddToCart}
+            disabled={isAdding}
+            aria-label={`Add ${product.name} to cart`}
+            title="Add to cart"
+            className="absolute bottom-3 right-3 w-10 h-10 rounded-full bg-accent-500 text-black flex items-center justify-center shadow-lg shadow-accent-500/30 opacity-100 md:opacity-0 md:translate-y-1.5 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-300 hover:bg-accent-400 active:scale-95 disabled:opacity-70"
+          >
+            {isAdding ? (
+              <span className="w-4 h-4 rounded-full border-2 border-black/30 border-t-black animate-spin" />
+            ) : (
+              <ShoppingBagIcon className="w-5 h-5" />
+            )}
+          </button>
+        )}
       </div>
 
-      {/* Body */}
-      <div className="p-4 space-y-2">
+      <div className="flex flex-1 flex-col p-4">
         <div className="flex items-center justify-between gap-2">
           <p className="text-[11px] font-semibold text-primary-700 uppercase tracking-[0.14em] truncate">
             {product.brand?.name || 'Mexcon Autos'}
@@ -132,15 +143,15 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           )}
         </div>
 
-        <h3 className="font-display text-base font-bold text-ink leading-snug line-clamp-2 group-hover:text-primary-700 transition-colors">
+        <h3 className="font-display text-base font-bold text-ink leading-snug line-clamp-2 mt-1.5 group-hover:text-primary-700 transition-colors">
           {product.name}
         </h3>
 
-        <div className="flex items-center justify-between pt-1">
-          <span className="text-lg font-black text-ink">
+        <div className="mt-auto flex items-end justify-between pt-3">
+          <span className="text-lg font-black tracking-tight text-ink">
             {formatNaira(product.price)}
           </span>
-          <span className="hidden md:inline-flex items-center text-xs font-semibold text-primary-700 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+          <span className="hidden md:inline-flex items-center text-xs font-semibold text-primary-700 opacity-0 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
             Shop now
             <ArrowRightIcon className="w-3.5 h-3.5 ml-1" />
           </span>

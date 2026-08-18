@@ -12,10 +12,14 @@ const detectInstalled = () =>
   // iOS Safari exposes `standalone` on navigator for installed PWAs
   (navigator as unknown as { standalone?: boolean }).standalone === true;
 
-const detectIOS = () =>
-  /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-  // iPadOS 13+ masquerades as Mac; require touch to still be a tablet/phone
-  ((navigator as unknown as { maxTouchPoints?: number }).maxTouchPoints || 0) > 1;
+const detectIOS = () => {
+  const ua = navigator.userAgent;
+  // iPhone / iPod / iPad (older iOS) expose their device in the UA.
+  if (/iPad|iPhone|iPod/.test(ua)) return true;
+  // iPadOS 13+ masquerades as a Mac in the UA; a touch-capable Safari
+  // engine is the reliable tell (works even when maxTouchPoints is 0/1).
+  return /Macintosh|Mac OS X/.test(ua) && 'ontouchend' in document;
+};
 
 export const useInstallPrompt = (delayMs = 3000) => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);

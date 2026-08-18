@@ -143,7 +143,7 @@ const fadeUp = {
 };
 
 const ProductCardSkeleton = () => (
-  <div className="bg-white rounded-2xl overflow-hidden ring-1 ring-black/5 shadow-sm" aria-hidden="true">
+  <div className="card" aria-hidden="true">
     <div className="aspect-[4/3] bg-metallic-100 animate-pulse" />
     <div className="p-4 space-y-2.5">
       <div className="h-2.5 w-1/3 bg-metallic-100 animate-pulse rounded-full" />

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import type { Brand } from '../../types';
 import { getBrandLogo } from './brandLogos';
 
@@ -13,19 +14,20 @@ interface BrandCardProps {
 export const BrandCard = ({ brand, variant = 'default' }: BrandCardProps) => {
   const [logoFailed, setLogoFailed] = useState(false);
   const logoUrl = !logoFailed && (brand.logo_url || getBrandLogo(brand.slug));
+  const count = brand.product_count || 0;
 
   if (variant === 'compact') {
     return (
       <Link
         to={`/brands/${brand.slug}`}
-        className="group card card-hover flex flex-col items-center justify-center gap-2 p-4 hover:ring-primary-500/50"
+        className="group card card-hover flex flex-col items-center justify-center gap-2.5 px-3 py-5 min-h-[7.5rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         title={brand.name}
       >
         {logoUrl ? (
           <img
             src={logoUrl}
             alt={brand.name}
-            className="max-h-10 max-w-full object-contain opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+            className="h-10 max-w-[4.5rem] object-contain opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
             loading="lazy"
             decoding="async"
             onError={() => setLogoFailed(true)}
@@ -36,7 +38,7 @@ export const BrandCard = ({ brand, variant = 'default' }: BrandCardProps) => {
           </span>
         )}
         {logoUrl && (
-          <span className="text-xs font-medium text-metallic-500 group-hover:text-primary-700 text-center leading-tight">
+          <span className="text-[11px] font-semibold text-metallic-500 group-hover:text-primary-700 text-center leading-tight tracking-wide uppercase">
             {brand.name}
           </span>
         )}
@@ -47,14 +49,14 @@ export const BrandCard = ({ brand, variant = 'default' }: BrandCardProps) => {
   return (
     <Link
       to={`/brands/${brand.slug}`}
-      className="group block card card-hover hover:ring-primary-500/50 overflow-hidden"
+      className="group flex flex-col card card-hover overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
     >
-      <div className="relative aspect-[4/3] bg-metallic-50 flex items-center justify-center p-6 border-b border-metallic-100/70">
+      <div className="relative aspect-[4/3] bg-metallic-50 flex items-center justify-center p-8 border-b border-metallic-100">
         {logoUrl ? (
           <img
             src={logoUrl}
             alt={brand.name}
-            className="max-w-full max-h-full object-contain opacity-90 transition-transform duration-300 group-hover:scale-[1.04]"
+            className="max-w-[70%] max-h-[70%] object-contain opacity-90 transition-transform duration-300 group-hover:scale-[1.06]"
             loading="lazy"
             decoding="async"
             onError={() => setLogoFailed(true)}
@@ -66,27 +68,33 @@ export const BrandCard = ({ brand, variant = 'default' }: BrandCardProps) => {
         )}
       </div>
 
-      <div className="p-5">
-        <div className="flex items-center justify-between gap-2">
-          <h3 className="font-display text-lg font-bold text-ink tracking-wide uppercase group-hover:text-primary-700 transition-colors">
-            {brand.name}
-          </h3>
-          <span className="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-1 rounded-md">
-            {brand.product_count || 0}
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="font-display text-lg font-bold text-ink tracking-wide uppercase group-hover:text-primary-700 transition-colors">
+              {brand.name}
+            </h3>
+            {brand.country && (
+              <p className="text-[11px] font-semibold text-metallic-400 uppercase tracking-[0.14em] mt-1">
+                {brand.country}
+              </p>
+            )}
+          </div>
+          <span className="shrink-0 text-[11px] font-semibold text-primary-700 bg-primary-50 px-2 py-1 rounded-md">
+            {count} {count === 1 ? 'part' : 'parts'}
           </span>
         </div>
 
-        {brand.country && (
-          <p className="text-sm font-medium text-metallic-500 uppercase tracking-wider mt-2">
-            {brand.country}
-          </p>
-        )}
-
         {brand.description && (
-          <p className="text-sm text-metallic-600 line-clamp-2 mt-2">
+          <p className="text-sm text-metallic-600 line-clamp-2 mt-2.5">
             {brand.description}
           </p>
         )}
+
+        <span className="mt-auto pt-4 inline-flex items-center text-xs font-semibold text-primary-700 opacity-0 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+          Shop brand
+          <ArrowRightIcon className="w-3.5 h-3.5 ml-1" />
+        </span>
       </div>
     </Link>
   );
