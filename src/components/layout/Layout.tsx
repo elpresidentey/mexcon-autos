@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { WhatsAppButton } from '../customer/WhatsAppButton';
+import { ChatWidget } from '../customer/ChatWidget';
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,6 +15,7 @@ export const Layout = ({ children }: LayoutProps) => {
       <main className="flex-grow bg-white">{children}</main>
       <Footer />
       <WhatsAppButton />
+      <ChatWidget />
     </div>
   );
 };
