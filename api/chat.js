@@ -86,8 +86,8 @@ async function callGemini(contents, functions) {
 // Supabase catalog lookups (public, RLS-readable tables)
 // ---------------------------------------------------------------------------
 
-async function catalogQuery(select, extra = '') {
-  const url = `${SUPABASE_URL}/rest/v1/${select}${extra}`;
+async function catalogQuery(path, extra = '') {
+  const url = `${SUPABASE_URL}/rest/v1/${path}${extra}`;
   const res = await fetch(url, {
     headers: {
       apikey: SUPABASE_KEY,
@@ -165,10 +165,7 @@ async function searchInventory(query) {
 }
 
 async function listCategories() {
-  const raw = await catalogQuery(
-    'categories',
-    '?select=name,slug,description&is_active=eq.true&order=order_index.asc'
-  );
+  const raw = await catalogQuery('categories', '?select=name,slug,description&is_active=eq.true&order=order_index.asc');
   return { categories: raw };
 }
 
