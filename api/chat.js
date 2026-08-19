@@ -305,7 +305,14 @@ export default async function handler(req, res) {
     res.end(JSON.stringify({ reply }));
   } catch (err) {
     console.error('chat error:', err.message);
-    res.statusCode = 500;
-    res.end(JSON.stringify({ error: 'Sorry, something went wrong. Please try again or WhatsApp +234 903 577 7779.' }));
+    const quotaHit = /429|RESOURCE_EXHAUSTED|quota|rate.?limit/i.test(err.message || '');
+    res.statusCode = quotaHit ? 429 : 500;
+    res.end(
+      JSON.stringify({
+        error: quotaHit
+          ? 'Our AI assistant has reached its daily usage limit for today. Please message us on WhatsApp (+234 903 577 7779) or use the quote form — we reply within 24 hours.'
+          : 'Sorry, something went wrong. Please try again or WhatsApp +234 903 577 7779.',
+      })
+    );
   }
 }
