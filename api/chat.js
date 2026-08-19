@@ -1,16 +1,17 @@
 // Mexcon Autos parts assistant — serverless chat endpoint (Vercel function).
 //
-// Flow: browser sends the conversation -> this function calls Google Gemini
-// with function calling -> Gemini asks for inventory/catalog lookups ->
-// we query Supabase and feed results back -> Gemini writes the final answer.
+// Flow: browser sends the conversation -> this function calls an
+// OpenAI-compatible model (NVIDIA NIM by default) with tool calling ->
+// the model asks for inventory/catalog lookups -> we query Supabase and
+// feed results back -> the model writes the final answer.
 //
-// The Gemini key lives only on the server (GEMINI_API_KEY), never in the
-// browser bundle.
+// Secrets live only on the server (AI_API_KEY), never in the browser bundle.
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || '';
 const SUPABASE_KEY = process.env.VITE_SUPABASE_ANON_KEY || '';
-const GEMINI_KEY = process.env.GEMINI_API_KEY || '';
-const MODEL = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
+const AI_KEY = process.env.AI_API_KEY || process.env.NVIDIA_API_KEY || '';
+const AI_BASE = (process.env.AI_BASE_URL || 'https://integrate.api.nvidia.com/v1').replace(/\/$/, '');
+const MODEL = process.env.AI_MODEL || 'nvidia/llama-3.3-nemotron-super-49b-v1';
 
 const COMPANY = {
   name: 'Mexcon Autos',
@@ -47,39 +48,56 @@ const SYSTEM_PROMPT = [
   `- Give the exact part_number and OEM number when citing a product, and prices in Naira (NGN).`,
   `- Be honest about availability. Prices and stock change; recommend the shop (${COMPANY.website}/shop) or WhatsApp to confirm.`,
   ``,
-  `Style: concise, warm, plain language. Short paragraphs or a small bulleted list. Keep answers under ~160 words unless the customer asks for detail.`,
+  `Style: concise, warm, plain language. Short paragraphs or a small bulleted list. Keep answers under ~160 words unless the customer asks for detail. Never mention your model or provider.`,
 ].join('\n');
 
 // ---------------------------------------------------------------------------
-// Gemini helpers (REST, no SDK dependency)
+// LLM helper: OpenAI-compatible chat completions (NVIDIA NIM by default)
 // ---------------------------------------------------------------------------
 
-async function callGemini(contents, functions) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(GEMINI_KEY)}`;
-  const body = {
-    contents,
-    systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-    tools: [{ functionDeclarations: functions }],
-    toolConfig: { functionCallingConfig: { mode: 'AUTO' } },
-    generationConfig: { temperature: 0.3, maxOutputTokens: 900 },
+async function callLLM(messages, tools) {
+  const payload = {
+    model: MODEL,
+    messages,
+    tools: tools.map((t) => ({
+      type: 'function',
+      function: { name: t.name, description: t.description, parameters: t.parameters },
+    })),
+    tool_choice: 'auto',
+    temperature: 0.3,
+    max_tokens: 900,
   };
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    let detail = '';
+  let lastErr = null;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    if (attempt > 0) await new Promise((r) => setTimeout(r, 1500));
     try {
-      detail = JSON.stringify((await res.json()).error || {});
-    } catch {
-      /* ignore */
+      const res = await fetch(`${AI_BASE}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${AI_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        let detail = '';
+        try {
+          detail = JSON.stringify((await res.json()).error || {});
+        } catch {
+          /* ignore */
+        }
+        // Retry once on 5xx (transient platform blips), not on 4xx.
+        if (res.status >= 500) { lastErr = `LLM ${res.status}: ${detail}`; continue; }
+        throw new Error(`LLM ${res.status}: ${detail}`);
+      }
+      const data = await res.json();
+      const message = data?.choices?.[0]?.message || {};
+      return { message };
+    } catch (err) {
+      lastErr = err.message;
     }
-    throw new Error(`Gemini ${res.status}: ${detail}`);
   }
-  const data = await res.json();
-  const parts = data?.candidates?.[0]?.content?.parts || [];
-  return { parts, finishReason: data?.candidates?.[0]?.finishReason };
+  throw new Error(lastErr || 'LLM request failed');
 }
 
 // ---------------------------------------------------------------------------
@@ -184,9 +202,9 @@ const TOOLS = [
     description:
       'Search the Mexcon Autos in-stock catalog by any keyword: part name, part number, OEM number, brand, category or compatible vehicle/model. Returns up to 6 matching products with price and part numbers.',
     parameters: {
-      type: 'OBJECT',
+      type: 'object',
       properties: {
-        query: { type: 'STRING', description: 'The product or vehicle the customer is asking about, e.g. "Corolla water pump", "16100-29065", "Hyundai" or "Lexus RX350".' },
+        query: { type: 'string', description: 'The product or vehicle the customer is asking about, e.g. "Corolla water pump", "16100-29065", "Hyundai" or "Lexus RX350".' },
       },
       required: ['query'],
     },
@@ -194,12 +212,12 @@ const TOOLS = [
   {
     name: 'list_categories',
     description: 'List the part categories Mexcon Autos currently stocks (e.g. Water Pumps, Fuel Pumps).',
-    parameters: { type: 'OBJECT', properties: {} },
+    parameters: { type: 'object', properties: {} },
   },
   {
     name: 'list_brands',
     description: 'List the car brands Mexcon Autos currently stocks (Lexus, Toyota, Mitsubishi, Nissan, Acura, Kia, Hyundai).',
-    parameters: { type: 'OBJECT', properties: {} },
+    parameters: { type: 'object', properties: {} },
   },
 ];
 
@@ -226,8 +244,8 @@ function sanitizeMessages(raw) {
     .filter((m) => m && (m.role === 'user' || m.role === 'model' || m.role === 'assistant') && typeof m.text === 'string')
     .slice(-12)
     .map((m) => ({
-      role: m.role === 'assistant' ? 'model' : m.role,
-      text: m.text.slice(0, 2000),
+      role: m.role === 'model' ? 'assistant' : m.role,
+      content: m.text.slice(0, 2000),
     }));
 }
 
@@ -243,7 +261,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  if (!GEMINI_KEY) {
+  if (!AI_KEY) {
     res.statusCode = 503;
     res.end(JSON.stringify({ error: 'Assistant is not configured yet.' }));
     return;
@@ -258,43 +276,42 @@ export default async function handler(req, res) {
     return;
   }
 
-  const messages = sanitizeMessages(body.messages);
-  if (!messages.length) {
+  const history = sanitizeMessages(body.messages);
+  if (!history.length) {
     res.statusCode = 400;
     res.end(JSON.stringify({ error: 'No messages provided.' }));
     return;
   }
 
   try {
-    const contents = messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] }));
+    const messages = [{ role: 'system', content: SYSTEM_PROMPT }, ...history];
 
     let reply = null;
     for (let round = 0; round < 5 && reply === null; round++) {
-      const { parts } = await callGemini(contents, TOOLS);
-      const calls = parts.filter((p) => p.functionCall);
+      const { message } = await callLLM(messages, TOOLS);
+      const calls = Array.isArray(message.tool_calls) ? message.tool_calls : [];
 
-      if (calls.length === 0) {
-        reply = parts.map((p) => p.text || '').join('').trim();
-        if (!reply) throw new Error('Gemini returned an empty answer.');
+      if (!calls.length) {
+        reply = (message.content || '').trim();
+        if (!reply) throw new Error('Model returned an empty answer.');
         break;
       }
 
-      contents.push({
-        role: 'model',
-        parts: calls.map((c) => ({
-          functionCall: c.functionCall,
-          ...(c.thoughtSignature ? { thoughtSignature: c.thoughtSignature } : {}),
-        })),
-      });
-
-      const toolResponses = await Promise.all(
-        calls.map(async (c) => {
-          const { name, args } = c.functionCall;
-          const result = await executeTool(name, args || {});
-          return { name, response: { name, content: JSON.stringify(result) } };
-        })
-      );
-      contents.push({ role: 'user', parts: toolResponses.map((r) => ({ functionResponse: r })) });
+      messages.push({ role: 'assistant', content: message.content || null, tool_calls: calls });
+      for (const call of calls) {
+        let args = {};
+        try {
+          args = JSON.parse(call.function.arguments || '{}');
+        } catch {
+          /* malformed args (rare) — let the model fix itself */
+        }
+        const result = await executeTool(call.function.name, args);
+        messages.push({
+          role: 'tool',
+          tool_call_id: call.id,
+          content: JSON.stringify(result),
+        });
+      }
     }
 
     if (reply === null) {
@@ -305,12 +322,12 @@ export default async function handler(req, res) {
     res.end(JSON.stringify({ reply }));
   } catch (err) {
     console.error('chat error:', err.message);
-    const quotaHit = /429|RESOURCE_EXHAUSTED|quota|rate.?limit/i.test(err.message || '');
-    res.statusCode = quotaHit ? 429 : 500;
+    const creditIssue = /429|402|quota|credit|rate.?limit|insufficient/i.test(err.message || '');
+    res.statusCode = creditIssue ? 429 : 500;
     res.end(
       JSON.stringify({
-        error: quotaHit
-          ? 'Our AI assistant has reached its daily usage limit for today. Please message us on WhatsApp (+234 903 577 7779) or use the quote form — we reply within 24 hours.'
+        error: creditIssue
+          ? 'Our AI assistant is temporarily unavailable (usage limit reached). Please message us on WhatsApp (+234 903 577 7779) or use the quote form — we reply within 24 hours.'
           : 'Sorry, something went wrong. Please try again or WhatsApp +234 903 577 7779.',
       })
     );
