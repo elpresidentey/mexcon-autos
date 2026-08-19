@@ -38,7 +38,7 @@ const SYSTEM_PROMPT = [
   `- Payment methods: bank transfer, card (Visa, Mastercard, Verve) and pay-on-delivery in select cities (Lagos, Abuja, Port Harcourt, Ibadan).`,
   `- 30-day returns for unused, unopened parts that don't fit or are defective.`,
   `- Most parts carry a 3-12 month manufacturer warranty (see the product page).`,
-  `- We currently stock only these brands: Lexus, Toyota, Mitsubishi, Nissan, Acura, Kia, Hyundai.`,
+  `- We currently stock only these brands: Lexus, Toyota, Honda, Mitsubishi, Nissan, Acura, Kia, Hyundai.`,
   `- If a part is not in stock we can still source it — a quote request gets a reply within 24 hours.`,
   ``,
   `Inventory rules (MOST IMPORTANT):`,
@@ -67,9 +67,10 @@ async function callLLM(messages, tools) {
     temperature: 0.3,
     max_tokens: 900,
   };
+  const backoffs = [900, 2300];
   let lastErr = null;
-  for (let attempt = 0; attempt < 2; attempt++) {
-    if (attempt > 0) await new Promise((r) => setTimeout(r, 1500));
+  for (let attempt = 0; attempt <= backoffs.length; attempt++) {
+    if (attempt > 0) await new Promise((r) => setTimeout(r, backoffs[attempt - 1] + Math.floor(Math.random() * 400)));
     try {
       const res = await fetch(`${AI_BASE}/chat/completions`, {
         method: 'POST',
@@ -86,7 +87,7 @@ async function callLLM(messages, tools) {
         } catch {
           /* ignore */
         }
-        // Retry once on 5xx (transient platform blips), not on 4xx.
+        // Retry on 5xx (transient platform blips), not on 4xx.
         if (res.status >= 500) { lastErr = `LLM ${res.status}: ${detail}`; continue; }
         throw new Error(`LLM ${res.status}: ${detail}`);
       }
@@ -216,7 +217,7 @@ const TOOLS = [
   },
   {
     name: 'list_brands',
-    description: 'List the car brands Mexcon Autos currently stocks (Lexus, Toyota, Mitsubishi, Nissan, Acura, Kia, Hyundai).',
+    description: 'List the car brands Mexcon Autos currently stocks (Lexus, Toyota, Honda, Mitsubishi, Nissan, Acura, Kia, Hyundai).',
     parameters: { type: 'object', properties: {} },
   },
 ];

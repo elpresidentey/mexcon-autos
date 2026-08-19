@@ -189,7 +189,7 @@ export const ShopPage = () => {
 
   // Popular brands we stock shown as quick-filter chips
   const popularBrandNames = [
-    'Lexus', 'Toyota', 'Mitsubishi', 'Nissan', 'Acura', 'Kia', 'Hyundai',
+    'Lexus', 'Toyota', 'Honda', 'Mitsubishi', 'Nissan', 'Acura', 'Kia', 'Hyundai',
   ];
   const popularBrands = popularBrandNames
     .map((name) => brands.find((b) => b.name === name))

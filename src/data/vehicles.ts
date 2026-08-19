@@ -1,6 +1,6 @@
 // Hierarchical vehicle data for the vehicle-based search (Req 3)
 // manufacturer -> models -> years -> engine types
-// Limited to the brands we stock: Lexus, Toyota, Mitsubishi, Nissan, Acura, Kia, Hyundai
+// Limited to the brands we stock: Lexus, Toyota, Honda, Mitsubishi, Nissan, Acura, Kia, Hyundai
 
 export interface VehicleModel {
   name: string;
@@ -48,6 +48,17 @@ export const VEHICLES: VehicleManufacturer[] = [
       { name: 'Rogue', years: [2008, 2011, 2014, 2017, 2020], engineTypes: ['2.5L QR25DE'] },
       { name: 'Patrol', years: [1998, 2004, 2008, 2010, 2016, 2019, 2021], engineTypes: ['4.2L TB42E', '4.8L TB48DE', '4.0L VQ40DE', '5.6L VK56VD'] },
       { name: 'X-Trail', years: [2001, 2004, 2008, 2013, 2017, 2020], engineTypes: ['2.0L QR20DE', '2.5L QR25DE', '2.0L M9R Diesel'] },
+    ],
+  },
+  {
+    name: 'Honda',
+    models: [
+      { name: 'Accord', years: [1998, 2003, 2008, 2010, 2013, 2016, 2019], engineTypes: ['2.0L F20B', '2.4L K24A', '3.0L J30A', '2.0L K20C Turbo'] },
+      { name: 'Civic', years: [1998, 2001, 2005, 2008, 2012, 2015, 2019], engineTypes: ['1.5L D15B', '1.8L R18A', '1.5L L15B Turbo', '2.0L K20C'] },
+      { name: 'CR-V', years: [1998, 2002, 2006, 2009, 2012, 2015, 2018], engineTypes: ['2.0L B20B', '2.4L K24A', '2.0L R20A'] },
+      { name: 'Pilot', years: [2003, 2006, 2009, 2013, 2016, 2019], engineTypes: ['3.5L J35A', '3.5L J35Y'] },
+      { name: 'HR-V', years: [2015, 2018, 2021], engineTypes: ['1.8L R18A', '1.5L L15B'] },
+      { name: 'Odyssey', years: [1999, 2003, 2006, 2009, 2012, 2015, 2018], engineTypes: ['3.0L J30A', '3.5L J35A', '3.5L J35Y'] },
     ],
   },
   {

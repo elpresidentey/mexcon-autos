@@ -114,6 +114,7 @@ export const isAdminUser = (
 export const JAPANESE_MANUFACTURERS = [
   'Toyota',
   'Lexus',
+  'Honda',
   'Nissan',
   'Mitsubishi',
   'Acura',

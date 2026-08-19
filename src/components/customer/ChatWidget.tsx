@@ -92,13 +92,30 @@ export const ChatWidget = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setLoading(true);
+
+    const post = async (attempt: number): Promise<{ reply?: string; error?: string }> => {
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: [...messages, userMessage] }),
+        });
+        if (!res.ok && res.status >= 500 && attempt < 2) {
+          await new Promise((r) => setTimeout(r, 1200));
+          return post(attempt + 1);
+        }
+        return await res.json().catch(() => ({}));
+      } catch {
+        if (attempt < 2) {
+          await new Promise((r) => setTimeout(r, 1200));
+          return post(attempt + 1);
+        }
+        throw new Error('network');
+      }
+    };
+
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages, userMessage] }),
-      });
-      const data = await res.json().catch(() => ({}));
+      const data = await post(0);
       const reply: string =
         data?.reply || data?.error || 'Sorry, I could not answer that just now. Please WhatsApp us on +234 903 577 7779.';
       setMessages((prev) => [...prev, { role: 'assistant', text: reply }]);

@@ -46,7 +46,7 @@ const fallbackSlides: HeroSlide[] = [
     title: 'Genuine Japanese',
     accent: '& Korean Parts',
     subtitle:
-      'OEM-quality parts for Lexus, Toyota, Mitsubishi, Nissan, Acura, Kia and Hyundai — fair pricing, nationwide delivery, quotes in 24 hours.',
+      'OEM-quality parts for Lexus, Toyota, Honda, Mitsubishi, Nissan, Acura, Kia and Hyundai — fair pricing, nationwide delivery, quotes in 24 hours.',
     ctaText: 'Browse Catalog',
     ctaLink: '/shop',
   },
@@ -160,13 +160,14 @@ interface CategoryTileProps {
   productCount?: number;
   size: string;
   isHero?: boolean;
+  imageUrl?: string | null;
 }
 
-const CategoryTile = ({ name, slug, productCount, size, isHero }: CategoryTileProps) => {
-  const imageUrl = getCategoryImage({ slug, image_url: null });
+const CategoryTile = ({ name, slug, productCount, size, isHero, imageUrl }: CategoryTileProps) => {
+  const imgUrl = getCategoryImage({ slug, image_url: imageUrl });
   const count = productCount || 0;
   const [imgFailed, setImgFailed] = useState(false);
-  const showImage = imageUrl && !imgFailed;
+  const showImage = imgUrl && !imgFailed;
 
   return (
     <Link
@@ -175,7 +176,7 @@ const CategoryTile = ({ name, slug, productCount, size, isHero }: CategoryTilePr
     >
       {showImage ? (
         <img
-          src={imageUrl}
+          src={imgUrl}
           alt={name}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.07]"
           loading="lazy"
@@ -326,7 +327,7 @@ export const HomePage = () => {
         description="Mexcon Autos supplies genuine Japanese and Korean auto spare parts in Nigeria. Search by vehicle, browse categories and request quotes within 24 hours."
         canonicalPath="/"
         image="/og-image.png"
-        keywords="auto spare parts Nigeria, Japanese car parts, Korean car parts, Toyota parts, Lexus parts, Nissan parts, Mitsubishi parts, Hyundai parts, Kia parts, Acura parts, OEM auto parts, Mexcon Autos"
+        keywords="auto spare parts Nigeria, Japanese car parts, Korean car parts, Toyota parts, Honda parts, Lexus parts, Nissan parts, Mitsubishi parts, Hyundai parts, Kia parts, Acura parts, OEM auto parts, Mexcon Autos"
         jsonLd={[
           organizationJsonLd({
             phone: '+2349035777779',
@@ -703,6 +704,7 @@ export const HomePage = () => {
                     name={category.name}
                     slug={category.slug}
                     productCount={category.product_count}
+                    imageUrl={category.image_url}
                     size={bentoSizes[index] || 'col-span-1 row-span-1'}
                     isHero={index === 0}
                   />

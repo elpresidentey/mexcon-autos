@@ -30,6 +30,7 @@ const legalLinks = [
 const manufacturers = [
   'Lexus',
   'Toyota',
+  'Honda',
   'Mitsubishi',
   'Nissan',
   'Acura',

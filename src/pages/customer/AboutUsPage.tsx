@@ -89,7 +89,7 @@ export const AboutUsPage = () => {
               <p>
                 We set out to change that. By building direct relationships with trusted
                 suppliers and leveraging deep knowledge of Asian vehicle platforms, we source
-                genuine OEM and equivalent parts for Lexus, Toyota, Mitsubishi, Nissan, Acura, Kia and
+                genuine OEM and equivalent parts for Lexus, Toyota, Honda, Mitsubishi, Nissan, Acura, Kia and
                 many more manufacturers.
               </p>
               <p>

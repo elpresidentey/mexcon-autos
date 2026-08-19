@@ -26,7 +26,7 @@ export const Seo = ({
     const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} - Japanese & Korean Auto Spare Parts`;
     const metaDescription =
       description ||
-      'Quality genuine Japanese and Korean auto spare parts in Nigeria. Request a quote for Lexus, Toyota, Mitsubishi, Nissan, Acura, Kia and Hyundai.';
+      'Quality genuine Japanese and Korean auto spare parts in Nigeria. Request a quote for Lexus, Toyota, Honda, Mitsubishi, Nissan, Acura, Kia and Hyundai.';
 
     // Title
     document.title = fullTitle;
