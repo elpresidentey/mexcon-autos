@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /account
 
-Sitemap: https://mexconautos.com/sitemap.xml
+Sitemap: https://mextechautospareparts.com/sitemap.xml

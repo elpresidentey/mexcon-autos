@@ -13,6 +13,23 @@ const AI_KEY = process.env.AI_API_KEY || process.env.NVIDIA_API_KEY || '';
 const AI_BASE = (process.env.AI_BASE_URL || 'https://integrate.api.nvidia.com/v1').replace(/\/$/, '');
 const MODEL = process.env.AI_MODEL || 'nvidia/llama-3.3-nemotron-super-49b-v1';
 
+// Simple in-memory sliding-window rate limit (per warm instance): 10 chats
+// per IP per minute. Blunts casual abuse of the paid LLM backend.
+const RATE_LIMIT = { windowMs: 60_000, max: 10 };
+const rateHits = new Map();
+function isRateLimited(ip) {
+  const now = Date.now();
+  const recent = (rateHits.get(ip) || []).filter((t) => now - t < RATE_LIMIT.windowMs);
+  if (recent.length >= RATE_LIMIT.max) {
+    rateHits.set(ip, recent);
+    return true;
+  }
+  recent.push(now);
+  rateHits.set(ip, recent);
+  if (rateHits.size > 5000) rateHits.clear();
+  return false;
+}
+
 const COMPANY = {
   name: 'Mexcon Autos',
   tagline: 'Genuine Japanese and Korean auto spare parts, sourced for Nigeria.',
@@ -265,6 +282,22 @@ export default async function handler(req, res) {
   if (!AI_KEY) {
     res.statusCode = 503;
     res.end(JSON.stringify({ error: 'Assistant is not configured yet.' }));
+    return;
+  }
+
+  const ip =
+    String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||
+    req.socket?.remoteAddress ||
+    'unknown';
+  if (isRateLimited(ip)) {
+    res.statusCode = 429;
+    res.setHeader('Retry-After', '60');
+    res.end(
+      JSON.stringify({
+        error:
+          'You are sending messages too quickly. Please wait a moment and try again, or WhatsApp us on +234 903 577 7779.',
+      })
+    );
     return;
   }
 
