@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button, EmptyState } from '../../components/common';
+import { Button, EmptyState, Reveal } from '../../components/common';
 import { Seo, organizationJsonLd, webSiteJsonLd, webPageJsonLd } from '../../components/Seo';
 import { ProductCard } from '../../components/customer/ProductCard';
 import { BrandCard } from '../../components/customer/BrandCard';
@@ -331,7 +331,7 @@ export const HomePage = () => {
         jsonLd={[
           organizationJsonLd({
             phone: '+2349035777779',
-            email: 'info@mexconautos.com',
+            email: 'info@mextechautospareparts.com',
             address: 'Lagos, Nigeria',
           }),
           webSiteJsonLd(),
@@ -531,11 +531,13 @@ export const HomePage = () => {
           ) : carouselProducts.length === 0 ? (
             <EmptyState title="No featured products yet" description="Check back soon for new stock" />
           ) : (
+            <Reveal delay={0.08}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {carouselProducts.slice(0, 8).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
+          </Reveal>
           )}
         </div>
       </section>
@@ -750,11 +752,13 @@ export const HomePage = () => {
                 </svg>
               </Link>
             </div>
+            <Reveal delay={0.06}>
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
               {brands.map((brand) => (
                 <BrandCard key={brand.id} brand={brand} variant="compact" />
               ))}
             </div>
+          </Reveal>
           </div>
         </section>
       )}
@@ -810,7 +814,8 @@ export const HomePage = () => {
         <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-accent-500 via-accent-400 to-accent-500" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0di00aC0ydjRoMnptMC0xMHYtNGgtMnY0aDJ6bTAgMjB2LTRoLTJ2NGgyem0wLTEwdi00aC0ydjRoMnptMjAgMHY2aC0ydjZoMnptMCAxMHYtNmgtMnY2aDJ6bTAtMjB2NmgtMnYtNmgyem0tMjAgMHY2aC0ydjZoMnptMCAxMHYtNmgtMnY2aDJ6bTAtMjB2NmgtMnYtNmgyem0tMjAgMHY2aC0ydjZoMnptMCAxMHYtNmgtMnY2aDJ6bTAtMjB2NmgtMnYtNmgyem0tMjAgMHY2aC0ydjZoMnptMCAxMHYtNmgtMnY2aDJ6bTAtMjB2NmgtMnYtNmgyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
         <div className="container-custom relative">
-          <div className="max-w-2xl">
+          <Reveal>
+            <div className="max-w-2xl">
             <h2 className="font-display text-3xl lg:text-4xl font-bold tracking-wide uppercase leading-tight">
               Can&apos;t find the part?
             </h2>
@@ -825,7 +830,8 @@ export const HomePage = () => {
                 Request a Quote
               </Button>
             </Link>
-          </div>
+            </div>
+          </Reveal>
         </div>
       </section>
     </div>

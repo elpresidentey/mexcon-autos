@@ -13,6 +13,7 @@ import {
   LoadingSpinner,
   EmptyState,
   Button,
+  Reveal,
 } from '../../components/common';
 import { FunnelIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -474,11 +475,13 @@ className={`px-5 py-2.5 text-sm font-medium rounded-full border transition-all d
               </div>
             ) : (
               <>
+                <Reveal>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {products.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}
                 </div>
+              </Reveal>
 
                 {totalPages > 1 && (
                   <div className="mt-12 flex justify-center">

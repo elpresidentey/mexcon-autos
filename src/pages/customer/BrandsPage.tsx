@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { brandsService } from '../../services/brands.service';
 import type { Brand } from '../../types';
 import { BrandCard } from '../../components/customer/BrandCard';
-import { LoadingSpinner, EmptyState } from '../../components/common';
+import { LoadingSpinner, EmptyState, Reveal } from '../../components/common';
 import { BuildingStorefrontIcon } from '@heroicons/react/24/outline';
 
 export const BrandsPage = () => {
@@ -95,8 +95,10 @@ export const BrandsPage = () => {
                   Japanese <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-lime-500">Brands</span>
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                  {japaneseBrands.map((brand) => (
-                    <BrandCard key={brand.id} brand={brand} />
+                  {japaneseBrands.map((brand, index) => (
+                    <Reveal key={brand.id} delay={Math.min(index * 0.06, 0.36)}>
+                      <BrandCard brand={brand} />
+                    </Reveal>
                   ))}
                 </div>
               </div>
@@ -110,8 +112,10 @@ export const BrandsPage = () => {
                   Korean <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-lime-500">Brands</span>
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                  {koreanBrands.map((brand) => (
-                    <BrandCard key={brand.id} brand={brand} />
+                  {koreanBrands.map((brand, index) => (
+                    <Reveal key={brand.id} delay={Math.min(index * 0.06, 0.36)}>
+                      <BrandCard brand={brand} />
+                    </Reveal>
                   ))}
                 </div>
               </div>
@@ -124,8 +128,10 @@ export const BrandsPage = () => {
                   All <span className="text-primary-600">Brands</span>
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                  {otherBrands.map((brand) => (
-                    <BrandCard key={brand.id} brand={brand} />
+                  {otherBrands.map((brand, index) => (
+                    <Reveal key={brand.id} delay={Math.min(index * 0.06, 0.36)}>
+                      <BrandCard brand={brand} />
+                    </Reveal>
                   ))}
                 </div>
               </div>

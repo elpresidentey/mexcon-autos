@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Bars3Icon, XMarkIcon, PhoneIcon, ShoppingBagIcon, UserIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,9 +7,17 @@ import { useAuth } from '../../contexts/AuthContext';
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { cartItemCount } = useCart();
   const { isAuthenticated, userType, user } = useAuth();
   const isCustomer = isAuthenticated && userType === 'customer';
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const navigation = [
     { name: 'Shop', href: '/shop' },
@@ -21,7 +29,11 @@ export const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-metallic-200">
+    <header
+      className={`sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-metallic-200 transition-shadow duration-300 ${
+        scrolled ? 'shadow-[0_12px_32px_-20px_rgba(15,23,42,0.45)]' : ''
+      }`}
+    >
       <nav className="container-custom">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center gap-3 group">

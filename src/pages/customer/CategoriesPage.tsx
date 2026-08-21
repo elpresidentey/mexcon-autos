@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { categoriesService } from '../../services/categories.service';
 import type { Category } from '../../types';
 import { CategoryCard } from '../../components/customer/CategoryCard';
-import { LoadingSpinner, EmptyState } from '../../components/common';
+import { LoadingSpinner, EmptyState, Reveal } from '../../components/common';
 import { RectangleStackIcon } from '@heroicons/react/24/outline';
 
 export const CategoriesPage = () => {
@@ -75,8 +75,10 @@ export const CategoriesPage = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {categories.map((category) => (
-                <CategoryCard key={category.id} category={category} />
+              {categories.map((category, index) => (
+                <Reveal key={category.id} delay={Math.min(index * 0.06, 0.36)}>
+                  <CategoryCard category={category} />
+                </Reveal>
               ))}
             </div>
           </>

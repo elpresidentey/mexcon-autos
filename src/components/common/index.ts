@@ -28,3 +28,4 @@ export * from './FormField';
 export * from './ToastViewport';
 export * from './toast';
 export * from './useToast';
+export * from './Reveal';
