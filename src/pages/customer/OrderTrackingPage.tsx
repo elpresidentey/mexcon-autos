@@ -75,7 +75,7 @@ const STATUS_STEPS = ['pending', 'confirmed', 'processing', 'shipped', 'delivere
 
 // Order stored in this session after checkout (guests land here with
 // order number + email pre-filled so tracking is one click away).
-const getStoredOrderInfo = (): { orderNumber: string; email: string; receiptUrl?: string } | null => {
+const getStoredOrderInfo = (): { orderNumber: string; email: string } | null => {
   try {
     const raw = sessionStorage.getItem('mexcon_last_order');
     return raw ? JSON.parse(raw) : null;
@@ -169,16 +169,12 @@ const OrderCard = ({ order }: { order: Order }) => (
                 <span className="font-semibold">{order.payment_reference}</span>
               </div>
             )}
-            {order.receipt_url && (
+            {order.receipt_path && (
               <div className="flex justify-between items-center gap-4">
                 <span className="text-metallic-600">Payment Receipt</span>
-                <a href={order.receipt_url} target="_blank" rel="noopener noreferrer" title="View full receipt">
-                  <img
-                    src={order.receipt_url}
-                    alt="Payment receipt"
-                    className="w-20 h-20 object-cover rounded-lg border border-metallic-200 hover:opacity-80 transition-opacity"
-                  />
-                </a>
+                <span className="text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-2 py-1 rounded-md">
+                  Received
+                </span>
               </div>
             )}
             {order.payment_verified_at && (

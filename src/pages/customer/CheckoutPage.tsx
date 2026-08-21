@@ -57,7 +57,7 @@ export const CheckoutPage = () => {
     shippingCost: number;
     totalAmount: number;
     paymentMethod: string;
-    receiptUrl?: string;
+    receiptPreview?: string;
   } | null>(null);
   const [customerNotes, setCustomerNotes] = useState('');
 
@@ -233,7 +233,7 @@ export const CheckoutPage = () => {
         shippingCost,
         totalAmount,
         paymentMethod: effectiveMethod,
-        receiptUrl: receipt?.url ?? undefined,
+        receiptPreview: receiptPreview ?? undefined,
       });
 
       // Remember the order in this browser tab/session so guests can jump
@@ -244,7 +244,6 @@ export const CheckoutPage = () => {
           JSON.stringify({
             orderNumber: order.order_number,
             email: isGuest ? guestContact.email : (user?.email || ''),
-            receiptUrl: receipt?.url ?? null,
           })
         );
       } catch {
@@ -817,16 +816,14 @@ export const CheckoutPage = () => {
                       <span className="text-metallic-600">Payment Method</span>
                       <span className="font-semibold capitalize text-ink">{placedSummary.paymentMethod.replace('_', ' ')}</span>
                     </div>
-                    {placedSummary.paymentMethod === 'bank_transfer' && placedSummary.receiptUrl && (
+                    {placedSummary.paymentMethod === 'bank_transfer' && placedSummary.receiptPreview && (
                       <div className="flex justify-between items-center pt-2">
                         <span className="text-metallic-600">Payment Receipt</span>
-                        <a href={placedSummary.receiptUrl} target="_blank" rel="noopener noreferrer" title="View full receipt">
-                          <img
-                            src={placedSummary.receiptUrl}
-                            alt="Payment receipt"
-                            className="w-20 h-20 object-cover rounded-lg border border-metallic-200 hover:opacity-80 transition-opacity"
-                          />
-                        </a>
+                        <img
+                          src={placedSummary.receiptPreview}
+                          alt="Payment receipt"
+                          className="w-20 h-20 object-cover rounded-lg border border-metallic-200"
+                        />
                       </div>
                     )}
                   </div>

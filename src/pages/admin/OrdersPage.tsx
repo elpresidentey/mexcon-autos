@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ordersService } from '../../services/orders.service';
+import { getSignedUrl, STORAGE_BUCKETS } from '../../services/supabase';
 import type { Order } from '../../types';
 import {
   Button,
@@ -81,6 +82,23 @@ export const OrdersPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [receiptSignedUrl, setReceiptSignedUrl] = useState<string | null>(null);
+
+  // Receipts live in a private bucket: mint a short-lived signed URL for the
+  // selected order's proof of payment (admins hold SELECT via RLS).
+  useEffect(() => {
+    let cancelled = false;
+    setReceiptSignedUrl(null);
+    const path = selectedOrder?.receipt_path;
+    if (selectedOrder && path) {
+      getSignedUrl(STORAGE_BUCKETS.RECEIPTS, path, 600).then((url) => {
+        if (!cancelled) setReceiptSignedUrl(url);
+      });
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedOrder]);
   const [isUpdating, setIsUpdating] = useState(false);
   const perPage = 10;
 
@@ -316,7 +334,7 @@ export const OrdersPage = () => {
                         <Badge variant={paymentStatusBadge[order.payment_status] || 'secondary'}>
                           {order.payment_status}
                         </Badge>
-                        {order.receipt_url && (
+                        {order.receipt_path && (
                           <div className="mt-1 flex items-center gap-1 text-xs text-metallic-500" title="Receipt uploaded">
                             <PhotoIcon className="w-3.5 h-3.5" />
                             Receipt
@@ -516,20 +534,24 @@ export const OrdersPage = () => {
                   Note: {selectedOrder.payment_note}
                 </p>
               )}
-              {selectedOrder.receipt_url && (
+              {selectedOrder.receipt_path && (
                 <div className="mt-2">
                   <p className="text-xs font-semibold text-metallic-500 uppercase tracking-wider mb-2">Customer Receipt</p>
-                  <a href={selectedOrder.receipt_url} target="_blank" rel="noopener noreferrer" className="block">
-                    <img
-                      src={selectedOrder.receipt_url}
-                      alt={`Receipt for ${selectedOrder.order_number}`}
-                      className="w-full max-w-xs max-h-64 object-contain bg-white rounded-lg ring-1 ring-black/5 p-2 cursor-zoom-in"
-                    />
-                  </a>
-                  <p className="text-xs text-metallic-500 mt-1">Click to open full size in a new tab</p>
+                  {receiptSignedUrl ? (
+                    <a href={receiptSignedUrl} target="_blank" rel="noopener noreferrer" className="block">
+                      <img
+                        src={receiptSignedUrl}
+                        alt={`Receipt for ${selectedOrder.order_number}`}
+                        className="w-full max-w-xs max-h-64 object-contain bg-white rounded-lg ring-1 ring-black/5 p-2 cursor-zoom-in"
+                      />
+                    </a>
+                  ) : (
+                    <div className="w-full max-w-xs h-40 rounded-lg bg-metallic-100 skeleton" />
+                  )}
+                  <p className="text-xs text-metallic-500 mt-1">Secure link · expires after 10 minutes</p>
                 </div>
               )}
-              {selectedOrder.receipt_url && selectedOrder.payment_status !== 'paid' && (
+              {selectedOrder.receipt_path && selectedOrder.payment_status !== 'paid' && (
                 <div className="flex flex-wrap gap-2 mt-4">
                   <Button
                     size="sm"

@@ -68,7 +68,7 @@ export class OrdersService {
           billing_country: shippingAddress.country,
           customer_notes: customerNotes,
           receipt_path: receipt?.path ?? null,
-          receipt_url: receipt?.url ?? null,
+          receipt_url: null,
         })
         .select()
         .single();
@@ -215,7 +215,7 @@ export class OrdersService {
         p_customer_email: payload.customerEmail,
         p_customer_notes: payload.customerNotes,
         p_receipt_path: payload.receipt?.path ?? null,
-        p_receipt_url: payload.receipt?.url ?? null,
+        p_receipt_url: null,
       });
 
       if (error) throw error;

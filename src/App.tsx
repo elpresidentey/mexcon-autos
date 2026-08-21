@@ -33,8 +33,6 @@ const CustomerRegisterPage = lazy(() => import('./pages/customer/RegisterPage').
 const ForgotPasswordPage = lazy(() => import('./pages/customer/ForgotPasswordPage').then((m) => ({ default: m.ForgotPasswordPage })));
 const ResetPasswordPage = lazy(() => import('./pages/customer/ResetPasswordPage').then((m) => ({ default: m.ResetPasswordPage })));
 const AccountPage = lazy(() => import('./pages/customer/AccountPage').then((m) => ({ default: m.AccountPage })));
-const UIComponentsDemo = lazy(() => import('./pages/demo/UIComponentsDemo').then((m) => ({ default: m.UIComponentsDemo })));
-const DesignSystemPage = lazy(() => import('./pages/design/DesignSystemPage').then((m) => ({ default: m.DesignSystemPage })));
 const LoginPage = lazy(() => import('./pages/admin/LoginPage').then((m) => ({ default: m.LoginPage })));
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage').then((m) => ({ default: m.DashboardPage })));
 const ProductsListPage = lazy(() => import('./pages/admin/ProductsListPage').then((m) => ({ default: m.ProductsListPage })));
@@ -128,8 +126,6 @@ function App() {
                 <Route path="forgot-password" element={<Layout><ForgotPasswordPage /></Layout>} />
                 <Route path="reset-password" element={<Layout><ResetPasswordPage /></Layout>} />
                 <Route path="account" element={<Layout><AccountPage /></Layout>} />
-                <Route path="demo/ui-components" element={<Layout><UIComponentsDemo /></Layout>} />
-                <Route path="design-system" element={<DesignSystemPage />} />
 
                 {/* Admin Login */}
                 <Route path="/admin/login" element={<LoginPage />} />
