@@ -50,6 +50,12 @@ export const ProductFormPage = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Numeric fields are kept as raw text while typing so commas/spaces/decimals
+  // behave naturally (native type="number" rejects them mid-edit), and are
+  // parsed back to numbers on submit.
+  const [priceDraft, setPriceDraft] = useState('');
+  const [warrantyDraft, setWarrantyDraft] = useState('6');
+
   useEffect(() => {
     let cancelled = false;
 
@@ -95,6 +101,8 @@ export const ProductFormPage = () => {
             warranty_months: data.warranty_months ?? 6,
             is_featured: data.is_featured || false,
           });
+          setPriceDraft(String(data.price ?? ''));
+          setWarrantyDraft(String(data.warranty_months ?? 6));
 
           // Convert product images to ImageGallery format
           if (data.images) {
@@ -162,8 +170,14 @@ export const ProductFormPage = () => {
       newErrors.brand_id = 'Brand is required';
     }
 
-    if (!formData.price || formData.price <= 0) {
+    const parsedPrice = parseFloat(priceDraft.replace(/,/g, '').trim());
+    if (isNaN(parsedPrice) || parsedPrice <= 0) {
       newErrors.price = 'Valid price is required';
+    }
+
+    const parsedWarranty = parseInt(warrantyDraft.replace(/,/g, '').trim(), 10);
+    if (isNaN(parsedWarranty) || parsedWarranty < 0) {
+      newErrors.warranty_months = 'Warranty must be 0 or more months';
     }
 
     if (!isEditMode && existingImages.length === 0) {
@@ -182,17 +196,23 @@ export const ProductFormPage = () => {
       return;
     }
 
+    const payload = {
+      ...formData,
+      price: parseFloat(priceDraft.replace(/,/g, '').trim()),
+      warranty_months: parseInt(warrantyDraft.replace(/,/g, '').trim(), 10) || 0,
+    };
+
     setIsSaving(true);
 
     try {
       if (isEditMode && id) {
         // Update existing product
-        await productsService.updateProduct(id, formData, existingImages);
+        await productsService.updateProduct(id, payload, existingImages);
 
         toast.success('Product updated successfully');
       } else {
         // Create new product
-        await productsService.createProduct(formData, existingImages);
+        await productsService.createProduct(payload, existingImages);
         toast.success('Product created successfully');
       }
 
@@ -290,14 +310,17 @@ export const ProductFormPage = () => {
             <Input
               label="Price (NGN)"
               name="price"
-              type="number"
-              value={formData.price}
-              onChange={handleChange}
+              type="text"
+              inputMode="decimal"
+              value={priceDraft}
+              onChange={(e) => {
+                setPriceDraft(e.target.value.replace(/[^0-9.,]/g, ''));
+                if (errors.price) setErrors((prev) => ({ ...prev, price: '' }));
+              }}
               error={errors.price}
               required
-              placeholder="0.00"
-              step="0.01"
-              min="0"
+              placeholder="e.g. 13,500"
+              helperText="Numbers only — commas are allowed"
             />
 
             <div className="md:col-span-2">
@@ -411,10 +434,14 @@ export const ProductFormPage = () => {
             <Input
               label="Warranty (months)"
               name="warranty_months"
-              type="number"
-              value={formData.warranty_months ?? 6}
-              onChange={handleChange}
-              min={0}
+              type="text"
+              inputMode="numeric"
+              value={warrantyDraft}
+              onChange={(e) => {
+                setWarrantyDraft(e.target.value.replace(/[^0-9]/g, ''));
+                if (errors.warranty_months) setErrors((prev) => ({ ...prev, warranty_months: '' }));
+              }}
+              error={errors.warranty_months}
               helperText="e.g., 6 = six months warranty"
             />
           </div>

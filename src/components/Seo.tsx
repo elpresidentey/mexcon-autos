@@ -11,7 +11,7 @@ interface SeoProps {
 }
 
 const SITE_NAME = 'Mexcon Autos';
-const SITE_URL = 'https://mexconautos.com';
+const SITE_URL = 'https://mextechautospareparts.com';
 
 export const Seo = ({
   title,

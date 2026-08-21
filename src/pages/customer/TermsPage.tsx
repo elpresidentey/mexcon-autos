@@ -134,8 +134,8 @@ export const TermsPage = () => {
             <h2 className="text-2xl font-black text-dark-900 mb-3 tracking-tight">11. Contact</h2>
             <p className="text-metallic-600 leading-relaxed">
               For questions about these terms, contact us at{' '}
-              <a href="mailto:info@mexconautos.com" className="text-primary-600 hover:text-primary-700 font-medium">
-                info@mexconautos.com
+              <a href="mailto:info@mextechautospareparts.com" className="text-primary-600 hover:text-primary-700 font-medium">
+                info@mextechautospareparts.com
               </a>
             </p>
           </section>

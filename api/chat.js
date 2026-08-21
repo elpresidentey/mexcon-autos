@@ -19,8 +19,8 @@ const COMPANY = {
   location: 'Lagos, Nigeria',
   phone: '+234 903 577 7779',
   whatsapp: '+234 903 577 7779',
-  email: 'info@mexconautos.com',
-  website: 'https://mexconautos.com',
+  email: 'info@mextechautospareparts.com',
+  website: 'https://mextechautospareparts.com',
 };
 
 // Company knowledge baked into every conversation (mirrors the site's

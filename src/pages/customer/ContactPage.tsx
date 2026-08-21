@@ -172,7 +172,7 @@ export const ContactPage = () => {
                     </div>
                     <div>
                       <p className="font-black text-dark-900">Email</p>
-                      <p className="text-metallic-600 text-sm font-medium">{settings?.contact_email || 'info@mexconautos.com'}</p>
+                      <p className="text-metallic-600 text-sm font-medium">{settings?.contact_email || 'info@mextechautospareparts.com'}</p>
                     </div>
                   </div>
 

@@ -117,8 +117,8 @@ export const PrivacyPolicyPage = () => {
             <p className="text-metallic-600 leading-relaxed">
               If you have any questions about this privacy policy or your data, please
               contact us at{' '}
-              <a href="mailto:info@mexconautos.com" className="text-primary-600 hover:text-primary-700 font-medium">
-                info@mexconautos.com
+              <a href="mailto:info@mextechautospareparts.com" className="text-primary-600 hover:text-primary-700 font-medium">
+                info@mextechautospareparts.com
               </a>
             </p>
           </section>

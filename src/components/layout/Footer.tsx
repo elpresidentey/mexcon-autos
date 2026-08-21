@@ -131,8 +131,8 @@ export const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <EnvelopeIcon className="w-4 h-4 text-accent-400 flex-shrink-0" />
-                <a href="mailto:info@mexconautos.com" className="hover:text-white transition-colors">
-                  info@mexconautos.com
+                <a href="mailto:info@mextechautospareparts.com" className="hover:text-white transition-colors">
+                  info@mextechautospareparts.com
                 </a>
               </li>
             </ul>
