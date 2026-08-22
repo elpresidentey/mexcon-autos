@@ -332,7 +332,7 @@ export const HomePage = () => {
           organizationJsonLd({
             phone: '+2349035777779',
             email: 'info@mextechautospareparts.com',
-            address: 'Lagos, Nigeria',
+            address: 'Zone B, Block 3, Shop 85, ASPAMDA, Lagos International Trade Fair Complex, Ojo, Lagos',
           }),
           webSiteJsonLd(),
           webPageJsonLd({

@@ -182,7 +182,7 @@ export const ContactPage = () => {
                     </div>
                     <div>
                       <p className="font-black text-dark-900">Address</p>
-                      <p className="text-metallic-600 text-sm font-medium">{settings?.business_address || 'Lagos, Nigeria'}</p>
+                      <p className="text-metallic-600 text-sm font-medium">{settings?.business_address || 'Zone B, Block 3, Shop 85, ASPAMDA, Lagos International Trade Fair Complex, Ojo, Lagos'}</p>
                     </div>
                   </div>
 

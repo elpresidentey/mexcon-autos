@@ -121,7 +121,10 @@ export const Footer = () => {
             <ul className="space-y-3 text-sm text-white/60">
               <li className="flex items-start gap-3">
                 <MapPinIcon className="w-4 h-4 text-accent-400 flex-shrink-0 mt-0.5" />
-                <span>Lagos, Nigeria</span>
+                <span>
+                  Zone B, Block 3, Shop 85, ASPAMDA,<br />
+                  Lagos International Trade Fair Complex, Ojo, Lagos
+                </span>
               </li>
               <li className="flex items-center gap-3">
                 <PhoneIcon className="w-4 h-4 text-accent-400 flex-shrink-0" />
