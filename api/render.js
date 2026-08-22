@@ -34,7 +34,7 @@ const STATIC_PAGES = {
     itemList: { kind: 'brands' },
   },
   '/faqs': {
-    title: `FAQs | ${SITE_NAME}`,
+    title: `FAQs - Delivery, Payment & Returns | ${SITE_NAME}`,
     description: 'Answers about ordering, delivery, payment, returns and warranties at Mexcon Autos.',
     faq: true,
   },
@@ -42,15 +42,10 @@ const STATIC_PAGES = {
     title: `Request a Free Quote | ${SITE_NAME}`,
     description: "Can't find a part? Request a quote and we'll confirm availability and pricing within 24 hours.",
   },
-  '/about': { title: `About Us | ${SITE_NAME}`, description: 'Who we are: trusted suppliers of genuine OEM Japanese and Korean auto parts across Nigeria.' },
+  '/about': { title: `About Mexcon Autos | Japanese & Korean Auto Spare Parts`, description: 'Who we are: trusted suppliers of genuine OEM Japanese and Korean auto parts across Nigeria.' },
   '/contact': { title: `Contact Us | ${SITE_NAME}`, description: 'Call, WhatsApp or email Mexcon Autos for parts enquiries, quotes and support.' },
   '/payment-methods': { title: `Payment Methods | ${SITE_NAME}`, description: 'Bank transfer, card payments and pay-on-delivery options for your auto parts orders.' },
   '/guarantees': { title: `Our Guarantees | ${SITE_NAME}`, description: '100% genuine parts, 30-day returns and manufacturer warranties on every order.' },
-  '/faqs': {
-    title: `FAQs | ${SITE_NAME}`,
-    description: 'Answers about ordering, delivery, payment, returns and warranties at Mexcon Autos.',
-    faq: true,
-  },
   '/maintenance-tips': { title: `Maintenance Tips | ${SITE_NAME}`, description: 'Practical car maintenance tips from the Mexcon Autos team.' },
   '/track-order': { title: `Track Your Order | ${SITE_NAME}`, description: 'Track your Mexcon Autos order with your order number and email address.' },
   '/privacy-policy': { title: `Privacy Policy | ${SITE_NAME}`, description: 'How Mexcon Autos collects, uses and protects your personal information.' },
@@ -233,11 +228,18 @@ function inject(html, { title, description, canonicalPath, ogType, image, jsonLd
   out = out.replace(/<meta\s+property="twitter:image"[^>]*>/, `<meta property="twitter:image" content="${escapeHtml(image)}" />`);
 
   const blocks = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
-  const head = [
-    `<link rel="canonical" href="${canonical}" />`,
-    ...blocks.map((b) => `<script type="application/ld+json">${JSON.stringify(b).replace(/</g, '\\u003c')}</script>`),
-  ].join('\n');
-  out = out.replace('</head>', `${head}\n</head>`);
+  // Replace the shell's default canonical (never stack two canonical tags).
+  const canonTag = `<link rel="canonical" href="${canonical}" />`;
+  if (/<link\s+rel="canonical"/.test(out)) {
+    out = out.replace(/<link\s+rel="canonical"[^>]*>/, canonTag);
+    const head = blocks
+      .map((b) => `<script type="application/ld+json">${JSON.stringify(b).replace(/</g, '\\u003c')}</script>`)
+      .join('\n');
+    out = out.replace('</head>', `${head}\n</head>`);
+  } else {
+    const head = [canonTag, ...blocks.map((b) => `<script type="application/ld+json">${JSON.stringify(b).replace(/</g, '\\u003c')}</script>`)].join('\n');
+    out = out.replace('</head>', `${head}\n</head>`);
+  }
   return out;
 }
 
