@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { sbImg } from '../../services/supabase';
 import { getCategoryImage } from './categoryImages';
 import type { Category } from '../../types';
 
@@ -10,7 +11,8 @@ interface CategoryCardProps {
 }
 
 export const CategoryCard = ({ category }: CategoryCardProps) => {
-  const imageUrl = getCategoryImage(category);
+  const rawUrl = getCategoryImage(category);
+  const imageUrl = rawUrl ? sbImg(rawUrl, 800) || rawUrl : null;
   const productCount = category.product_count || 0;
 
   return (

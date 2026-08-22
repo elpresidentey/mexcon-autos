@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { productsService } from '../../services/products.service';
+import { sbImg } from '../../services/supabase';
 import { useCart } from '../../contexts/CartContext';
 import type { Product } from '../../types';
 import { LoadingSpinner, Breadcrumbs, Button } from '../../components/common';
@@ -111,7 +112,6 @@ export const ProductDetailPage = () => {
       : [];
 
   const selectedImage = images[selectedImageIndex]?.url;
-
   const breadcrumbItems = [
     { label: 'Shop', href: '/shop' },
     ...(product.category ? [{ label: product.category.name, href: `/categories/${product.category.slug}` }] : []),
@@ -157,7 +157,7 @@ export const ProductDetailPage = () => {
               {selectedImage ? (
                 <>
                   <img
-                    src={selectedImage}
+                    src={sbImg(selectedImage, 1200, 80) || selectedImage}
                     alt={product.name}
                     className="w-full h-full object-contain p-6 group-hover:scale-105 transition-transform duration-500"
                   />
@@ -213,7 +213,7 @@ export const ProductDetailPage = () => {
                     aria-label={`View image ${index + 1}`}
                   >
                     <img
-                      src={image.url}
+                      src={sbImg(image.url, 240) || image.url}
                       alt={`${product.name} - Image ${index + 1}`}
                       className="w-full h-full object-contain p-1.5"
                       loading="lazy"

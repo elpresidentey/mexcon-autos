@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Header } from './Header';
@@ -13,6 +14,14 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
+  // Mount the chat widget off the critical path so it never competes with
+  // first render (its history/localStorage work is not urgent).
+  const [chatReady, setChatReady] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setChatReady(true), 2500);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -28,7 +37,7 @@ export const Layout = ({ children }: LayoutProps) => {
       </motion.main>
       <Footer />
       <WhatsAppButton />
-      <ChatWidget />
+      {chatReady && <ChatWidget />}
       <BackToTop />
     </div>
   );

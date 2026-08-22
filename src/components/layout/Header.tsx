@@ -40,7 +40,9 @@ export const Header = () => {
             <div className="bg-white p-2 rounded-lg shadow-sm border border-metallic-200">
               <img
                 src="/Logo 1.png"
-                alt="Mexcon Group"
+                alt=""
+                width={160}
+                height={160}
                 className="h-12 w-auto transition-transform duration-200 group-hover:scale-[1.03]"
                 style={{
                   imageRendering: 'crisp-edges',

@@ -109,7 +109,7 @@ export const Footer = () => {
           <div className="lg:col-span-4">
             <Link to="/" className="inline-flex items-center gap-3 mb-5 group">
               <div className="bg-white/[0.08] border border-white/10 p-2 rounded-lg">
-                <img src="/Logo 2.png" alt="Mexcon Autos" className="h-9 w-auto" />
+                <img src="/Logo 2.png" alt="" width={160} height={160} className="h-9 w-auto" />
               </div>
               <span className="font-display text-xl font-bold text-white tracking-wide uppercase group-hover:text-accent-400 transition-colors">
                 Mexcon Group

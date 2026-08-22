@@ -38,6 +38,28 @@ export const STORAGE_BUCKETS = {
   RECEIPTS: 'receipts',
 } as const;
 
+/**
+ * Returns a CDN-transformed Supabase storage URL (resized/re-encoded on the
+ * edge). Non-Supabase URLs are returned untouched. Falls back to the original
+ * URL if transforms are unavailable to the caller's plan.
+ */
+export const sbImg = (
+  url: string | null | undefined,
+  width?: number,
+  quality = 75
+): string | undefined | null => {
+  if (!url) return url;
+  if (!url.includes('/storage/v1/object/public/')) return url;
+  try {
+    const u = new URL(url);
+    if (width) u.searchParams.set('width', String(width));
+    u.searchParams.set('quality', String(quality));
+    return u.toString();
+  } catch {
+    return url;
+  }
+};
+
 // Helper function to upload image
 export const uploadImage = async (
   bucket: string,

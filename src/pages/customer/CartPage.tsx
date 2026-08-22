@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
+import { sbImg } from '../../services/supabase';
 import { LoadingSpinner, EmptyState } from '../../components/common';
 import { TrashIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 
@@ -60,7 +61,7 @@ export const CartPage = () => {
                     {/* Product Image */}
                     {item.product?.primary_image_url && (
                       <img
-                        src={item.product.primary_image_url}
+                        src={sbImg(item.product.primary_image_url, 240) || item.product.primary_image_url}
                         alt={item.product.name}
                         className="w-24 h-24 object-cover rounded-xl"
                       />

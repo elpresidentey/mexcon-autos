@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { ShoppingBagIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { useCart } from '../../contexts/CartContext';
+import { sbImg } from '../../services/supabase';
 import { getCategoryImage } from './categoryImages';
 import { getBrandLogo } from './brandLogos';
 import type { Product, Brand, Category } from '../../types';
@@ -63,7 +64,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     >
       <div className="relative aspect-[4/3] bg-metallic-50 overflow-hidden">
         <img
-          src={effectivePrimary}
+          src={sbImg(effectivePrimary, 640) || effectivePrimary}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           loading={imgFailed ? 'eager' : 'lazy'}
@@ -137,7 +138,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             {product.brand?.name || 'Mexcon Autos'}
           </p>
           {product.part_number && (
-            <p className="text-[10px] font-mono text-metallic-400 truncate">
+            <p className="text-[10px] font-mono text-metallic-500 truncate">
               {product.part_number}
             </p>
           )}

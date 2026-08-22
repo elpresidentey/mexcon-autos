@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import type { Brand } from '../../types';
+import { sbImg } from '../../services/supabase';
 import { getBrandLogo } from './brandLogos';
 
 interface BrandCardProps {
@@ -14,6 +15,7 @@ interface BrandCardProps {
 export const BrandCard = ({ brand, variant = 'default' }: BrandCardProps) => {
   const [logoFailed, setLogoFailed] = useState(false);
   const logoUrl = !logoFailed && (brand.logo_url || getBrandLogo(brand.slug));
+  const displayLogo = logoUrl ? sbImg(logoUrl, 160) || logoUrl : null;
   const count = brand.product_count || 0;
 
   if (variant === 'compact') {
@@ -25,8 +27,9 @@ export const BrandCard = ({ brand, variant = 'default' }: BrandCardProps) => {
       >
         {logoUrl ? (
           <img
-            src={logoUrl}
-            alt={brand.name}
+            src={displayLogo || logoUrl}
+            alt=""
+            aria-hidden="true"
             className="h-10 max-w-[4.5rem] object-contain opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
             loading="lazy"
             decoding="async"
@@ -37,7 +40,7 @@ export const BrandCard = ({ brand, variant = 'default' }: BrandCardProps) => {
             {brand.name}
           </span>
         )}
-        {logoUrl && (
+                {logoUrl && (
           <span className="text-[11px] font-semibold text-metallic-500 group-hover:text-primary-700 text-center leading-tight tracking-wide uppercase">
             {brand.name}
           </span>
@@ -54,7 +57,7 @@ export const BrandCard = ({ brand, variant = 'default' }: BrandCardProps) => {
       <div className="relative aspect-[4/3] bg-metallic-50 flex items-center justify-center p-8 border-b border-metallic-100">
         {logoUrl ? (
           <img
-            src={logoUrl}
+            src={displayLogo || logoUrl}
             alt={brand.name}
             className="max-w-[70%] max-h-[70%] object-contain opacity-90 transition-transform duration-300 group-hover:scale-[1.06]"
             loading="lazy"

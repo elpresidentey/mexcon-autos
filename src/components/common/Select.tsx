@@ -1,5 +1,5 @@
 import type { SelectHTMLAttributes, ReactNode } from 'react';
-import { forwardRef } from 'react';
+import { forwardRef, useId } from 'react';
 
 interface SelectOption {
   value: string;
@@ -16,17 +16,20 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, error, helperText, options, placeholder, className = '', children, ...props }, ref) => {
+  ({ label, error, helperText, options, placeholder, className = '', children, id, ...props }, ref) => {
+    const autoId = useId();
+    const selectId = id || autoId;
     return (
       <div className="w-full">
         {label && (
-          <label className="label" htmlFor={props.id}>
+          <label className="label" htmlFor={selectId}>
             {label}
             {props.required && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
         <select
           ref={ref}
+          id={selectId}
           className={`input ${error ? 'input-error' : ''} ${className}`}
           {...props}
         >

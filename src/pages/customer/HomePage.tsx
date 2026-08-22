@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button, EmptyState, Reveal } from '../../components/common';
+import { sbImg } from '../../services/supabase';
 import { Seo, organizationJsonLd, webSiteJsonLd, webPageJsonLd } from '../../components/Seo';
 import { ProductCard } from '../../components/customer/ProductCard';
 import { BrandCard } from '../../components/customer/BrandCard';
@@ -165,6 +166,7 @@ interface CategoryTileProps {
 
 const CategoryTile = ({ name, slug, productCount, size, isHero, imageUrl }: CategoryTileProps) => {
   const imgUrl = getCategoryImage({ slug, image_url: imageUrl });
+  const displayUrl: string | undefined = (imgUrl && (sbImg(imgUrl, 900) || imgUrl)) || undefined;
   const count = productCount || 0;
   const [imgFailed, setImgFailed] = useState(false);
   const showImage = imgUrl && !imgFailed;
@@ -176,7 +178,7 @@ const CategoryTile = ({ name, slug, productCount, size, isHero, imageUrl }: Cate
     >
       {showImage ? (
         <img
-          src={imgUrl}
+          src={displayUrl}
           alt={name}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.07]"
           loading="lazy"
@@ -247,7 +249,7 @@ export const HomePage = () => {
             const titleParts = (banner.title ?? '').split('\n');
             return {
               key: banner.id,
-              image: banner.image_url,
+              image: sbImg(banner.image_url, 1600) || banner.image_url,
               eyebrow: 'Mexcon Autos',
               title: titleParts[0] || 'Genuine Japanese',
               accent: titleParts[1] || 'Auto Parts',
@@ -786,7 +788,7 @@ export const HomePage = () => {
               >
                 <span className="absolute top-5 right-6 font-display text-6xl leading-none text-metallic-100 select-none" aria-hidden>                  &rdquo;
                 </span>
-                <div className="flex items-center gap-0.5 text-accent-500 mb-4" aria-label="5 star rating">
+                <div className="flex items-center gap-0.5 text-accent-500 mb-4" role="img" aria-label="Rated 5 out of 5 stars">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <StarIcon key={i} className="w-4 h-4 fill-current" />
                   ))}
